@@ -28,7 +28,8 @@
 	};
 
 	var tagTypeNames = new (function() {
-		for (var typeName in tagTypes) {
+		var typeName;
+		for (typeName in tagTypes) {
 			if (tagTypes.hasOwnProperty(typeName)) {
 				this[tagTypes[typeName]] = typeName;
 			}
@@ -58,7 +59,8 @@
 		this[tagTypes.byteArray] = function() {
 			var length = this.int();
 			var bytes = [];
-			for (var i = 0; i < length; i++) {
+			var i;
+			for (i = 0; i < length; i++) {
 				bytes.push(this.byte());
 			}
 			return new Buffer(bytes);
@@ -73,7 +75,8 @@
 			var type = this.byte();
 			var length = this.int();
 			var values = [];
-			for (var i = 0; i < length; i++) {
+			var i;
+			for (i = 0; i < length; i++) {
 				values.push(this[type]());
 			}
 			return values;
@@ -93,7 +96,8 @@
 			return values;
 		};
 		
-		for (var typeName in tagTypes) {
+		var typeName;
+		for (typeName in tagTypes) {
 			if (tagTypes.hasOwnProperty(typeName)) {
 				this[typeName] = this[tagTypes[typeName]];
 			}
@@ -107,7 +111,7 @@
 		var type = valueReader.byte();
 		if (type !== tagTypes.compound) {
 			throw 'Top tag should be a compound';
-		};
+		}
 		
 		var name = valueReader.string();
 		var result = {};
