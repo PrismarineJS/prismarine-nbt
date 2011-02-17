@@ -1,0 +1,16 @@
+{
+	"name": "nbt",
+	"version": "v0.1.0",
+	"description": "NBT.js – a JavaScript parser for uncompressed NBT archives",
+	"keywords": ["nbt", "minecraft"],
+	"homepage": "https://github.com/sjmulder/nbt-js",
+	"author": "Sijmen Mulder <sjmulder@gmail.com>",
+	"main": "nbt",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/sjmulder/nbt-js.git"
+	},
+	"engines": [ 
+		"node >=0.3.0 <0.5.0"
+	]
+}
