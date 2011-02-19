@@ -1,5 +1,5 @@
 /* 
-	NBT.js - a JavaScript parser for uncompressed NBT archives
+	NBT.js - a JavaScript parser for NBT archives
 	by Sijmen Mulder
 
 	I, the copyright holder of this work, hereby release it into the public
@@ -11,7 +11,9 @@
 */
 
 (function() {
-	var binary = require('./binary');
+	var compress = require('compress'),
+		binary = require('./binary');
+		
 	
 	var tagTypes = {
 		end: 0,
@@ -104,7 +106,7 @@
 		}
 	};
 
-	this.parse = function(data) {
+	var parseUncompressed = function(data) {
 		var binaryReader = new binary.BinaryReader(data, true);
 		var valueReader = new ValueReader(binaryReader);
 		
@@ -118,5 +120,20 @@
 		result[name] = valueReader.compound();
 		
 		return result;
+	}
+
+	this.parse = function(data, callback) {
+		if (compress.hasGzipHeader(data)) {
+			var gunzip = new compress.Gunzip();
+			gunzip.write(data, function(error, uncompressed) {
+				if (error) {
+					callback(error, data);
+				} else {
+					callback(null, parseUncompressed(uncompressed));
+				}
+			});
+		} else {
+			callback(null, parseUncompressed(data));
+		}
 	};
 }).apply(exports || (nbt = {}));
