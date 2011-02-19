@@ -116,10 +116,15 @@
 		}
 		
 		var name = valueReader.string();
-		var result = {};
-		result[name] = valueReader.compound();
+		var value = valueReader.compound();
 		
-		return result;
+		if (name === '') {
+			return value;
+		} else {
+			var result = {};
+			result[name] = value;
+			return result;
+		}
 	}
 
 	this.parse = function(data, callback) {
