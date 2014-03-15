@@ -11,7 +11,7 @@
 */
 
 (function() {
-	var compress = require('compress'),
+	var zlib = require('zlib'),
 		binary = require('./binary');
 		
 	
@@ -128,17 +128,12 @@
 	}
 
 	this.parse = function(data, callback) {
-		if (compress.hasGzipHeader(data)) {
-			var gunzip = new compress.Gunzip();
-			gunzip.write(data, function(error, uncompressed) {
-				if (error) {
-					callback(error, data);
-				} else {
-					callback(null, parseUncompressed(uncompressed));
-				}
-			});
-		} else {
-			callback(null, parseUncompressed(data));
-		}
-	};
+    zlib.unzip(data, function(err, uncompressed) {
+      if (err) {
+        callback(null, parseUncompressed(data));
+      } else {
+        callback(null, parseUncompressed(uncompressed));
+      }
+    });
+  };
 }).apply(exports || (nbt = {}));
