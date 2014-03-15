@@ -112,7 +112,7 @@
 		
 		var type = valueReader.byte();
 		if (type !== tagTypes.compound) {
-			throw 'Top tag should be a compound';
+			throw new Error('Top tag should be a compound');
 		}
 		
 		var name = valueReader.string();
