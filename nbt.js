@@ -26,7 +26,8 @@
 		byteArray: 7,
 		string: 8,
 		list: 9,
-		compound: 10
+		compound: 10,
+		intArray: 11
 	};
 
 	var tagTypeNames = new (function() {
@@ -67,6 +68,17 @@
 			}
 			return new Buffer(bytes);
 		};
+
+		this[tagTypes.intArray] = function() {
+			var length = this.int();
+			var ints = [];
+			var i;
+			for (i = 0; i < length; i++) {
+				ints.push(this.int());
+			}
+			return ints;
+		};
+
 
 		this[tagTypes.string] = function() {
 			var length = this.short();
