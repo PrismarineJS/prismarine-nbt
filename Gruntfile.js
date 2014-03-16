@@ -63,4 +63,6 @@ module.exports = function(grunt) {
 			tasks: ['jshint', 'jasmine_node']
 		}
 	});
+
+	grunt.registerTask('test', ['jasmine_node']);
 };

@@ -33,9 +33,9 @@ Development and testing
 
 [Grunt](http://gruntjs.com) is used as a task runner:
 
-    grunt jshint        # Check code quality
-    grunt jasmine_node  # Run tests
-    grunt watch         # Do the above two on every file change
+    grunt jshint  # Check code quality
+    grunt test    # Run tests
+    grunt watch   # Do the above two on every file change
 
 The test coverage is very basic and could be extended.
 
