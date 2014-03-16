@@ -69,7 +69,7 @@
 			for (i = 0; i < length; i++) {
 				bytes.push(this.byte());
 			}
-			return new Buffer(bytes);
+			return bytes;
 		};
 
 		this[tagTypes.intArray] = function() {

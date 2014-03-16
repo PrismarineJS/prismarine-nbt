@@ -27,8 +27,6 @@ If the data is gzipped, it is automatically decompressed first.
 
 Tag names are copied verbatim, and as some names are not valid JavaScript names, use of the indexer may be required – such as with the nested compound test in the example above.
 
-Byte arrays are returned as Node.js [`Buffer`](http://nodejs.org/api/buffer.html) objects.
-
 
 Development and testing
 -----------------------
