@@ -59,7 +59,7 @@
 			/* FIXME: this can overflow, JS has 53 bit precision */
 			var upper = this.int();
 			var lower = this.int();
-			return upper << 32 + lower;
+			return (upper << 32) + lower;
 		};
 
 		this[tagTypes.byteArray] = function() {
