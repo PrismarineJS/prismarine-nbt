@@ -16,7 +16,7 @@
 	var nbt = this;
 	var zlib = require('zlib');
 
-	var tagTypes = {
+	nbt.tagTypes = {
 		'end': 0,
 		'byte': 1,
 		'short': 2,
@@ -31,11 +31,11 @@
 		'intArray': 11
 	};
 
-	var tagTypeNames = {};
+	nbt.tagTypeNames = {};
 	(function() {
-		for (var typeName in tagTypes) {
-			if (tagTypes.hasOwnProperty(typeName)) {
-				tagTypeNames[tagTypes[typeName]] = typeName;
+		for (var typeName in nbt.tagTypes) {
+			if (nbt.tagTypes.hasOwnProperty(typeName)) {
+				nbt.tagTypeNames[nbt.tagTypes[typeName]] = typeName;
 			}
 		}
 	})();
@@ -49,20 +49,20 @@
 			return val;
 		}
 
-		this[tagTypes.byte]   = read.bind(this, 'Int8', 1);
-		this[tagTypes.short]  = read.bind(this, 'Int16BE', 2);
-		this[tagTypes.int]    = read.bind(this, 'Int32BE', 4);
-		this[tagTypes.float]  = read.bind(this, 'FloatBE', 4);
-		this[tagTypes.double] = read.bind(this, 'DoubleBE', 8);
+		this[nbt.tagTypes.byte]   = read.bind(this, 'Int8', 1);
+		this[nbt.tagTypes.short]  = read.bind(this, 'Int16BE', 2);
+		this[nbt.tagTypes.int]    = read.bind(this, 'Int32BE', 4);
+		this[nbt.tagTypes.float]  = read.bind(this, 'FloatBE', 4);
+		this[nbt.tagTypes.double] = read.bind(this, 'DoubleBE', 8);
 
-		this[tagTypes.long] = function() {
+		this[nbt.tagTypes.long] = function() {
 			/* FIXME: this can overflow, JS has 53 bit precision */
 			var upper = this.int();
 			var lower = this.int();
 			return (upper << 32) + lower;
 		};
 
-		this[tagTypes.byteArray] = function() {
+		this[nbt.tagTypes.byteArray] = function() {
 			var length = this.int();
 			var bytes = [];
 			var i;
@@ -72,7 +72,7 @@
 			return bytes;
 		};
 
-		this[tagTypes.intArray] = function() {
+		this[nbt.tagTypes.intArray] = function() {
 			var length = this.int();
 			var ints = [];
 			var i;
@@ -82,14 +82,14 @@
 			return ints;
 		};
 
-		this[tagTypes.string] = function() {
+		this[nbt.tagTypes.string] = function() {
 			var length = this.short();
 			var val = buffer.toString('utf8', offset, offset + length);
 			offset += length;
 			return val;
 		};
 
-		this[tagTypes.list] = function() {
+		this[nbt.tagTypes.list] = function() {
 			var type = this.byte();
 			var length = this.int();
 			var values = [];
@@ -100,11 +100,11 @@
 			return values;
 		};
 
-		this[tagTypes.compound] = function() {
+		this[nbt.tagTypes.compound] = function() {
 			var values = {};
 			while (true) {
 				var type = this.byte();
-				if (type === tagTypes.end) {
+				if (type === nbt.tagTypes.end) {
 					break;
 				}
 				var name = this.string();
@@ -115,9 +115,9 @@
 		};
 
 		var typeName;
-		for (typeName in tagTypes) {
-			if (tagTypes.hasOwnProperty(typeName)) {
-				this[typeName] = this[tagTypes[typeName]];
+		for (typeName in nbt.tagTypes) {
+			if (nbt.tagTypes.hasOwnProperty(typeName)) {
+				this[typeName] = this[nbt.tagTypes[typeName]];
 			}
 		}
 	};
@@ -127,7 +127,7 @@
 		var reader = new nbt.Reader(buffer);
 
 		var type = reader.byte();
-		if (type !== tagTypes.compound) {
+		if (type !== nbt.tagTypes.compound) {
 			throw new Error('Top tag should be a compound');
 		}
 
