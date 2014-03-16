@@ -13,8 +13,7 @@
 (function() {
 	'use strict';
 
-	var zlib = require('zlib'),
-		binary = require('./binary');
+	var zlib = require('zlib');
 
 	var tagTypes = {
 		'end': 0,
@@ -40,25 +39,26 @@
 		}
 	})();
 
-	var ValueReader = function(binaryReader) {
-		var intReader = function(bits) {
-			return function() {
-				return binaryReader.int(bits, true);
-			};
-		};
+	var ValueReader = function(buffer) {
+		var offset = 0;
 
-		var floatReader = function(precisionBits, exponentBits) {
-			return function() {
-				return binaryReader.float(precisionBits, exponentBits);
-			};
-		};
+		function read(dataType, size) {
+			var val = buffer['read' + dataType](offset);
+			offset += size;
+			return val;
+		}
 
-		this[tagTypes.byte] = intReader(8);
-		this[tagTypes.short] = intReader(16);
-		this[tagTypes.int] = intReader(32);
-		this[tagTypes.long] = intReader(64);
-		this[tagTypes.float] = floatReader(23, 8);
-		this[tagTypes.double] = floatReader(52, 11);
+		this[tagTypes.byte]   = read.bind(this, 'Int8', 1);
+		this[tagTypes.short]  = read.bind(this, 'Int16BE', 2);
+		this[tagTypes.int]    = read.bind(this, 'Int32BE', 4);
+		this[tagTypes.float]  = read.bind(this, 'FloatBE', 4);
+		this[tagTypes.double] = read.bind(this, 'DoubleBE', 8)
+
+		this[tagTypes.long] = function() {
+			var upper = this.int();
+			var lower = this.int();
+			return upper << 32 + lower;
+		};
 
 		this[tagTypes.byteArray] = function() {
 			var length = this.int();
@@ -82,7 +82,9 @@
 
 		this[tagTypes.string] = function() {
 			var length = this.short();
-			return binaryReader.utf8(length);
+			var val = buffer.toString('utf8', offset, offset + length);
+			offset += length;
+			return val;
 		};
 
 		this[tagTypes.list] = function() {
@@ -119,8 +121,8 @@
 	};
 
 	var parseUncompressed = function(data) {
-		var binaryReader = new binary.BinaryReader(data, true);
-		var valueReader = new ValueReader(binaryReader);
+		var buffer = new Buffer(data);
+		var valueReader = new ValueReader(buffer);
 
 		var type = valueReader.byte();
 		if (type !== tagTypes.compound) {
