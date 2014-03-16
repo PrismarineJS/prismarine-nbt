@@ -11,7 +11,7 @@
 */
 
 (function() {
-	var compress = require('compress'),
+	var zlib = require('zlib'),
 		binary = require('./binary');
 		
 	
@@ -26,7 +26,8 @@
 		byteArray: 7,
 		string: 8,
 		list: 9,
-		compound: 10
+		compound: 10,
+		intArray: 11
 	};
 
 	var tagTypeNames = new (function() {
@@ -67,6 +68,17 @@
 			}
 			return new Buffer(bytes);
 		};
+
+		this[tagTypes.intArray] = function() {
+			var length = this.int();
+			var ints = [];
+			var i;
+			for (i = 0; i < length; i++) {
+				ints.push(this.int());
+			}
+			return ints;
+		};
+
 
 		this[tagTypes.string] = function() {
 			var length = this.short();
@@ -112,7 +124,7 @@
 		
 		var type = valueReader.byte();
 		if (type !== tagTypes.compound) {
-			throw 'Top tag should be a compound';
+			throw new Error('Top tag should be a compound');
 		}
 		
 		var name = valueReader.string();
@@ -128,17 +140,12 @@
 	}
 
 	this.parse = function(data, callback) {
-		if (compress.hasGzipHeader(data)) {
-			var gunzip = new compress.Gunzip();
-			gunzip.write(data, function(error, uncompressed) {
-				if (error) {
-					callback(error, data);
-				} else {
-					callback(null, parseUncompressed(uncompressed));
-				}
-			});
-		} else {
-			callback(null, parseUncompressed(data));
-		}
-	};
+    zlib.unzip(data, function(err, uncompressed) {
+      if (err) {
+        callback(null, parseUncompressed(data));
+      } else {
+        callback(null, parseUncompressed(uncompressed));
+      }
+    });
+  };
 }).apply(exports || (nbt = {}));
