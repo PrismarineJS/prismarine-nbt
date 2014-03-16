@@ -27,13 +27,13 @@ If the data is gzipped, it is automatically decompressed first.
 
 Tag names are copied verbatim, and as some names are not valid JavaScript names, use of the indexer may be required – such as with the nested compound test in the example above.
 
-Byte arrays are returned as Node.js `Buffer` objects.
+Byte arrays are returned as Node.js [`Buffer`](http://nodejs.org/api/buffer.html) objects.
 
 
 Development and testing
 -----------------------
 
-Grunt is used as a task runner:
+[Grunt](http://gruntjs.com) is used as a task runner:
 
     grunt jshint        # Check code quality
     grunt jasmine_node  # Run tests
@@ -45,7 +45,7 @@ The test coverage is very basic and could be extended.
 Known issues
 ------------
 
- * 64 bit integers overflow
+ * [64 bit integers overflow](https://github.com/sjmulder/nbt-js/issues/1)
 
 
 Copyright
