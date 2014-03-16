@@ -33,7 +33,6 @@ Known issues
 
  * No formal test cases (only a sample program)
  * 64 bit integers overflow
- * Unicode may not be handled correctly for gzipped archives
 
 Copyright
 ---------
