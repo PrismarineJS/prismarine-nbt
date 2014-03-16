@@ -52,7 +52,7 @@
 		this[tagTypes.short]  = read.bind(this, 'Int16BE', 2);
 		this[tagTypes.int]    = read.bind(this, 'Int32BE', 4);
 		this[tagTypes.float]  = read.bind(this, 'FloatBE', 4);
-		this[tagTypes.double] = read.bind(this, 'DoubleBE', 8)
+		this[tagTypes.double] = read.bind(this, 'DoubleBE', 8);
 
 		this[tagTypes.long] = function() {
 			/* FIXME: this can overflow, JS has 53 bit prevision */
