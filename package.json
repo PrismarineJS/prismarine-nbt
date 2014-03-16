@@ -1,6 +1,6 @@
 {
 	"name": "nbt",
-	"version": "v0.1.0",
+	"version": "v0.2.0",
 	"description": "A parser for NBT archives",
 	"keywords": ["nbt", "minecraft"],
 	"homepage": "https://github.com/sjmulder/nbt-js",
