@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 			},
 			files: [
 				'nbt.js',
-				'sample/sapmple.js',
+				'sample/sample.js',
 				'Gruntfile.js'
 			]
 		},
