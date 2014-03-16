@@ -11,6 +11,8 @@
 */
 
 (function() {
+	'use strict';
+
 	var zlib = require('zlib'),
 		binary = require('./binary');
 
@@ -30,14 +32,14 @@
 		'intArray': 11
 	};
 
-	var tagTypeNames = new (function() {
-		var typeName;
-		for (typeName in tagTypes) {
+	var tagTypeNames = {};
+	(function() {
+		for (var typeName in tagTypes) {
 			if (tagTypes.hasOwnProperty(typeName)) {
-				this[tagTypes[typeName]] = typeName;
+				tagTypeNames[tagTypes[typeName]] = typeName;
 			}
 		}
-	});
+	})();
 
 	var ValueReader = function(binaryReader) {
 		var intReader = function(bits) {
@@ -137,7 +139,7 @@
 			result[name] = value;
 			return result;
 		}
-	}
+	};
 
 	this.parse = function(data, callback) {
 		zlib.unzip(data, function(err, uncompressed) {
