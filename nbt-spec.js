@@ -75,6 +75,33 @@ describe('nbt.Reader', function() {
 		expect(reader.string()).toEqual('Hello!');
 		expect(reader.string()).toEqual('こんにちは!');
 	});
+
+	it('reads lists', function() {
+		var reader = new nbt.Reader(new Buffer([
+			1, 0,0,0,3, 1, 2, 3,
+			8, 0,0,0,2, 0,5, 0x48,0x65,0x6C,0x6C,0x6F,
+			            0,5, 0x57,0x6F,0x72,0x6C,0x64
+		]));
+		expect(reader.list()).toEqual([1, 2, 3]);
+		expect(reader.list()).toEqual(['Hello', 'World']);
+	});
+
+	it('reads compounds', function() {
+		var reader = new nbt.Reader(new Buffer([
+			1, 0,2, 0x61,0x61, 1,
+			9, 0,2, 0x62,0x62, 1, 0,0,0,3, 1, 2, 3,
+			0,
+			1, 0,2, 0x63,0x63, 2,
+			0
+		]));
+		expect(reader.compound()).toEqual({
+			aa: 1,
+			bb: [1, 2, 3]
+		});
+		expect(reader.compound()).toEqual({
+			cc: 2,
+		});
+	});
 });
 
 describe('nbt.parse', function() {
