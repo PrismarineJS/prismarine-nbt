@@ -16,7 +16,6 @@
 	var zlib = require('zlib'),
 		binary = require('./binary');
 
-
 	var tagTypes = {
 		'end': 0,
 		'byte': 1,
@@ -80,7 +79,6 @@
 			}
 			return ints;
 		};
-
 
 		this[tagTypes.string] = function() {
 			var length = this.short();
