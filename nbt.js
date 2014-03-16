@@ -140,12 +140,12 @@
 	}
 
 	this.parse = function(data, callback) {
-	zlib.unzip(data, function(err, uncompressed) {
-		if (err) {
-			callback(null, parseUncompressed(data));
-		} else {
-			callback(null, parseUncompressed(uncompressed));
-		}
+		zlib.unzip(data, function(err, uncompressed) {
+			if (err) {
+				callback(null, parseUncompressed(data));
+			} else {
+				callback(null, parseUncompressed(uncompressed));
+			}
 		});
 	};
 }).apply(exports || (nbt = {}));
