@@ -48,6 +48,24 @@ describe('nbt.Reader', function() {
 		expect(reader.long()).toEqual(-127 << 56);
 	});
 
+	it('reads 32-bit floats', function() {
+		var reader = new nbt.Reader(new Buffer([
+			0x00,0x00,0x00,0x00,
+			0x3f,0x80,0x00,0x00
+		]));
+		expect(reader.float()).toEqual(0);
+		expect(reader.float()).toEqual(1);
+	});
+
+	it('reads 64-bit doubles', function() {
+		var reader = new nbt.Reader(new Buffer([
+			0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+			0x3f,0xf0,0x00,0x00,0x00,0x00,0x00,0x00
+		]));
+		expect(reader.double()).toEqual(0);
+		expect(reader.double()).toEqual(1);
+	});
+
 	it('reads 8-bit byte arrays', function() {
 		var reader = new nbt.Reader(new Buffer([
 			0,0,0,2, 1,2,
