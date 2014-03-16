@@ -37,14 +37,11 @@ Development and testing
     grunt test    # Run tests
     grunt watch   # Do the above two on every file change
 
-The test coverage is very basic and could be extended.
-
 
 Known issues
 ------------
 
  * [64 bit integers overflow](https://github.com/sjmulder/nbt-js/issues/1)
- * Tests are minimal, hence the validity of many of the parsing function is uncertain.
 
 
 Copyright
