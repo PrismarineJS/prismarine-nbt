@@ -12,5 +12,10 @@
 	},
 	"engines": [
 		"node >=0.10"
-	]
+	],
+	"devDependencies": {
+		"grunt": "~0.4.4",
+		"grunt-cli": "~0.1.13",
+		"grunt-contrib-jshint": "~0.9.2",
+	}
 }
