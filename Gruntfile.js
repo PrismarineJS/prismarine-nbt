@@ -33,5 +33,16 @@ module.exports = function(grunt) {
 				'Gruntfile.js'
 			]
 		},
+
+		watch: {
+			options: { atBegin: true },
+			files: [
+				'nbt.js',
+				'sample/sample.js',
+				'Gruntfile.js',
+				'package.json'
+			],
+			tasks: ['jshint']
+		}
 	});
 };
