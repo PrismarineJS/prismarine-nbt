@@ -1,4 +1,4 @@
-/* 
+/*
 	NBT.js - a JavaScript parser for NBT archives
 	by Sijmen Mulder
 
@@ -13,8 +13,8 @@
 (function() {
 	var zlib = require('zlib'),
 		binary = require('./binary');
-		
-	
+
+
 	var tagTypes = {
 		end: 0,
 		byte: 1,
@@ -51,7 +51,7 @@
 				return binaryReader.float(precisionBits, exponentBits);
 			};
 		};
-		
+
 		this[tagTypes.byte] = intReader(8);
 		this[tagTypes.short] = intReader(16);
 		this[tagTypes.int] = intReader(32);
@@ -109,7 +109,7 @@
 			}
 			return values;
 		};
-		
+
 		var typeName;
 		for (typeName in tagTypes) {
 			if (tagTypes.hasOwnProperty(typeName)) {
@@ -121,15 +121,15 @@
 	var parseUncompressed = function(data) {
 		var binaryReader = new binary.BinaryReader(data, true);
 		var valueReader = new ValueReader(binaryReader);
-		
+
 		var type = valueReader.byte();
 		if (type !== tagTypes.compound) {
 			throw new Error('Top tag should be a compound');
 		}
-		
+
 		var name = valueReader.string();
 		var value = valueReader.compound();
-		
+
 		if (name === '') {
 			return value;
 		} else {
@@ -140,12 +140,12 @@
 	}
 
 	this.parse = function(data, callback) {
-    zlib.unzip(data, function(err, uncompressed) {
-      if (err) {
-        callback(null, parseUncompressed(data));
-      } else {
-        callback(null, parseUncompressed(uncompressed));
-      }
-    });
-  };
+	zlib.unzip(data, function(err, uncompressed) {
+		if (err) {
+			callback(null, parseUncompressed(data));
+		} else {
+			callback(null, parseUncompressed(uncompressed));
+		}
+		});
+	};
 }).apply(exports || (nbt = {}));
