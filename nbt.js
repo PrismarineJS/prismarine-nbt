@@ -13,6 +13,7 @@
 (function() {
 	'use strict';
 
+	var nbt = this;
 	var zlib = require('zlib');
 
 	var tagTypes = {
@@ -39,7 +40,7 @@
 		}
 	})();
 
-	var ValueReader = function(buffer) {
+	nbt.Reader = function(buffer) {
 		var offset = 0;
 
 		function read(dataType, size) {
@@ -123,15 +124,15 @@
 
 	var parseUncompressed = function(data) {
 		var buffer = new Buffer(data);
-		var valueReader = new ValueReader(buffer);
+		var reader = new nbt.Reader(buffer);
 
-		var type = valueReader.byte();
+		var type = reader.byte();
 		if (type !== tagTypes.compound) {
 			throw new Error('Top tag should be a compound');
 		}
 
-		var name = valueReader.string();
-		var value = valueReader.compound();
+		var name = reader.string();
+		var value = reader.compound();
 
 		if (name === '') {
 			return value;
@@ -142,7 +143,7 @@
 		}
 	};
 
-	this.parse = function(data, callback) {
+	nbt.parse = function(data, callback) {
 		zlib.unzip(data, function(err, uncompressed) {
 			if (err) {
 				callback(null, parseUncompressed(data));
