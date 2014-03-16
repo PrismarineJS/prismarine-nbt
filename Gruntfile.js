@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = function(grunt) {
+	grunt.loadNpmTasks('grunt-jasmine-node');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 
@@ -11,6 +12,15 @@ module.exports = function(grunt) {
 
 		jshint: {
 			options: {
+				globals: {
+					'beforeEach': true,
+					'describe': true,
+					'expect': true,
+					'it': true,
+					'jasmine': true,
+					'runs': true,
+					'spyOn': true
+				},
 				camelcase: true,
 				curly: true,
 				eqeqeq: true,
@@ -29,20 +39,27 @@ module.exports = function(grunt) {
 			},
 			files: [
 				'nbt.js',
+				'nbt-spec.js',
 				'sample/sample.js',
 				'Gruntfile.js'
 			]
+		},
+
+		/* quoted to satisfy jshint */
+		'jasmine_node': {
+			all: ['.']
 		},
 
 		watch: {
 			options: { atBegin: true },
 			files: [
 				'nbt.js',
+				'nbt-spec.js',
 				'sample/sample.js',
 				'Gruntfile.js',
 				'package.json'
 			],
-			tasks: ['jshint']
+			tasks: ['jshint', 'jasmine_node']
 		}
 	});
 };
