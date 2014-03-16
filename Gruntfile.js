@@ -19,7 +19,8 @@ module.exports = function(grunt) {
 					'it': true,
 					'jasmine': true,
 					'runs': true,
-					'spyOn': true
+					'spyOn': true,
+					'waitsFor': true
 				},
 				camelcase: true,
 				curly: true,
