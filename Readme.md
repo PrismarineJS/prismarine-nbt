@@ -5,6 +5,7 @@ by Sijmen Mulder.
 
 NBT.js is a JavaScript parser [NBT](http://www.minecraft.net/docs/NBT.txt) archives, for use with [Node.js](http://nodejs.org/).
 
+
 Usage
 -----
 
@@ -28,6 +29,7 @@ Tag names are copied verbatim, and as some names are not valid JavaScript names,
 
 Byte arrays are returned as Node.js `Buffer` objects.
 
+
 Development and testing
 -----------------------
 
@@ -39,10 +41,12 @@ Grunt is used as a task runner:
 
 The test coverage is very basic and could be extended.
 
+
 Known issues
 ------------
 
  * 64 bit integers overflow
+
 
 Copyright
 ---------
