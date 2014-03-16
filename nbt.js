@@ -55,6 +55,7 @@
 		this[tagTypes.double] = read.bind(this, 'DoubleBE', 8)
 
 		this[tagTypes.long] = function() {
+			/* FIXME: this can overflow, JS has 53 bit prevision */
 			var upper = this.int();
 			var lower = this.int();
 			return upper << 32 + lower;
