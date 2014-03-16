@@ -28,10 +28,20 @@ Tag names are copied verbatim, and as some names are not valid JavaScript names,
 
 Byte arrays are returned as Node.js `Buffer` objects.
 
+Development and testing
+-----------------------
+
+Grunt is used as a task runner:
+
+    grunt jshint        # Check code quality
+    grunt jasmine_node  # Run tests
+    grunt watch         # Do the above two on every file change
+
+The test coverage is very basic and could be extended.
+
 Known issues
 ------------
 
- * No formal test cases (only a sample program)
  * 64 bit integers overflow
 
 Copyright
