@@ -40,6 +40,13 @@
 		}
 	})();
 
+	var hasGzipHeader = function(data){
+		var result=true;
+		if(data[0]!=0x1f) result=false;
+		if(data[1]!=0x8b) result=false;
+		return result;
+	}
+
 	nbt.Reader = function(buffer) {
 		var offset = 0;
 
@@ -141,15 +148,19 @@
 			result[name] = value;
 			return result;
 		}
-	};
+	}
 
-	nbt.parse = function(data, callback) {
-		zlib.unzip(data, function(err, uncompressed) {
-			if (err) {
-				callback(null, parseUncompressed(data));
-			} else {
-				callback(null, parseUncompressed(uncompressed));
-			}
-		});
+	this.parse = function(data, callback) {
+		if (hasGzipHeader(data)) {
+			zlib.unzip(data, function(error, uncompressed) {
+				if (error) {
+					callback(error, data);
+				} else {
+					callback(null, parseUncompressed(uncompressed));
+				}
+			});
+		} else {
+			callback(null, parseUncompressed(data));
+		}
 	};
 }).apply(exports || (nbt = {}));
