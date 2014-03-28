@@ -152,7 +152,7 @@
 
 	this.parse = function(data, callback) {
 		if (hasGzipHeader(data)) {
-			zlib.unzip(data, function(error, uncompressed) {
+			zlib.gunzip(data, function(error, uncompressed) {
 				if (error) {
 					callback(error, data);
 				} else {
