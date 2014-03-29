@@ -41,11 +41,17 @@ describe('nbt.Reader', function() {
 			0,0,0,0,0,0,0,255,
 			-127,0,0,0,0,0,0,0
 		]));
-		expect(reader.long()).toEqual(0);
-		expect(reader.long()).toEqual(255);
+		expect(+reader.long()).toEqual(0);
+		expect(+reader.long()).toEqual(255);
 
-		/* false pass - JS only has 53 bit precision */
-		expect(reader.long()).toEqual(-127 << 56);
+		/* node-int64 integer */
+		var big = reader.long();
+		expect(big.toOctetString()).toEqual('8100000000000000'); // exact
+		expect(+big).toEqual(-Infinity); // clamped
+		expect(big.valueOf()).toEqual(-Infinity);
+		expect(big.toNumber()).toEqual(-Infinity);
+		expect(big.toNumber(false)).toEqual(-Infinity);
+		expect(big.toNumber(true)).toEqual(-9151314442816848000); // rounded
 	});
 
 	it('reads 32-bit floats', function() {
