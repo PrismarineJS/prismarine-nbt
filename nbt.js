@@ -15,6 +15,7 @@
 
 	var nbt = this;
 	var zlib = require('zlib');
+	var Int64 = require('node-int64');
 
 	nbt.tagTypes = {
 		'end': 0,
@@ -63,10 +64,9 @@
 		this[nbt.tagTypes.double] = read.bind(this, 'DoubleBE', 8);
 
 		this[nbt.tagTypes.long] = function() {
-			/* FIXME: this can overflow, JS has 53 bit precision */
 			var upper = this.int();
 			var lower = this.int();
-			return (upper << 32) + lower;
+			return new Int64(upper, lower);
 		};
 
 		this[nbt.tagTypes.byteArray] = function() {
