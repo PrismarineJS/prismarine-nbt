@@ -49,11 +49,11 @@
 	}
 
 	nbt.Reader = function(buffer) {
-		var offset = 0;
+		this.offset = 0;
 
 		function read(dataType, size) {
 			var val = buffer['read' + dataType](offset);
-			offset += size;
+			this.offset += size;
 			return val;
 		}
 
@@ -91,8 +91,8 @@
 
 		this[nbt.tagTypes.string] = function() {
 			var length = this.short();
-			var val = buffer.toString('utf8', offset, offset + length);
-			offset += length;
+			var val = buffer.toString('utf8', this.offset, this.offset + length);
+			this.offset += length;
 			return val;
 		};
 
@@ -129,7 +129,7 @@
 		}
 	};
 
-	var parseUncompressed = function(data) {
+	var parseUncompressed = this.parseUncompressed = function(data) {
 		var buffer = new Buffer(data);
 		var reader = new nbt.Reader(buffer);
 
@@ -142,10 +142,10 @@
 		var value = reader.compound();
 
 		if (name === '') {
-			return value;
+			return { size: reader.offset, value: value };
 		} else {
-			var result = {};
-			result[name] = value;
+			var result = { size: reader.offset, value: { } };
+			result.value[name] = value;
 			return result;
 		}
 	}
