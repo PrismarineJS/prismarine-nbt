@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(grunt) {
-	grunt.loadNpmTasks('grunt-jasmine-node');
+	grunt.loadNpmTasks('grunt-mocha-test');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 
@@ -45,12 +45,6 @@ module.exports = function(grunt) {
 				'Gruntfile.js'
 			]
 		},
-
-		/* quoted to satisfy jshint */
-		'jasmine_node': {
-			all: ['.']
-		},
-
 		watch: {
 			options: { atBegin: true },
 			files: [
@@ -60,9 +54,19 @@ module.exports = function(grunt) {
 				'Gruntfile.js',
 				'package.json'
 			],
-			tasks: ['jshint', 'jasmine_node']
+			tasks: ['jshint', 'mochaTest']
+		},
+		mochaTest: {
+			test: {
+				options: {
+					reporter: 'spec',
+					captureFile: 'results.txt',
+					quiet: false,
+					clearRequireCache: false
+				},
+				src: ['test/**/*.js']
+			}
 		}
 	});
-
-	grunt.registerTask('test', ['jasmine_node']);
+	grunt.registerTask('test', 'mochaTest');
 };
