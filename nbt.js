@@ -227,8 +227,8 @@
 		var writer = new nbt.Writer();
 
 		writer.byte(nbt.tagTypes.compound);
-		writer.string('');
-		writer.compound(value);
+		writer.string(value.root);
+		writer.compound(value.value);
 		return writer.buffer;
 	}
 
@@ -244,13 +244,8 @@
 		var name = reader.string();
 		var value = reader.compound();
 
-		if (name === '') {
-			return { size: reader.offset, value: value };
-		} else {
-			var result = { size: reader.offset, value: { } };
-			result.value[name] = value;
-			return result;
-		}
+		var result = { size: reader.offset, value: { root: name, value: value } };
+		return result;
 	}
 
 	this.parse = function(data, callback) {
