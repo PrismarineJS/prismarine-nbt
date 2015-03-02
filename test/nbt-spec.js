@@ -241,32 +241,46 @@ describe('nbt.Reader', function() {
 });
 
 describe('nbt.parse', function() {
-	it('parses a compressed NBT file', function() {
-		var callback = jasmine.createSpy();
-
-		runs(function() {
-			fs.readFile('sample/bigtest.nbt.gz', function(error, data) {
-				if (error) {
+	it('parses a compressed NBT file', function(done) {
+		fs.readFile('sample/bigtest.nbt.gz', function(error, data) {
+			if (error) {
+				throw error;
+			}
+			nbt.parse(data, function(err, data) {
+				if (err)
 					throw error;
-				}
-
-				nbt.parse(data, callback);
-			});
-		}, 500);
-
-		waitsFor(function() {
-			return callback.callCount > 0;
-		}, 'the NBT file to be parsed', 750);
-
-		runs(function() {
-			var result = callback.mostRecentCall.args[1];
-			expect(result.Level).toBeDefined();
-			expect(result.Level.stringTest).to.equal(
+				expect(data.value.root).to.equal('Level');
+				expect(data.value.value.stringTest.value).to.equal(
 				'HELLO WORLD THIS IS A TEST STRING ÅÄÖ!');
-			expect(result.Level['nested compound test']).to.equal({
-				ham: { name: 'Hampus', value: 0.75 },
-				egg: { name: 'Eggbert', value: 0.5 }
+				expect(data.value.value['nested compound test'].value).to.deep.equal({
+					ham: {
+						type: "compound",
+						value: {
+							name: { type: "string", value: "Hampus" },
+							value: { type: "float", value: 0.75 }
+						}
+					},
+					egg: {
+						type: "compound",
+						value: {
+							name: { type: "string", value: 'Eggbert' },
+							value: { type: "float", value: 0.5 }
+						}
+					}
+				});
+				done();
 			});
+		});
+	});
+});
+
+describe('nbt.write', function() {
+	it('writes an uncompressed NBT file', function(done) {
+		fs.readFile('sample/bigtest.nbt', function(err, nbtdata) {
+			if (err)
+				throw err;
+			expect(nbt.writeUncompressed(require('../sample/bigtest'))).to.deep.equal(nbtdata);
+			done();
 		});
 	});
 });
