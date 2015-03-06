@@ -1,6 +1,8 @@
 Prismarine-NBT
 ======
 
+[![Join the chat at https://gitter.im/PrismarineJS/prismarine-nbt](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PrismarineJS/prismarine-nbt?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Inspired by NBT.js, by Sijmen Mulder.
 
 Prismarine-NBT is a JavaScript parser and serializer for [NBT](http://www.minecraft.net/docs/NBT.txt) archives, for use with [Node.js](http://nodejs.org/).
