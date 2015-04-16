@@ -3,7 +3,7 @@ Prismarine-NBT
 
 Inspired by NBT.js, by Sijmen Mulder.
 
-Prismarine-NBT is a JavaScript parser and serializer for [NBT](http://www.minecraft.net/docs/NBT.txt) archives, for use with [Node.js](http://nodejs.org/).
+Prismarine-NBT is a JavaScript parser and serializer for [NBT](http://wiki.vg/NBT) archives, for use with [Node.js](http://nodejs.org/).
 
 
 Usage
