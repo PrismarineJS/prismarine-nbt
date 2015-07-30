@@ -238,7 +238,7 @@
 
 		var type = reader.byte();
 		if (type !== nbt.tagTypes.compound) {
-			throw new Error('Top tag should be a compound');
+			//throw new Error('Top tag should be a compound');
 		}
 
 		var name = reader.string();
