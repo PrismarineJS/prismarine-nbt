@@ -35,6 +35,6 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "node-int64": "^0.3.1"
+    "protodef": "0.2.0"
   }
 }
