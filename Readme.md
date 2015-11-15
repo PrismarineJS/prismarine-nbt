@@ -53,6 +53,8 @@ grunt watch   # Do the above two on every file change
 
 ## Copyright
 
+Inspired by NBT.js, by Sijmen Mulder.
+
 I, the copyright holder of this work, hereby release it into the public domain. This applies worldwide.
 
 In case this is not legally possible: I grant anyone the right to use this work for any purpose, without any conditions, unless such conditions are required by law.
