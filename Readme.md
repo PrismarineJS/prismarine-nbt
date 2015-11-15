@@ -2,8 +2,6 @@
 [![NPM version](https://img.shields.io/npm/v/prismarine-nbt.svg)](http://npmjs.com/package/prismarine-nbt)
 [![Build Status](https://img.shields.io/circleci/project/PrismarineJS/prismarine-nbt/master.svg)](https://circleci.com/gh/PrismarineJS/prismarine-nbt)
 
-Inspired by NBT.js, by Sijmen Mulder.
-
 Prismarine-NBT is a JavaScript parser and serializer for [NBT](http://wiki.vg/NBT) archives, for use with [Node.js](http://nodejs.org/).
 
 
@@ -25,8 +23,6 @@ fs.readFile('bigtest.nbt', function(error, data) {
 ```
 
 If the data is gzipped, it is automatically decompressed first.
-
-Tag names are copied verbatim, and as some names are not valid JavaScript names, use of the indexer may be required – such as with the nested compound test in the example above.
 
 ## API
 

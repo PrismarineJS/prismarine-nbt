@@ -11,7 +11,8 @@
   "maintainers": [
     "roblabla <robinlambertz+dev@gmail.com",
     "Will Franzen <wtfranzen@gmail.com> (http://will.xyz/)",
-    "Dennis Bartlett <bartlett.dc.1@gmail.com>"
+    "Dennis Bartlett <bartlett.dc.1@gmail.com>",
+    "Romain Beaumont <romain.rom1@gmail.com>"
   ],
   "main": "nbt",
   "repository": {
@@ -23,16 +24,10 @@
   ],
   "devDependencies": {
     "chai": "^2.1.0",
-    "grunt": "~0.4.4",
-    "grunt-cli": "~0.1.13",
-    "grunt-contrib-jshint": "~0.9.2",
-    "grunt-contrib-watch": "~0.6.0",
-    "grunt-jasmine-node": "~0.2.1",
-    "grunt-mocha-test": "^0.12.7",
     "mocha": "^2.1.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "mocha --reporter spec"
   },
   "dependencies": {
     "protodef": "0.2.0"
