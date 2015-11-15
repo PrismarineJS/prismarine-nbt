@@ -42,14 +42,13 @@ Takes an optionally compressed `data` and provide a parsed nbt value in the `cal
 
 Provide the protodef instance used to parse and serialize nbt.
 
-## Development and testing
+## History
 
-[Grunt](http://gruntjs.com) is used as a task runner:
-```bash
-grunt jshint  # Check code quality
-grunt test    # Run tests
-grunt watch   # Do the above two on every file change
-```
+### 0.1.0
+* completely reimplement using ProtoDef, the API is mostly compatible with the old version
+
+### 0.0.1
+* import from nbt.js + changes to make writing possible
 
 ## Copyright
 
