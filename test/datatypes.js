@@ -3,14 +3,6 @@
 var nbt = require('../nbt');
 var expect = require('chai').expect;
 
-function write(type,packet) {
-  return nbt.proto.createPacketBuffer(type,packet);
-}
-
-function read(type,buffer) {
-  return nbt.proto.parsePacketBuffer(type,buffer).data;
-}
-
 var testData=[
   {
     type:"byte",
