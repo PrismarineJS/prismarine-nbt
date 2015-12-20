@@ -11,8 +11,7 @@ function readCompound(read)
     return self.read(function(count){return read(count,true)},"byte")
         .then(function(typ){
           if(typ == 0) {
-            self.read(read,"byte");
-            return;
+            return self.read(read,"byte").then(function(){return undefined;});
           }
           return self.read(read,"nbt")
           .then(function(val) {
