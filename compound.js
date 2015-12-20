@@ -8,7 +8,7 @@ function readCompound(read)
   var self=this;
   function next()
   {
-    return self.read((count)=> read(count,true),"byte")
+    return self.read(function(count){return read(count,true)},"byte")
         .then(function(typ){
           if(typ == 0) {
             self.read(read,"byte");
