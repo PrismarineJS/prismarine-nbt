@@ -30,9 +30,9 @@ If the data is gzipped, it is automatically decompressed first.
 
 Returns a buffer with a serialized nbt `value`.
 
-### parseUncompressed(data)
+### parseUncompressed(data, callback)
 
-Takes a buffer `data` and returns a parsed nbt value.
+Takes a buffer `data` and provide a parsed nbt value in the `callback(err,value)`
 
 ### parse(data, callback)
 
