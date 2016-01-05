@@ -3,14 +3,6 @@
 var nbt = require('../nbt');
 var expect = require('chai').expect;
 
-function write(type,packet) {
-  return nbt.proto.createPacketBuffer(type,packet);
-}
-
-function read(type,buffer) {
-  return nbt.proto.parsePacketBuffer(type,buffer).data;
-}
-
 var testData=[
   {
     type:"byte",
@@ -200,7 +192,7 @@ describe('nbt.Writer', function () {
   testData.forEach(function(typeTest){
     it('writes '+typeTest.description,function(){
       typeTest.data.forEach(function(test){
-        expect(write(typeTest.type,test.value)).to.deep.equal(test.buffer);
+        expect(nbt.proto.createBuffer(test.value,typeTest.type)).to.deep.equal(test.buffer);
       })
     })
   });
@@ -209,9 +201,17 @@ describe('nbt.Writer', function () {
 describe('nbt.Reader', function () {
   testData.forEach(function(typeTest){
     it('reads '+typeTest.description,function(){
-      typeTest.data.forEach(function(test){
-        expect(read(typeTest.type,test.buffer)).to.deep.equal(test.value);
-      })
+      typeTest.data.reduce(function(acc,test){
+        var next=function(){
+          return nbt.proto.readBuffer(test.buffer,typeTest.type).then(function(data){
+            expect(data).to.deep.equal(test.value);
+          })
+        };
+        if(acc==null)
+          return next();
+        else
+          return acc.then(next);
+      },null)
     })
   });
 });

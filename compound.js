@@ -1,56 +1,40 @@
 module.exports= {
-  'compound':[readCompound,writeCompound,sizeOfCompound]
+  'compound':[readCompound,writeCompound]
 };
 
-function readCompound(buffer,offset,typeArgs,rootNode)
+function readCompound(read)
 {
-  var results = {
-    value: {},
-    size: 0
-  };
-  while (true) {
-    var typ=this.read(buffer,offset,"byte",rootNode);
-    if (typ.value === 0) {
-      offset+=typ.size;
-      results.size+=typ.size;
-      break;
-    }
-
-    var readResults=this.read(buffer,offset,"nbt",rootNode);
-    offset+=readResults.size;
-    results.size+=readResults.size;
-    results.value[readResults.value.name] = {
-      type: readResults.value.type,
-      value: readResults.value.value
-    };
+  var value={};
+  var self=this;
+  function next()
+  {
+    return self.read(function(count){return read(count,true)},"byte")
+        .then(function(typ){
+          if(typ == 0) {
+            return self.read(read,"byte").then(function(){return undefined;});
+          }
+          return self.read(read,"nbt")
+          .then(function(val) {
+            value[val.name]={
+              type:val.type,
+              value:val.value
+            };
+          })
+          .then(next);
+        })
   }
-  return results;
+  return next().then(function(){ return value});
 }
 
-function writeCompound(value,buffer,offset,typeArgs,rootNode)
+function writeCompound(value,write)
 {
   var self=this;
   Object.keys(value).map(function (key) {
-    offset=self.write({
+    self.write({
       name:key,
       type:value[key].type,
       value:value[key].value
-    },buffer,offset,"nbt",rootNode);
+    },write,"nbt");
   });
-  offset=this.write(0,buffer,offset,"byte",rootNode);
-
-  return offset;
-}
-
-function sizeOfCompound(value,typeArgs,rootNode)
-{
-  var self=this;
-  var size=Object.keys(value).reduce(function (size,key) {
-    return size+self.sizeOf({
-        name:key,
-        type:value[key].type,
-        value:value[key].value
-      },"nbt",rootNode);
-  },0);
-  return 1+size;
+  this.write(0,write,"byte");
 }

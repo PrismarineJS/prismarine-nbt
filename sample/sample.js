@@ -10,6 +10,6 @@ fs.readFile('bigtest.nbt.gz', function(error, data) {
 
 	nbt.parse(data, function(error, result) {
 		console.log(result.value.stringTest);
-		console.log(result.value['nested compound test']);
+		console.log(JSON.stringify(result.value['nested compound test'],null,2));
 	});
 });

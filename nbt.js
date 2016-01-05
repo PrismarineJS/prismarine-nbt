@@ -14,11 +14,16 @@ proto.addType("compound",require("./compound").compound);
 proto.addTypes(require("./nbt.json"));
 
 function writeUncompressed(value) {
-  return proto.createPacketBuffer("nbt",value);
+  return proto.createBuffer(value,"nbt");
 }
 
-function parseUncompressed(data) {
-  return proto.parsePacketBuffer("nbt",data).data;
+function parseUncompressed(data,callback) {
+  proto.readBuffer(data,"nbt").then(function(packet){
+    callback(null,packet);
+  })
+  .catch(function(err){
+    callback(err);
+  });
 }
 
 function parse(data, callback) {
@@ -27,11 +32,11 @@ function parse(data, callback) {
       if (error) {
         callback(error, data);
       } else {
-        callback(null, parseUncompressed(uncompressed));
+        parseUncompressed(uncompressed,callback);
       }
     });
   } else {
-    callback(null, parseUncompressed(data));
+    parseUncompressed(data,callback);
   }
 }
 
