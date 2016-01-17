@@ -49,6 +49,9 @@ Provide the protodef instance used to parse and serialize nbt.
 
 ## History
 
+### 0.2.0
+* add simplify
+
 ### 0.1.0
 * completely reimplement using ProtoDef, the API is mostly compatible with the old version
 
