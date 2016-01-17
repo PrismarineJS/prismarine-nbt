@@ -35,9 +35,28 @@ function parse(data, callback) {
   }
 }
 
+function simplify(data)
+{
+  function transform(value,type)
+  {
+    if(type=="compound") {
+      return Object.keys(value).reduce((acc,key) => {
+        acc[key]=simplify(value[key]);
+        return acc;
+      },{});
+    }
+    if(type=="list") {
+      return value.value.map(v => transform(v,value.type));
+    }
+    return value;
+  }
+  return transform(data.value,data.type);
+}
+
 module.exports={
   writeUncompressed:writeUncompressed,
   parseUncompressed:parseUncompressed,
+  simplify:simplify,
   parse:parse,
   proto:proto
 };

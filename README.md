@@ -38,6 +38,11 @@ Takes a buffer `data` and returns a parsed nbt value.
 
 Takes an optionally compressed `data` and provide a parsed nbt value in the `callback(err,value)`
 
+### simplify(nbt)
+
+Returns a simplified nbt representation : keep only the value to remove one level.
+This loses the types so you cannot use the resulting representation to write it back to nbt.
+
 ### proto
 
 Provide the protodef instance used to parse and serialize nbt.
