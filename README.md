@@ -49,6 +49,9 @@ Provide the protodef instance used to parse and serialize nbt.
 
 ## History
 
+### 0.2.1
+* update protodef
+
 ### 0.2.0
 * add simplify
 
