@@ -9,7 +9,7 @@ function readCompound(buffer,offset,typeArgs,rootNode)
     size: 0
   };
   while (true) {
-    var typ=this.read(buffer,offset,"byte",rootNode);
+    var typ=this.read(buffer,offset,"i8",rootNode);
     if (typ.value === 0) {
       offset+=typ.size;
       results.size+=typ.size;
@@ -37,7 +37,7 @@ function writeCompound(value,buffer,offset,typeArgs,rootNode)
       value:value[key].value
     },buffer,offset,"nbt",rootNode);
   });
-  offset=this.write(0,buffer,offset,"byte",rootNode);
+  offset=this.write(0,buffer,offset,"i8",rootNode);
 
   return offset;
 }
