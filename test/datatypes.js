@@ -13,7 +13,7 @@ function read(type,buffer) {
 
 var testData=[
   {
-    type:"byte",
+    type:"i8",
     description:"8-bit bytes",
     data:[
       {
@@ -31,7 +31,7 @@ var testData=[
     ]
   },
   {
-    type:"short",
+    type:"i16",
     description:"16-bit shorts",
     data:[
       {
@@ -49,7 +49,7 @@ var testData=[
     ]
   },
   {
-    type:"int",
+    type:"i32",
     description:"32-bit ints",
     data:[
       {
@@ -67,7 +67,7 @@ var testData=[
     ]
   },
   {
-    type:"long",
+    type:"i64",
     description:"64-bit longs",
     data:[
       {
@@ -85,7 +85,7 @@ var testData=[
     ]
   },
   {
-    type:"float",
+    type:"f32",
     description:"32-bit floats",
     data:[
       {
@@ -99,7 +99,7 @@ var testData=[
     ]
   },
   {
-    type:"double",
+    type:"f64",
     description:"writes 64-bit doubles",
     data:[
       {

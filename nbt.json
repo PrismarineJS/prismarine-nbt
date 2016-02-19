@@ -5,12 +5,12 @@
   "compound": "native",
   "i16": "native",
   "i32": "native",
-  "long": "native",
+  "i64": "native",
   "f32": "native",
   "f64": "native",
   "pstring": "native",
   "shortString": ["pstring",{
-    "countType":"short"
+    "countType":"i16"
   }],
   "byteArray": [
     "array",
@@ -47,7 +47,7 @@
   ],
   "nbtMapper":["mapper",
     {
-      "type": "byte",
+      "type": "i8",
       "mappings": {
         "0": "end",
         "1": "byte",
@@ -73,7 +73,7 @@
         "byte": "i8",
         "short": "i16",
         "int": "i32",
-        "long": "long",
+        "long": "i64",
         "float": "f32",
         "double": "f64",
         "byteArray": "byteArray",
