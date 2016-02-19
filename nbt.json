@@ -1,22 +1,22 @@
 {
   "container": "native",
-  "byte": "native",
+  "i8": "native",
   "switch": "native",
   "compound": "native",
-  "short": "native",
-  "int": "native",
-  "long": "native",
-  "float": "native",
-  "double": "native",
+  "i16": "native",
+  "i32": "native",
+  "i64": "native",
+  "f32": "native",
+  "f64": "native",
   "pstring": "native",
   "shortString": ["pstring",{
-    "countType":"short"
+    "countType":"i16"
   }],
   "byteArray": [
     "array",
     {
-      "countType": "int",
-      "type": "byte"
+      "countType": "i32",
+      "type": "i8"
     }
   ],
   "list": [
@@ -31,7 +31,7 @@
         "type": [
           "array",
           {
-            "countType": "int",
+            "countType": "i32",
             "type": ["nbtSwitch",{"type":"type"}]
           }
         ]
@@ -41,13 +41,13 @@
   "intArray": [
     "array",
     {
-      "countType": "int",
-      "type": "int"
+      "countType": "i32",
+      "type": "i32"
     }
   ],
   "nbtMapper":["mapper",
     {
-      "type": "byte",
+      "type": "i8",
       "mappings": {
         "0": "end",
         "1": "byte",
@@ -70,12 +70,12 @@
       "compareTo": "$type",
       "fields": {
         "end": "void",
-        "byte": "byte",
-        "short": "short",
-        "int": "int",
-        "long": "long",
-        "float": "float",
-        "double": "double",
+        "byte": "i8",
+        "short": "i16",
+        "int": "i32",
+        "long": "i64",
+        "float": "f32",
+        "double": "f64",
         "byteArray": "byteArray",
         "string": "shortString",
         "list": "list",
