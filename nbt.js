@@ -40,7 +40,7 @@ function simplify(data)
   function transform(value,type)
   {
     if(type=="compound") {
-      return Object.keys(value).reduce((acc,key) => {
+      return Object.keys(value).reduce(function(acc,key){
         acc[key]=simplify(value[key]);
         return acc;
       },{});
