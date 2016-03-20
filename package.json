@@ -19,9 +19,6 @@
     "type": "git",
     "url": "https://github.com/prismarinejs/prismarine-nbt.git"
   },
-  "engines": [
-    "node >=4"
-  ],
   "devDependencies": {
     "chai": "^2.1.0",
     "mocha": "^2.1.0"
