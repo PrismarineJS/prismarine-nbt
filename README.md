@@ -10,7 +10,7 @@ Prismarine-NBT is a JavaScript parser and serializer for [NBT](http://wiki.vg/NB
 After `var nbt = require('nbt')`, you can use `nbt.parse(data, callback)` to convert NBT data into a regular JavaScript object.
 ```js
 var fs = require('fs'),
-    nbt = require('nbt');
+    nbt = require('prismarine-nbt');
 
 fs.readFile('bigtest.nbt', function(error, data) {
     if (error) throw error;
