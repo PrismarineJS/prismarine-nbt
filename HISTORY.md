@@ -1,5 +1,9 @@
 # History
 
+## 1.0.0
+
+* add little endian nbt support (for mcpe)
+
 ## 0.2.2
 
 * get back to full es5
