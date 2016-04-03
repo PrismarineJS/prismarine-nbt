@@ -25,17 +25,18 @@ If the data is gzipped, it is automatically decompressed first.
 
 ## API
 
-### writeUncompressed(value)
+### writeUncompressed(value,[isLittleEndian])
 
-Returns a buffer with a serialized nbt `value`.
+Returns a buffer with a serialized nbt `value`. If isLittleEndian is passed and is true, write little endian nbt (mcpe).
 
-### parseUncompressed(data)
+### parseUncompressed(data,[isLittleEndian])
 
-Takes a buffer `data` and returns a parsed nbt value.
+Takes a buffer `data` and returns a parsed nbt value. If isLittleEndian is passed and is true, read little endian nbt (mcpe).
 
-### parse(data, callback)
+### parse(data,[isLittleEndian], callback)
 
-Takes an optionally compressed `data` and provide a parsed nbt value in the `callback(err,value)`
+Takes an optionally compressed `data` and provide a parsed nbt value in the `callback(err,value)`.
+If isLittleEndian is passed and is true, read little endian nbt (mcpe).
 
 ### simplify(nbt)
 
@@ -46,32 +47,6 @@ This loses the types so you cannot use the resulting representation to write it 
 
 Provide the protodef instance used to parse and serialize nbt.
 
-## History
+### protoLE
 
-### 0.2.2
-
-* get back to full es5
-
-### 0.2.1
-
-* update protodef
-
-### 0.2.0
-
-* add simplify
-
-### 0.1.0
-
-* completely reimplement using ProtoDef, the API is mostly compatible with the old version
-
-### 0.0.1
-
-* import from nbt.js + changes to make writing possible
-
-## Copyright
-
-Inspired by NBT.js, by Sijmen Mulder.
-
-I, the copyright holder of this work, hereby release it into the public domain. This applies worldwide.
-
-In case this is not legally possible: I grant anyone the right to use this work for any purpose, without any conditions, unless such conditions are required by law.
+Provide the protodef instance used to parse and serialize little endian nbt.

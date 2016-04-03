@@ -26,7 +26,13 @@
   "scripts": {
     "test": "mocha --reporter spec"
   },
+  "browserify": {
+    "transform": [
+      "brfs"
+    ]
+  },
   "dependencies": {
-    "protodef": "^1.0.0"
-  }
+    "protodef": "^1.2.1"
+  },
+  "license": "MIT"
 }

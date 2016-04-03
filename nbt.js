@@ -1,4 +1,31 @@
 var zlib = require('zlib');
+var fs=require("fs");
+var path=require("path");
+var ProtoDef=require("protodef").ProtoDef;
+var compound=require("./compound").compound;
+
+
+var nbtJson=fs.readFileSync(path.join(__dirname,"nbt.json"),"utf8");
+var leNbtJson=nbtJson.replace(/(i[0-9]+)/g,"l$1");
+
+function createProto(le) {
+  var proto = new ProtoDef();
+  proto.addType("compound",compound);
+  proto.addTypes(JSON.parse(le ? leNbtJson : nbtJson));
+  return proto;
+}
+
+var proto=createProto(false);
+var protoLE=createProto(true);
+
+function writeUncompressed(value,le) {
+  return (le ? protoLE : proto).createPacketBuffer("nbt",value);
+}
+
+function parseUncompressed(data,le) {
+  return (le ? protoLE : proto).parsePacketBuffer("nbt",data).data;
+}
+
 
 var hasGzipHeader = function(data){
   var result=true;
@@ -7,31 +34,24 @@ var hasGzipHeader = function(data){
   return result;
 };
 
-var ProtoDef=require("protodef").ProtoDef;
-var proto=new ProtoDef();
-
-proto.addType("compound",require("./compound").compound);
-proto.addTypes(require("./nbt.json"));
-
-function writeUncompressed(value) {
-  return proto.createPacketBuffer("nbt",value);
-}
-
-function parseUncompressed(data) {
-  return proto.parsePacketBuffer("nbt",data).data;
-}
-
-function parse(data, callback) {
+function parse(data, le, callback) {
+  var isLe=false;
+  if (typeof le === "function") {
+    callback=le;
+  }
+  else {
+    isLe=le;
+  }
   if (hasGzipHeader(data)) {
     zlib.gunzip(data, function(error, uncompressed) {
       if (error) {
         callback(error, data);
       } else {
-        callback(null, parseUncompressed(uncompressed));
+        callback(null, parseUncompressed(uncompressed,isLe));
       }
     });
   } else {
-    callback(null, parseUncompressed(data));
+    callback(null, parseUncompressed(data,isLe));
   }
 }
 
@@ -58,5 +78,6 @@ module.exports={
   parseUncompressed:parseUncompressed,
   simplify:simplify,
   parse:parse,
-  proto:proto
+  proto:proto,
+  protoLE:protoLE
 };
