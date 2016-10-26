@@ -1,5 +1,9 @@
 # History
 
+## 1.1.0
+
+* fix nbt.simplify
+
 ## 1.0.0
 
 * add little endian nbt support (for mcpe)
