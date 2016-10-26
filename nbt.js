@@ -66,7 +66,7 @@ function simplify(data)
       },{});
     }
     if(type=="list") {
-      return value.value.map(function(v){transform(v,value.type)});
+      return value.value.map(function(v){return transform(v,value.type)});
     }
     return value;
   }
