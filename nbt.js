@@ -1,5 +1,4 @@
 var zlib = require('zlib');
-var fs=require("fs");
 var path=require("path");
 var ProtoDef=require("protodef").ProtoDef;
 var compound=require("./compound").compound;
