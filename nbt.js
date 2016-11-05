@@ -5,7 +5,7 @@ var ProtoDef=require("protodef").ProtoDef;
 var compound=require("./compound").compound;
 
 
-var nbtJson=fs.readFileSync(path.join(__dirname,"nbt.json"),"utf8");
+var nbtJson=JSON.stringify(require('./nbt.json'));
 var leNbtJson=nbtJson.replace(/(i[0-9]+)/g,"l$1");
 
 function createProto(le) {
