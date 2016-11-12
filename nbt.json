@@ -10,7 +10,7 @@
   "f64": "native",
   "pstring": "native",
   "shortString": ["pstring",{
-    "countType":"i16"
+    "countType":"varint"
   }],
   "byteArray": [
     "array",
