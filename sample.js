@@ -3,12 +3,13 @@
 var fs = require('fs'),
   nbt = require('./nbt');
 
-fs.readFile('hello_world.nbt', function (error, data) {
+fs.readFile('bigtest.nbt', function (error, data) {
   if (error) {
     throw error;
   }
 
   nbt.parse(data, function (error, result) {
-    console.log(nbt.simplify(result));
+    console.log(result);
+    //console.log(nbt.simplify(result));
   });
 });

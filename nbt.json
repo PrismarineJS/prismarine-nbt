@@ -15,7 +15,7 @@
   "byteArray": [
     "array",
     {
-      "countType": "i32",
+      "countType": "varint",
       "type": "i8"
     }
   ],
@@ -31,7 +31,7 @@
         "type": [
           "array",
           {
-            "countType": "i32",
+            "countType": "varint",
             "type": ["nbtSwitch",{"type":"type"}]
           }
         ]
@@ -41,7 +41,7 @@
   "intArray": [
     "array",
     {
-      "countType": "i32",
+      "countType": "varint",
       "type": "i32"
     }
   ],
@@ -72,7 +72,7 @@
         "end": "void",
         "byte": "i8",
         "short": "i16",
-        "int": "i32",
+        "int": "varint",
         "long": "i64",
         "float": "f32",
         "double": "f64",
