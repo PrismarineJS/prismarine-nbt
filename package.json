@@ -26,11 +26,6 @@
   "scripts": {
     "test": "mocha --reporter spec"
   },
-  "browserify": {
-    "transform": [
-      "brfs"
-    ]
-  },
   "dependencies": {
     "protodef": "^1.2.1"
   },
