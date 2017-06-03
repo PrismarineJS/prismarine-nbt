@@ -1,9 +1,8 @@
-var zlib = require('zlib');
+var zlib = require("zlib");
 var ProtoDef=require("protodef").ProtoDef;
 var compound=require("./compound").compound;
 
-
-var nbtJson=JSON.stringify(require('./nbt.json'));
+var nbtJson=JSON.stringify(require("./nbt.json"));
 var leNbtJson=nbtJson.replace(/(i[0-9]+)/g,"l$1");
 
 function createProto(le) {
