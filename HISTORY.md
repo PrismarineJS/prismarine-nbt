@@ -1,5 +1,9 @@
 # History
 
+## 1.1.1
+
+* remove fs.read for webpack
+
 ## 1.1.0
 
 * fix nbt.simplify
