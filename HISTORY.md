@@ -1,5 +1,9 @@
 # History
 
+## 1.2.0
+
+* add long array
+
 ## 1.1.1
 
 * remove fs.read for webpack
