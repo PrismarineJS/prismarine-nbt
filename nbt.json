@@ -45,6 +45,13 @@
       "type": "i32"
     }
   ],
+  "longArray": [
+    "array",
+    {
+      "countType": "i64",
+      "type": "i64"
+    }
+  ],
   "nbtMapper":["mapper",
     {
       "type": "i8",
@@ -60,7 +67,8 @@
         "8": "string",
         "9": "list",
         "10": "compound",
-        "11": "intArray"
+        "11": "intArray",
+        "12": "longArray"
       }
     }
   ],
@@ -80,7 +88,8 @@
         "string": "shortString",
         "list": "list",
         "compound": "compound",
-        "intArray": "intArray"
+        "intArray": "intArray",
+        "longArray": "longArray"
       }
     }
   ],
