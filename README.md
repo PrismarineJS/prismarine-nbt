@@ -1,4 +1,6 @@
 # Prismarine-NBT
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/PrismarineJS/prismarine-nbt.svg)](https://greenkeeper.io/)
 [![NPM version](https://img.shields.io/npm/v/prismarine-nbt.svg)](http://npmjs.com/package/prismarine-nbt)
 [![Build Status](https://img.shields.io/circleci/project/PrismarineJS/prismarine-nbt/master.svg)](https://circleci.com/gh/PrismarineJS/prismarine-nbt)
 
