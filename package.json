@@ -21,10 +21,13 @@
   },
   "devDependencies": {
     "chai": "^2.1.0",
-    "mocha": "^2.1.0"
+    "mocha": "^2.1.0",
+    "standard": "^11.0.1"
   },
   "scripts": {
-    "test": "mocha --reporter spec"
+    "test": "mocha --reporter spec",
+    "pretest": "npm run lint",
+    "lint": "standard"
   },
   "dependencies": {
     "protodef": "^1.2.1"
