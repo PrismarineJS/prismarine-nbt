@@ -1,5 +1,9 @@
 # History
 
+## 1.2.1
+
+* fix long array : the countType is i32 not i64
+
 ## 1.2.0
 
 * add long array
