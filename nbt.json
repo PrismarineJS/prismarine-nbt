@@ -48,7 +48,7 @@
   "longArray": [
     "array",
     {
-      "countType": "i64",
+      "countType": "i32",
       "type": "i64"
     }
   ],
