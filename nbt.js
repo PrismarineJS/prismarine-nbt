@@ -1,15 +1,15 @@
 const zlib = require('zlib')
-const ProtoDef = require('protodef').ProtoDef
-const compound = require('./compound').compound
+
+const { ProtoDefCompiler } = require('protodef').Compiler
 
 const nbtJson = JSON.stringify(require('./nbt.json'))
 const leNbtJson = nbtJson.replace(/(i[0-9]+)/g, 'l$1')
 
 function createProto (le) {
-  const proto = new ProtoDef()
-  proto.addType('compound', compound)
-  proto.addTypes(JSON.parse(le ? leNbtJson : nbtJson))
-  return proto
+  const compiler = new ProtoDefCompiler()
+  compiler.addTypes(require('./compiler-compound'))
+  compiler.addTypesToCompile(JSON.parse(le ? leNbtJson : nbtJson))
+  return compiler.compileProtoDefSync()
 }
 
 const proto = createProto(false)
@@ -67,10 +67,10 @@ function simplify (data) {
 }
 
 module.exports = {
-  writeUncompressed: writeUncompressed,
-  parseUncompressed: parseUncompressed,
-  simplify: simplify,
-  parse: parse,
-  proto: proto,
-  protoLE: protoLE
+  writeUncompressed,
+  parseUncompressed,
+  simplify,
+  parse,
+  proto,
+  protoLE
 }
