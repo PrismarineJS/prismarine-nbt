@@ -22,7 +22,7 @@
   "devDependencies": {
     "chai": "^2.1.0",
     "mocha": "^2.1.0",
-    "standard": "^11.0.1"
+    "standard": "^14.3.4"
   },
   "scripts": {
     "test": "mocha --reporter spec",
