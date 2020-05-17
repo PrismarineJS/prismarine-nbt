@@ -20,7 +20,7 @@
     "url": "https://github.com/prismarinejs/prismarine-nbt.git"
   },
   "devDependencies": {
-    "chai": "^2.1.0",
+    "chai": "^4.2.0",
     "mocha": "^2.1.0",
     "standard": "^14.3.4"
   },
