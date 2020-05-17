@@ -163,12 +163,12 @@ const testData = [
     data: [
       {
         buffer: Buffer.from([1, 0, 0, 0, 3, 1, 2, 3]),
-        value: {type: 'byte', value: [1, 2, 3]}
+        value: { type: 'byte', value: [1, 2, 3] }
       },
       {
         buffer: Buffer.from([8, 0, 0, 0, 2, 0, 5, 0x48, 0x65, 0x6C, 0x6C, 0x6F,
           0, 5, 0x57, 0x6F, 0x72, 0x6C, 0x64]),
-        value: {type: 'string', value: ['Hello', 'World']}
+        value: { type: 'string', value: ['Hello', 'World'] }
       }
     ]
   },
@@ -182,8 +182,8 @@ const testData = [
           9, 0, 2, 0x62, 0x62, 1, 0, 0, 0, 3, 1, 2, 3,
           0]),
         value: {
-          aa: {type: 'byte', value: 1},
-          bb: {type: 'list', value: {type: 'byte', value: [1, 2, 3]}}
+          aa: { type: 'byte', value: 1 },
+          bb: { type: 'list', value: { type: 'byte', value: [1, 2, 3] } }
         }
       },
       {
@@ -191,7 +191,7 @@ const testData = [
           1, 0, 2, 0x63, 0x63, 2,
           0]),
         value: {
-          cc: {type: 'byte', value: 2}
+          cc: { type: 'byte', value: 2 }
         }
       }
     ]

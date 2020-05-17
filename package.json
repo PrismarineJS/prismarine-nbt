@@ -27,7 +27,8 @@
   "scripts": {
     "test": "mocha --reporter spec",
     "pretest": "npm run lint",
-    "lint": "standard"
+    "lint": "standard",
+    "fix": "standard --fix"
   },
   "dependencies": {
     "protodef": "^1.2.1"

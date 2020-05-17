@@ -1,66 +1,66 @@
 module.exports = {
-  'name': 'Level',
-  'type': 'compound',
-  'value': {
-    'longTest': {
-      'type': 'long',
-      'value': [
+  name: 'Level',
+  type: 'compound',
+  value: {
+    longTest: {
+      type: 'long',
+      value: [
         2147483647,
         -1
       ]
     },
-    'shortTest': {
-      'type': 'short',
-      'value': 32767
+    shortTest: {
+      type: 'short',
+      value: 32767
     },
-    'stringTest': {
-      'type': 'string',
-      'value': 'HELLO WORLD THIS IS A TEST STRING ÅÄÖ!'
+    stringTest: {
+      type: 'string',
+      value: 'HELLO WORLD THIS IS A TEST STRING ÅÄÖ!'
     },
-    'floatTest': {
-      'type': 'float',
-      'value': 0.4982314705848694
+    floatTest: {
+      type: 'float',
+      value: 0.4982314705848694
     },
-    'intTest': {
-      'type': 'int',
-      'value': 2147483647
+    intTest: {
+      type: 'int',
+      value: 2147483647
     },
     'nested compound test': {
-      'type': 'compound',
-      'value': {
-        'ham': {
-          'type': 'compound',
-          'value': {
-            'name': {
-              'type': 'string',
-              'value': 'Hampus'
+      type: 'compound',
+      value: {
+        ham: {
+          type: 'compound',
+          value: {
+            name: {
+              type: 'string',
+              value: 'Hampus'
             },
-            'value': {
-              'type': 'float',
-              'value': 0.75
+            value: {
+              type: 'float',
+              value: 0.75
             }
           }
         },
-        'egg': {
-          'type': 'compound',
-          'value': {
-            'name': {
-              'type': 'string',
-              'value': 'Eggbert'
+        egg: {
+          type: 'compound',
+          value: {
+            name: {
+              type: 'string',
+              value: 'Eggbert'
             },
-            'value': {
-              'type': 'float',
-              'value': 0.5
+            value: {
+              type: 'float',
+              value: 0.5
             }
           }
         }
       }
     },
     'listTest (long)': {
-      'type': 'list',
-      'value': {
-        'type': 'long',
-        'value': [
+      type: 'list',
+      value: {
+        type: 'long',
+        value: [
           [
             0,
             11
@@ -85,31 +85,31 @@ module.exports = {
       }
     },
     'listTest (compound)': {
-      'type': 'list',
-      'value': {
-        'type': 'compound',
-        'value': [
+      type: 'list',
+      value: {
+        type: 'compound',
+        value: [
           {
-            'name': {
-              'type': 'string',
-              'value': 'Compound tag #0'
+            name: {
+              type: 'string',
+              value: 'Compound tag #0'
             },
             'created-on': {
-              'type': 'long',
-              'value': [
+              type: 'long',
+              value: [
                 294,
                 1379390861
               ]
             }
           },
           {
-            'name': {
-              'type': 'string',
-              'value': 'Compound tag #1'
+            name: {
+              type: 'string',
+              value: 'Compound tag #1'
             },
             'created-on': {
-              'type': 'long',
-              'value': [
+              type: 'long',
+              value: [
                 294,
                 1379390861
               ]
@@ -118,13 +118,13 @@ module.exports = {
         ]
       }
     },
-    'byteTest': {
-      'type': 'byte',
-      'value': 127
+    byteTest: {
+      type: 'byte',
+      value: 127
     },
     'byteArrayTest (the first 1000 values of (n*n*255+n*7)%100, starting with n=0 (0, 62, 34, 16, 8, ...))': {
-      'type': 'byteArray',
-      'value': [
+      type: 'byteArray',
+      value: [
         0,
         62,
         34,
@@ -1127,9 +1127,9 @@ module.exports = {
         48
       ]
     },
-    'doubleTest': {
-      'type': 'double',
-      'value': 0.4931287132182315
+    doubleTest: {
+      type: 'double',
+      value: 0.4931287132182315
     }
   }
 }

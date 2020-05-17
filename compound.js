@@ -1,5 +1,5 @@
 module.exports = {
-  'compound': [readCompound, writeCompound, sizeOfCompound]
+  compound: [readCompound, writeCompound, sizeOfCompound]
 }
 
 function readCompound (buffer, offset, typeArgs, rootNode) {
