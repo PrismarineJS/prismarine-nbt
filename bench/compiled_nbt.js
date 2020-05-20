@@ -20,11 +20,11 @@ fs.readFile('../sample/bigtest.nbt', async (error, buffer) => {
   compiler.addTypesToCompile(require('../nbt.json'))
   const compiledProto = await compiler.compileProtoDef()
 
-  let result = compiledProto.parsePacketBuffer(mainType, buffer).data
-  let result2 = proto.parsePacketBuffer(mainType, buffer).data
+  const result = compiledProto.parsePacketBuffer(mainType, buffer).data
+  const result2 = proto.parsePacketBuffer(mainType, buffer).data
 
-  let buffer2 = compiledProto.createPacketBuffer(mainType, result)
-  let result3 = proto.parsePacketBuffer(mainType, buffer2).data
+  const buffer2 = compiledProto.createPacketBuffer(mainType, result)
+  const result3 = proto.parsePacketBuffer(mainType, buffer2).data
 
   assert.deepStrictEqual(result, result2)
   assert.deepStrictEqual(result2, result3)
