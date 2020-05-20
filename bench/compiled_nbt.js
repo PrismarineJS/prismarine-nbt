@@ -2,10 +2,10 @@ const ProtoDef = require('protodef').ProtoDef
 const { performance } = require('perf_hooks')
 const assert = require('assert')
 const { ProtoDefCompiler } = require('protodef').Compiler
+const fs = require('fs')
 
 const mainType = 'nbt'
 
-const fs = require('fs')
 fs.readFile('../sample/bigtest.nbt', async (error, buffer) => {
   if (error) {
     throw error
