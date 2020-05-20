@@ -31,7 +31,7 @@
     "fix": "standard --fix"
   },
   "dependencies": {
-    "protodef": "Karang/node-protodef#karang_compiler"
+    "protodef": "^1.7.0"
   },
   "license": "MIT"
 }
