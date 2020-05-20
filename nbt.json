@@ -1,4 +1,5 @@
 {
+  "void": "native",
   "container": "native",
   "i8": "native",
   "switch": "native",
