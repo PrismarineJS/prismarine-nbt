@@ -1,5 +1,9 @@
 # History
 
+## 1.3.0
+
+* use protodef compiler, making prismarine-nbt much much faster (10x), thanks @Karang
+
 ## 1.2.1
 
 * fix long array : the countType is i32 not i64
