@@ -30,7 +30,7 @@ declare module 'prismarine-nbt'{
     [TagType.ByteArray]: { type: TagType.ByteArray, value: number[] };
     [TagType.String]: { type: TagType.String, value: string };
     [TagType.List]: List<TagType>
-    [TagType.Compound]: { type: TagType.Compound, value: Recorc<string, Tags[TagType]> };
+    [TagType.Compound]: { type: TagType.Compound, value: Recorc<string, undefined | Tags[TagType]> };
     [TagType.IntArray]: { type: TagType.IntArray, value: number[] };
     [TagType.LongArray]: { type: TagType.LongArray, value: [number, number][] };
   }
