@@ -15,6 +15,7 @@
     "Romain Beaumont <romain.rom1@gmail.com>"
   ],
   "main": "nbt",
+  "types": "./typings/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/prismarinejs/prismarine-nbt.git"

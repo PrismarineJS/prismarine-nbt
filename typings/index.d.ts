@@ -1,23 +1,37 @@
 
 declare module 'prismarine-nbt'{
-  type List<T extends TagTypes> = {type:'list', value: {type: Tag[T]['type'], value: Tag[T]['value'][]}};
-
-  export type CompoundTag = {type: 'compound', value: {[x in string]?: Tag}};
-  export type StringTag = {type: 'string', value: string};
-  export type FloatTag = {type: 'float', value: number};
-  export type IntTag = {type: 'int', value: number};
-  export type ShortTag = {type: 'short', value: number};
-  export type LongTag = {type: 'long', value: [number, number]};
-  export type ByteArrayTag = {type: 'byteArray', value: number[]};
-  export type IntArrayTag = {type: 'intArray', value: number[]};
-  export type LongArrayTag = {type: 'longArray', value: [number, number][]};
-  export type ListTag = List<TagTypes>
-  type testType = List<'int'>
-  export type Tag = CompoundTag | StringTag | FloatTag | IntTag | ShortTag | LongTag //| ByteArrayTag | IntArrayTag | LongArrayTag | ListTag;
-  export type TagTypes = Tag['type']
-  export type NBT = CompoundTag & {name: string};
-  export function writeUncompressed(value: NBT, le: boolean = false): ArrayBuffer;
-  export function parseUncompressed(value: ArrayBuffer, le: boolean = false): NBT;
+  type List<T extends TagType> = {type: TagType.List, value: {type: Tags[T]['type'], value: Tags[T]['value'][]}};
+  export enum TagType {
+    Byte = 'byte',
+    Short = 'short',
+    Int = 'int',
+    Long = 'long',
+    Float = 'float',
+    Double = 'double',
+    ByteArray = 'byteArray',
+    String = 'string',
+    List = 'list',
+    Compound = 'compound',
+    IntArray = 'intArray',
+    LongArray = 'longArray',
+  }
+  export type Tags = {
+    [TagType.Byte]: {type: TagType.Byte, value: number};
+    [TagType.Short]: {type: TagType.Short, value: number};
+    [TagType.Int]: {type: TagType.Int, value: number};
+    [TagType.Long]: {type: TagType.Long, value: [number, number]};
+    [TagType.Float]: {type: TagType.Float, value: number};
+    [TagType.Double]: {type: TagType.Double, value: number};
+    [TagType.ByteArray]: {type: TagType.ByteArray, value: number[]};
+    [TagType.String]: {type: TagType.String, value: string};
+    [TagType.List]: List<TagType>
+    [TagType.Compound]: {type: TagType.Compound, value: {[x in string]?: Tags[TagType]}};
+    [TagType.IntArray]: {type: TagType.IntArray, value: number[]};
+    [TagType.LongArray]: {type: TagType.LongArray, value: [number, number][]};
+  }
+  export type NBT = Tags['compound'] & {name: string};
+  export function writeUncompressed(value: NBT, le?: boolean): ArrayBuffer;
+  export function parseUncompressed(value: ArrayBuffer, le?: boolean): NBT;
   export function parse(data: ArrayBuffer, le:boolean, callback: (err: Error | null, value: NBT) => any): void;
   export function parse(data: ArrayBuffer, callback: (err: Error | null, value: NBT) => any): void;
   export function simplify(data: NBT): any
