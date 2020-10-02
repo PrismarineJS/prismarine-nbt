@@ -41,7 +41,7 @@ declare module 'prismarine-nbt'{
   export function parseUncompressed(value: ArrayBuffer, le?: boolean): NBT;
   export function parse(data: ArrayBuffer, le:boolean, callback: (err: Error | null, value: NBT) => any): void;
   export function parse(data: ArrayBuffer, callback: (err: Error | null, value: NBT) => any): void;
-  export function simplify(data: NBT): any
+  export function simplify(data: Tags[TagType]): any
   export const proto: any;
   export const protoLE: any;
 }
