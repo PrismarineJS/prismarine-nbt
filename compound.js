@@ -28,7 +28,7 @@ function readCompound (buffer, offset, typeArgs, rootNode) {
 
 function writeCompound (value, buffer, offset, typeArgs, rootNode) {
   const self = this
-  Object.keys(value).map(function (key) {
+  Object.keys(value).forEach(function (key) {
     offset = self.write({
       name: key,
       type: value[key].type,
