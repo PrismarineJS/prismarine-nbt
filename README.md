@@ -2,10 +2,34 @@
 [![NPM version](https://img.shields.io/npm/v/prismarine-nbt.svg)](http://npmjs.com/package/prismarine-nbt)
 ![CI](https://github.com/PrismarineJS/dprismarine-nbt/workflows/CI/badge.svg)
 
-Prismarine-NBT is a JavaScript parser and serializer for [NBT](http://wiki.vg/NBT) archives, for use with [Node.js](http://nodejs.org/).
+Prismarine-NBT is a JavaScript parser and serializer for [NBT](http://wiki.vg/NBT) archives, for use with [Node.js](http://nodejs.org/). It supports big, little, and little-varint encoded NBT files.
 
 
 ## Usage
+
+#### as a async promise
+
+```js
+const fs = require('fs')
+const { parse, writeUncompressed } = require('prismarine-nbt')
+
+async function main(file) {
+    const buffer = await fs.promises.readFile(file)
+    const { result, type } = await parse(buffer)
+    const json = JSON.stringify(result, (k,v) => typeof v == 'bigint' ? v.toString() : v)
+    console.log('JSON serialized:', json)
+
+    // Write it back 
+    const outBuffer = fs.createWriteStream('file.nbt')
+    const newBuf = writeUncompressed(result, type)
+    outBuffer.write(newBuf)
+    outBuffer.end(() => console.log('written!'))
+}
+
+main(process.argv[2])
+```
+
+#### as a callback
 
 ```js
 var fs = require('fs'),
@@ -25,18 +49,26 @@ If the data is gzipped, it is automatically decompressed first.
 
 ## API
 
-### writeUncompressed(value,[isLittleEndian])
+### parse(data, [format]): Promise<{ result, type }>
+### parse(data, [format,] callback)
 
-Returns a buffer with a serialized nbt `value`. If isLittleEndian is passed and is true, write little endian nbt (mcpe).
+Takes an optionally compressed `data` buffer and reads the nbt data.
+It returns a promise and takes an optional callback.
 
-### parseUncompressed(data,[isLittleEndian])
+The endian `format` argument is automatically inferred, but can be manually specified as 'big', 'little' or 'littleVarint'.
+If not specified, the program will try to load first as big, little, and little-varint.
 
-Takes a buffer `data` and returns a parsed nbt value. If isLittleEndian is passed and is true, read little endian nbt (mcpe).
+Minecraft Java Edition uses big-endian format, and Bedrock Edition uses little-endian.
 
-### parse(data,[isLittleEndian], callback)
 
-Takes an optionally compressed `data` and provide a parsed nbt value in the `callback(err,value)`.
-If isLittleEndian is passed and is true, read little endian nbt (mcpe).
+### writeUncompressed(value, format='big')
+
+Returns a buffer with a serialized nbt `value`. 
+
+### parseUncompressed(data, format='big')
+
+Takes a buffer `data` and returns a parsed nbt value.
+
 
 ### simplify(nbt)
 

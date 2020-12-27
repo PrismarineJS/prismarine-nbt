@@ -35,12 +35,17 @@ declare module 'prismarine-nbt'{
     [TagType.LongArray]: { type: TagType.LongArray, value: [number, number][] };
   }
 
+  export type NBTFormat = 'big' | 'little' | 'littleVarint'
+
   export type NBT = Tags['compound'] & {name: string};
 
-  export function writeUncompressed(value: NBT, le?: boolean): ArrayBuffer;
-  export function parseUncompressed(value: ArrayBuffer, le?: boolean): NBT;
-  export function parse(data: ArrayBuffer, le:boolean, callback: (err: Error | null, value: NBT) => any): void;
-  export function parse(data: ArrayBuffer, callback: (err: Error | null, value: NBT) => any): void;
+  export function writeUncompressed(value: NBT, format?: NBTFormat): ArrayBuffer;
+  export function parseUncompressed(value: ArrayBuffer, format?: NBTFormat): NBT;
+  export function writeUncompressed(value: NBT, little?: boolean): ArrayBuffer;
+  export function parseUncompressed(value: ArrayBuffer, little?: boolean): NBT;
+  export function parse(data: ArrayBuffer, nbtType: NBTFormat, callback?: (err: Error | null, value: NBT) => any): Promise<{result, type: NBTFormat, metadata}>;
+  export function parse(data: ArrayBuffer, little: boolean, callback?: (err: Error | null, value: NBT) => any): Promise<{result, type: NBTFormat, metadata}>;
+  export function parse(data: ArrayBuffer, callback?: (err: Error | null, value: NBT) => any): Promise<{result, type: NBTFormat, metadata}>;
   export function simplify(data: Tags[TagType]): any
   export const proto: any;
   export const protoLE: any;

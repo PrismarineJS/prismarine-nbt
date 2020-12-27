@@ -94,7 +94,7 @@ async function parse (data, format, callback) {
     try {
       ret = await parseAs(data, 'little')
     } catch (e2) {
-      // console.debug('Failed read as le varint, trying le')
+      // console.debug('Failed read as le, trying le varint')
       try {
         ret = await parseAs(data, 'littleVarint')
       } catch (e3) {
