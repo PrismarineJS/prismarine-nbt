@@ -4,19 +4,23 @@
   "i8": "native",
   "switch": "native",
   "compound": "native",
+  "zigzag": "native",
   "i16": "native",
   "i32": "native",
   "i64": "native",
   "f32": "native",
   "f64": "native",
   "pstring": "native",
-  "shortString": ["pstring",{
-    "countType":"i16"
-  }],
+  "shortString": [
+    "pstring",
+    {
+      "countType": "varint"
+    }
+  ],
   "byteArray": [
     "array",
     {
-      "countType": "i32",
+      "countType": "zigzag",
       "type": "i8"
     }
   ],
@@ -32,8 +36,13 @@
         "type": [
           "array",
           {
-            "countType": "i32",
-            "type": ["nbtSwitch",{"type":"type"}]
+            "countType": "zigzag",
+            "type": [
+              "nbtSwitch",
+              {
+                "type": "type"
+              }
+            ]
           }
         ]
       }
@@ -42,18 +51,19 @@
   "intArray": [
     "array",
     {
-      "countType": "i32",
+      "countType": "zigzag",
       "type": "i32"
     }
   ],
   "longArray": [
     "array",
     {
-      "countType": "i32",
+      "countType": "zigzag",
       "type": "i64"
     }
   ],
-  "nbtMapper":["mapper",
+  "nbtMapper": [
+    "mapper",
     {
       "type": "i8",
       "mappings": {
@@ -73,7 +83,7 @@
       }
     }
   ],
-  "nbtSwitch":[
+  "nbtSwitch": [
     "switch",
     {
       "compareTo": "$type",
@@ -81,8 +91,8 @@
         "end": "void",
         "byte": "i8",
         "short": "i16",
-        "int": "i32",
-        "long": "i64",
+        "int": "zigzag",
+        "long": "zigzag",
         "float": "f32",
         "double": "f64",
         "byteArray": "byteArray",
@@ -107,7 +117,12 @@
       },
       {
         "name": "value",
-        "type": ["nbtSwitch",{"type":"type"}]
+        "type": [
+          "nbtSwitch",
+          {
+            "type": "type"
+          }
+        ]
       }
     ]
   ]
