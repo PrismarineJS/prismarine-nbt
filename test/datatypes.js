@@ -5,12 +5,12 @@
 const nbt = require('../nbt')
 const expect = require('chai').expect
 
-function write (type, packet) {
-  return nbt.proto.createPacketBuffer(type, packet)
+function write (proto, type, packet) {
+  return nbt.protos[proto].createPacketBuffer(type, packet)
 }
 
-function read (type, buffer) {
-  return nbt.proto.parsePacketBuffer(type, buffer).data
+function read (proto, type, buffer) {
+  return nbt.protos[proto].parsePacketBuffer(type, buffer).data
 }
 
 const testData = [
@@ -198,21 +198,21 @@ const testData = [
   }
 ]
 
-describe('nbt.Writer', function () {
+describe('nbt.Writer big', function () {
   testData.forEach(function (typeTest) {
     it('writes ' + typeTest.description, function () {
       typeTest.data.forEach(function (test) {
-        expect(write(typeTest.type, test.value)).to.deep.equal(test.buffer)
+        expect(write('big', typeTest.type, test.value)).to.deep.equal(test.buffer)
       })
     })
   })
 })
 
-describe('nbt.Reader', function () {
+describe('nbt.Reader big', function () {
   testData.forEach(function (typeTest) {
     it('reads ' + typeTest.description, function () {
       typeTest.data.forEach(function (test) {
-        expect(read(typeTest.type, test.buffer)).to.deep.equal(test.value)
+        expect(read('big', typeTest.type, test.buffer)).to.deep.equal(test.value)
       })
     })
   })

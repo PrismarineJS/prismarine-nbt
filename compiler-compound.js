@@ -6,11 +6,15 @@ module.exports = {
         value: {},
         size: 0
       }
-      while (true) {
+      while (offset !== buffer.length) {
         const typ = ctx.i8(buffer, offset)
         if (typ.value === 0) {
           results.size += typ.size
           break
+        }
+
+        if (typ.value > 100) {
+          throw new Error(`Tag type out of bounds: ${typ.value} > 100`) // Likely little endian or varint
         }
 
         const readResults = ctx.nbt(buffer, offset)
