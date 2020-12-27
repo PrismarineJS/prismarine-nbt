@@ -90,12 +90,12 @@ describe('little endian read write', function () {
     const results = []
     while (data.startOffset !== data.length) {
       const { result, type, metadata } = await nbt.parse(data)
-      expect(type).to.equal('little-varint')
+      expect(type).to.equal('littleVarint')
       data.startOffset += metadata.size
       // console.log(data.byteOffset, JSON.stringify(result))
       results.push(result)
 
-      const newBuf = nbt.writeUncompressed(result, 'little-varint')
+      const newBuf = nbt.writeUncompressed(result, 'littleVarint')
       dataOut.write(newBuf)
     }
 

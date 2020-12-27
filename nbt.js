@@ -11,7 +11,7 @@ function createProto (type) {
   compiler.addTypes(require('./compiler-compound'))
   compiler.addTypes(require('./compiler-tagname'))
   let proto = beNbtJson
-  if (type === 'little-varint') {
+  if (type === 'littleVarint') {
     compiler.addTypes(require('./compiler-zigzag'))
     proto = varintJson
   } else if (type === 'little') {
@@ -23,24 +23,22 @@ function createProto (type) {
 
 const protoBE = createProto('big')
 const protoLE = createProto('little')
-const protoVarInt = createProto('little-varint')
+const protoVarInt = createProto('littleVarint')
 
 const protos = {
   big: protoBE,
   little: protoLE,
-  'little-varint': protoVarInt
+  littleVarint: protoVarInt
 }
 
 function writeUncompressed (value, proto = 'big') {
   if (proto === true) proto = 'little'
   proto = proto === true ? proto = 'little' : proto
-  // console.log('Creating uncompressed', value, proto)
   return protos[proto].createPacketBuffer('nbt', value)
 }
 
 function parseUncompressed (data, proto = 'big') {
   if (proto === true) proto = 'little'
-  // console.log('Reading uncompressed', data, proto)
   return protos[proto].parsePacketBuffer('nbt', data, data.startOffset)
 }
 
@@ -67,14 +65,9 @@ function parseAs (data, type) {
       resolve([null, ret.data, type, ret.metadata])
     }
   })
-
-  // We can't execute callback here, otherwise errors
-  // in the callback will break fallback detection
 }
 
 async function parse (data, format, callback) {
-  // console.log('A0', data, format, callback)
-
   let fmt = null
   if (typeof format === 'function') {
     callback = format
@@ -82,35 +75,16 @@ async function parse (data, format, callback) {
     fmt = 'little'
   } else if (format === 'big') {
     fmt = 'big'
-  } else if (format === 'little-varint') {
-    fmt = 'little-varint'
+  } else if (format === 'littleVarint') {
+    fmt = 'littleVarint'
   } else if (format) {
     throw new Error('Unrecognized format: ' + format)
   }
   if (!callback) callback = () => {}
 
   if (fmt) {
-    // console.log('Read as', fmt)
     return parseAs(data, fmt).then(callback)
   }
-
-  // let didCallback = false
-  // const callbackOnce = (args) => {
-  //   // if (!didCallback) callback(...args)
-  //   didCallback = true
-  // }
-
-  // console.log('Parsing')
-  // return parseAs(data, 'big')
-  //   .catch(e0 => parseAs(data, 'little-varint')
-  //     .catch(e1 => parseAs(data, 'little')
-  //       .catch(e2 => {
-  //         console.warn('Failed to read as big endian');
-  //         throw e0 // return first error reading as BE
-  //       }).then(callbackOnce)
-  //     ).then(callbackOnce)
-  //   ).then(callbackOnce)
-  //   .finally('SHOULD GET CALLED!')
 
   let ret = null
   try {
@@ -122,7 +96,7 @@ async function parse (data, format, callback) {
     } catch (e2) {
       // console.debug('Failed read as le varint, trying le')
       try {
-        ret = await parseAs(data, 'little-varint')
+        ret = await parseAs(data, 'littleVarint')
       } catch (e3) {
         console.warn('Failed to read nbt')
         console.log(e)
@@ -138,10 +112,6 @@ async function parse (data, format, callback) {
   callback(...ret) // eslint-disable-line
   const [, result, type, metadata] = ret
   return { result, type, metadata }
-}
-
-function parseAsync (data, format) {
-  return new Promise(resolve => parse(data, format, (...args) => resolve(args)))
 }
 
 function simplify (data) {
@@ -166,7 +136,6 @@ module.exports = {
   simplify,
   parse,
   parseAs,
-  parseAsync,
   proto: protoBE,
   protoLE,
   protos
