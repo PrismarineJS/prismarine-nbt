@@ -33,13 +33,16 @@ const protos = {
 
 function writeUncompressed (value, proto = 'big') {
   if (proto === true) proto = 'little'
-  proto = proto === true ? proto = 'little' : proto
   return protos[proto].createPacketBuffer('nbt', value)
 }
 
-function parseUncompressed (data, proto = 'big') {
+function _parseUncompressed (data, proto = 'big') {
   if (proto === true) proto = 'little'
   return protos[proto].parsePacketBuffer('nbt', data, data.startOffset)
+}
+
+function parseUncompressed (data, proto = 'big') {
+  return _parseUncompressed(data, proto).data
 }
 
 const hasGzipHeader = function (data) {
@@ -56,12 +59,13 @@ function parseAs (data, type) {
         if (error) {
           reject(error)
         } else {
-          const ret = parseUncompressed(uncompressed, type)
+          const ret = _parseUncompressed(uncompressed, type)
+          ret.metadata.compressed = true
           resolve([null, ret.data, type, ret.metadata])
         }
       })
     } else {
-      const ret = parseUncompressed(data, type)
+      const ret = _parseUncompressed(data, type)
       resolve([null, ret.data, type, ret.metadata])
     }
   })

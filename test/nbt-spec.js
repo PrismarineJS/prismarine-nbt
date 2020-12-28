@@ -76,7 +76,7 @@ describe('nbt.write', function () {
     const input = require('../sample/bigtest')
     const output = nbt.writeUncompressed(input)
     const decodedOutput = nbt.parseUncompressed(output)
-    expect(decodedOutput.data).to.deep.equal(input)
+    expect(decodedOutput).to.deep.equal(input)
   })
 })
 

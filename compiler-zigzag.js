@@ -2,6 +2,7 @@
 function sizeOfVarInt (value) {
   if (typeof value !== 'bigint') value = BigInt(value)
   let cursor = 0
+  value = (value << 1n) ^ (value >> 31n)
   while (value & ~0x7Fn) {
     value >>= 7n
     cursor++
