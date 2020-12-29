@@ -4,7 +4,7 @@ const { ProtoDefCompiler } = require('protodef').Compiler
 
 const beNbtJson = JSON.stringify(require('./nbt.json'))
 const leNbtJson = beNbtJson.replace(/([if][0-7]+)/g, 'l$1')
-const varintJson = JSON.stringify(require('./nbt-varint.json')).replace(/([if][0-9]+)/g, 'l$1')
+const varintJson = JSON.stringify(require('./nbt-varint.json')).replace(/([if][0-7]+)/g, 'l$1')
 
 function createProto (type) {
   const compiler = new ProtoDefCompiler()
@@ -52,6 +52,9 @@ const hasGzipHeader = function (data) {
   return result
 }
 
+const hasBedrockLevelHeader = (data) =>
+  data[1] === 0 && data[2] === 0 && data[3] === 0
+
 function parseAs (data, type) {
   return new Promise((resolve, reject) => {
     if (hasGzipHeader(data)) {
@@ -86,25 +89,56 @@ async function parse (data, format, callback) {
   }
   if (!callback) callback = () => {}
 
-  if (fmt) {
-    return parseAs(data, fmt).then(callback)
+  data.startOffset = data.startOffset || 0
+
+  if (!fmt && !data.startOffset) {
+    if (hasBedrockLevelHeader(data)) { // bedrock level.dat header
+      data.startOffset += 8 // skip + 8 bytes
+      fmt = 'little'
+      // TODO: should this info be returned to the caller ?
+    }
   }
 
+  if (fmt) {
+    const ret = await parseAs(data, fmt)
+    if (ret[0]) {
+      throw new Error(ret[0])
+    }
+    callback(...ret) // eslint-disable-line
+    const [, result, type, metadata] = ret
+    return { result, type, metadata }
+  }
+
+  // Check if we decoded properly: the EOF should match end of the buffer,
+  // or there should be more tags to read, else throw unexpected EOF
+  const verifyEOF = (meta) => {
+    const readLen = meta.size
+    const bufferLen = data.length - data.startOffset
+    const lastByte = data[readLen + data.startOffset]
+    const nextNbtTag = (lastByte < 13) && (lastByte > 0)
+    if (readLen < bufferLen && !nextNbtTag) {
+      throw new Error(`Unexpected EOF at ${readLen}: still have ${bufferLen - readLen} bytes to read !`)
+    }
+  }
+
+  // Try to parse as all formats until something passes
   let ret = null
   try {
     ret = await parseAs(data, 'big')
+    verifyEOF(ret[3])
   } catch (e) {
     // console.debug('Failed read as big endian, trying le')
     try {
       ret = await parseAs(data, 'little')
+      verifyEOF(ret[3])
     } catch (e2) {
       // console.debug('Failed read as le, trying le varint')
       try {
         ret = await parseAs(data, 'littleVarint')
+        verifyEOF(ret[3])
       } catch (e3) {
-        console.warn('Failed to read nbt')
-        console.log(e)
-        throw e // error decoding as big endian
+        // console.warn('Failed to read nbt', e, e2, e3)
+        throw e // throw error decoding as big endian
       }
     }
   }
@@ -138,6 +172,7 @@ module.exports = {
   writeUncompressed,
   parseUncompressed,
   simplify,
+  hasBedrockLevelHeader,
   parse,
   parseAs,
   proto: protoBE,
