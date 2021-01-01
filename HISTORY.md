@@ -1,5 +1,9 @@
 # History
 
+## 1.4.0
+
+* typings (@mcbobby123 and @Dep0sit)
+
 ## 1.3.0
 
 * use protodef compiler, making prismarine-nbt much much faster (10x), thanks @Karang
