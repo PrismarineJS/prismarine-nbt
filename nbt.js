@@ -64,11 +64,13 @@ function parseAs (data, type) {
         } else {
           const ret = _parseUncompressed(uncompressed, type)
           ret.metadata.compressed = true
+          ret.metadata.buffer = uncompressed
           resolve([null, ret.data, type, ret.metadata])
         }
       })
     } else {
       const ret = _parseUncompressed(data, type)
+      ret.metadata.buffer = data
       resolve([null, ret.data, type, ret.metadata])
     }
   })
@@ -111,10 +113,10 @@ async function parse (data, format, callback) {
 
   // Check if we decoded properly: the EOF should match end of the buffer,
   // or there should be more tags to read, else throw unexpected EOF
-  const verifyEOF = (meta) => {
-    const readLen = meta.size
-    const bufferLen = data.length - data.startOffset
-    const lastByte = data[readLen + data.startOffset]
+  const verifyEOF = ({ buffer, size }) => {
+    const readLen = size
+    const bufferLen = buffer.length - buffer.startOffset
+    const lastByte = buffer[readLen + buffer.startOffset]
     const nextNbtTag = (lastByte < 13) && (lastByte > 0)
     if (readLen < bufferLen && !nextNbtTag) {
       throw new Error(`Unexpected EOF at ${readLen}: still have ${bufferLen - readLen} bytes to read !`)
