@@ -4,7 +4,8 @@
   "i8": "native",
   "switch": "native",
   "compound": "native",
-  "zigzag": "native",
+  "zigzag32": "native",
+  "zigzag64": "native",
   "i16": "native",
   "i32": "native",
   "i64": "native",
@@ -20,7 +21,7 @@
   "byteArray": [
     "array",
     {
-      "countType": "zigzag",
+      "countType": "zigzag32",
       "type": "i8"
     }
   ],
@@ -36,7 +37,7 @@
         "type": [
           "array",
           {
-            "countType": "zigzag",
+            "countType": "zigzag32",
             "type": [
               "nbtSwitch",
               {
@@ -51,14 +52,14 @@
   "intArray": [
     "array",
     {
-      "countType": "zigzag",
+      "countType": "zigzag32",
       "type": "i32"
     }
   ],
   "longArray": [
     "array",
     {
-      "countType": "zigzag",
+      "countType": "zigzag32",
       "type": "i64"
     }
   ],
@@ -91,8 +92,8 @@
         "end": "void",
         "byte": "i8",
         "short": "i16",
-        "int": "zigzag",
-        "long": "zigzag",
+        "int": "zigzag32",
+        "long": "zigzag64",
         "float": "f32",
         "double": "f64",
         "byteArray": "byteArray",

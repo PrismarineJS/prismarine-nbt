@@ -30,7 +30,7 @@ declare module 'prismarine-nbt'{
     [TagType.ByteArray]: { type: TagType.ByteArray, value: number[] };
     [TagType.String]: { type: TagType.String, value: string };
     [TagType.List]: List<TagType>
-    [TagType.Compound]: { type: TagType.Compound, value: Recorc<string, undefined | Tags[TagType]> };
+    [TagType.Compound]: { type: TagType.Compound, value: Record<string, undefined | Tags[TagType]> };
     [TagType.IntArray]: { type: TagType.IntArray, value: number[] };
     [TagType.LongArray]: { type: TagType.LongArray, value: [number, number][] };
   }
@@ -39,13 +39,13 @@ declare module 'prismarine-nbt'{
 
   export type NBT = Tags['compound'] & {name: string};
 
-  export function writeUncompressed(value: NBT, format?: NBTFormat): ArrayBuffer;
-  export function parseUncompressed(value: ArrayBuffer, format?: NBTFormat): NBT;
-  export function writeUncompressed(value: NBT, little?: boolean): ArrayBuffer;
-  export function parseUncompressed(value: ArrayBuffer, little?: boolean): NBT;
-  export function parse(data: ArrayBuffer, nbtType: NBTFormat, callback?: (err: Error | null, value: NBT) => any): Promise<{result, type: NBTFormat, metadata}>;
-  export function parse(data: ArrayBuffer, little: boolean, callback?: (err: Error | null, value: NBT) => any): Promise<{result, type: NBTFormat, metadata}>;
-  export function parse(data: ArrayBuffer, callback?: (err: Error | null, value: NBT) => any): Promise<{result, type: NBTFormat, metadata}>;
+  export function writeUncompressed(value: NBT, format?: NBTFormat): Buffer;
+  export function parseUncompressed(value: Buffer, format?: NBTFormat): NBT;
+  export function writeUncompressed(value: NBT, little?: boolean): Buffer;
+  export function parseUncompressed(value: Buffer, little?: boolean): NBT;
+  export function parse(data: Buffer, nbtType: NBTFormat, callback?: (err: Error | null, value: NBT) => any): Promise<{result, type: NBTFormat, metadata}>;
+  export function parse(data: Buffer, little: boolean, callback?: (err: Error | null, value: NBT) => any): Promise<{result, type: NBTFormat, metadata}>;
+  export function parse(data: Buffer, callback?: (err: Error | null, value: NBT) => any): Promise<{result, type: NBTFormat, metadata}>;
   export function simplify(data: Tags[TagType]): any
   export const proto: any;
   export const protoLE: any;
