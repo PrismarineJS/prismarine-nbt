@@ -1,12 +1,11 @@
 /* global PartialReadError */
 
 class BigIntExtended extends Array {
-  constructor (arg, isLE) {
-    const arr = [Number((arg >> 32n) & 0xFFFFFFFFn), Number(arg & 0xFFFFFFFFn)]
-    if (isLE) arr.reverse()
-    super(...arr)
-    this.arg = arg // <- is this needed?
-    this.isLE = isLE | 0
+  constructor (arg) {
+    if (typeof arg === 'number') arg = BigInt(arg)
+    const upper = BigInt.asIntN(32, arg >> 32n)
+    const lower = BigInt.asIntN(32, arg)
+    super(Number(upper), Number(lower))
     this.valueOf = () => arg
   }
 }
@@ -41,9 +40,8 @@ function readSignedVarLong (buffer, offset) {
     if (shift > 63) throw new PartialReadError(`varint is too big: ${shift}`)
   }
 
-  const unsigned = result
-  const zigzag = (unsigned >> 1n) ^ (unsigned & (1n << 63n))
-  const value = new BigIntExtended(zigzag, true)
+  const zigzag = (BigInt.asIntN(1, result) ^ result >> 1n) ^ (result & (1n << 63n))
+  const value = new BigIntExtended(zigzag)
   return { value, size }
 }
 
