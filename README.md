@@ -15,8 +15,8 @@ const { parse, writeUncompressed } = require('prismarine-nbt')
 
 async function main(file) {
     const buffer = await fs.promises.readFile(file)
-    const { result, type } = await parse(buffer)
-    const json = JSON.stringify(result, (k,v) => typeof v == 'bigint' ? v.toString() : v)
+    const { parsed, type } = await parse(buffer)
+    const json = JSON.stringify(result, null, 2)
     console.log('JSON serialized:', json)
 
     // Write it back 
@@ -45,21 +45,19 @@ fs.readFile('bigtest.nbt', function(error, data) {
 });
 ```
 
-If the data is gzipped, it is automatically decompressed first.
+If the data is gzipped, it is automatically decompressed, for the buffer see metadata.buffer
 
 ## API
 
-### parse(data, [format]): Promise<{ result, type }>
+### parse(data, [format]): Promise<{ parsed, type, metadata: { size, buffer? } }>
 ### parse(data, [format,] callback)
 
 Takes an optionally compressed `data` buffer and reads the nbt data.
-It returns a promise and takes an optional callback.
 
-The endian `format` argument is automatically inferred, but can be manually specified as 'big', 'little' or 'littleVarint'.
-If not specified, the program will try to load first as big, little, and little-varint.
+If the endian `format` is known, it can be specified as 'big', 'little' or 'littleVarint'. If not specified, the library will
+try to sequentially load as big, little and little varint until the parse is successful. The deduced type is returned as `type`.
 
-Minecraft Java Edition uses big-endian format, and Bedrock Edition uses little-endian.
-
+Minecraft Java Edition uses big-endian format, and Bedrock uses little-endian.
 
 ### writeUncompressed(value, format='big')
 
@@ -75,10 +73,14 @@ Takes a buffer `data` and returns a parsed nbt value.
 Returns a simplified nbt representation : keep only the value to remove one level.
 This loses the types so you cannot use the resulting representation to write it back to nbt.
 
+### protos : { big, little, littleVarint }
+
+Provides compiled protodef instances used to parse and serialize nbt
+
 ### proto
 
-Provide the protodef instance used to parse and serialize nbt.
+Provide the big-endian protodef instance used to parse and serialize nbt.
 
 ### protoLE
 
-Provide the protodef instance used to parse and serialize little endian nbt.
+Provide the little-endian protodef instance used to parse and serialize little endian nbt.

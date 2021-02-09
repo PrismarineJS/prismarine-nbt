@@ -14,7 +14,7 @@ async function main (file) {
 
   // Write it back
   const outBuffer = fs.createWriteStream('file.nbt')
-  const newBuf = writeUncompressed(result, type)
+  const newBuf = writeUncompressed(parsed, type)
   outBuffer.write(newBuf)
   outBuffer.end(() => console.log('written!'))
 }

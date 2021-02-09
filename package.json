@@ -32,7 +32,7 @@
     "fix": "standard --fix"
   },
   "dependencies": {
-    "protodef": "github:extremeheat/node-protodef#big"
+    "protodef": "^1.8.3"
   },
   "license": "MIT"
 }
