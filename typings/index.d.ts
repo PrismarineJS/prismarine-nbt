@@ -1,4 +1,3 @@
-
 declare module 'prismarine-nbt'{
   export type List<T extends TagType> = {
     type: TagType.List,
@@ -38,15 +37,24 @@ declare module 'prismarine-nbt'{
   export type NBTFormat = 'big' | 'little' | 'littleVarint'
 
   export type NBT = Tags['compound'] & {name: string};
-
+  export type Metadata = {
+    // The decompressed buffer
+    buffer: Buffer
+    // The length of bytes read from the buffer
+    size: number
+  }
   export function writeUncompressed(value: NBT, format?: NBTFormat): Buffer;
   export function parseUncompressed(value: Buffer, format?: NBTFormat): NBT;
   export function writeUncompressed(value: NBT, little?: boolean): Buffer;
   export function parseUncompressed(value: Buffer, little?: boolean): NBT;
-  export function parse(data: Buffer, nbtType: NBTFormat, callback?: (err: Error | null, value: NBT) => any): Promise<{result, type: NBTFormat, metadata}>;
-  export function parse(data: Buffer, little: boolean, callback?: (err: Error | null, value: NBT) => any): Promise<{result, type: NBTFormat, metadata}>;
-  export function parse(data: Buffer, callback?: (err: Error | null, value: NBT) => any): Promise<{result, type: NBTFormat, metadata}>;
+  export function parse(data: Buffer, nbtType: NBTFormat, callback?: (err: Error | null, value: NBT) => any): Promise<{parsed: NBT, type: NBTFormat, metadata: Metadata}>;
+  export function parse(data: Buffer, little: boolean, callback?: (err: Error | null, value: NBT) => any): Promise<{parsed: NBT, type: NBTFormat, metadata: Metadata}>;
+  export function parse(data: Buffer, callback?: (err: Error | null, value: NBT) => any): Promise<{parsed: NBT, type: NBTFormat, metadata: Metadata}>;
   export function simplify(data: Tags[TagType]): any
+  // ProtoDef compiled protocols
+  export const protos: { big, little, littleVarint };
+  // Big Endian protocol
   export const proto: any;
+  // Little Endian protocol
   export const protoLE: any;
 }

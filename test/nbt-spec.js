@@ -89,13 +89,12 @@ describe('little endian read write', function () {
     data.startOffset = 0
     const results = []
     while (data.startOffset !== data.length) {
-      const { result, type, metadata } = await nbt.parse(data)
+      const { parsed, type, metadata } = await nbt.parse(data)
       expect(type).to.equal('littleVarint')
       data.startOffset += metadata.size
-      // console.log(data.byteOffset, JSON.stringify(result))
-      results.push(result)
+      results.push(parsed)
 
-      const newBuf = nbt.writeUncompressed(result, 'littleVarint')
+      const newBuf = nbt.writeUncompressed(parsed, 'littleVarint')
       dataOut.write(newBuf)
     }
 
@@ -103,8 +102,6 @@ describe('little endian read write', function () {
 
     const shaA = await checksumFile('sha1', 'sample/block_states.lev.nbt')
     const shaB = await checksumFile('sha1', 'out-block-states.nbt')
-    // console.assert(shaA == shaB, shaA + ' != ' + shaB)
-    // console.warn(shaA, shaB)
     expect(shaA).to.equal(shaB)
     return true
   })
@@ -113,9 +110,9 @@ describe('little endian read write', function () {
     const dataOut = fs.createWriteStream('out-le-level.dat')
     const nbtdata = fs.readFileSync('sample/level.dat')
 
-    const { result, type } = await nbt.parse(nbtdata)
+    const { parsed, type } = await nbt.parse(nbtdata)
     expect(type).to.equal('little')
-    const newBuf = nbt.writeUncompressed(result, 'little')
+    const newBuf = nbt.writeUncompressed(parsed, 'little')
     dataOut.write(newBuf)
     dataOut.end()
 

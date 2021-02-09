@@ -36,13 +36,9 @@ function writeUncompressed (value, proto = 'big') {
   return protos[proto].createPacketBuffer('nbt', value)
 }
 
-function _parseUncompressed (data, proto = 'big') {
-  if (proto === true) proto = 'little'
-  return protos[proto].parsePacketBuffer('nbt', data, data.startOffset)
-}
-
 function parseUncompressed (data, proto = 'big') {
-  return _parseUncompressed(data, proto).data
+  if (proto === true) proto = 'little'
+  return protos[proto].parsePacketBuffer('nbt', data, data.startOffset).data
 }
 
 const hasGzipHeader = function (data) {
@@ -55,25 +51,19 @@ const hasGzipHeader = function (data) {
 const hasBedrockLevelHeader = (data) =>
   data[1] === 0 && data[2] === 0 && data[3] === 0
 
-function parseAs (data, type) {
-  return new Promise((resolve, reject) => {
-    if (hasGzipHeader(data)) {
-      zlib.gunzip(data, function (error, uncompressed) {
-        if (error) {
-          reject(error)
-        } else {
-          const ret = _parseUncompressed(uncompressed, type)
-          ret.metadata.compressed = true
-          ret.metadata.buffer = uncompressed
-          resolve([null, ret.data, type, ret.metadata])
-        }
+async function parseAs (data, type) {
+  if (hasGzipHeader(data)) {
+    data = await new Promise((resolve, reject) => {
+      zlib.gunzip(data, (error, uncompressed) => {
+        if (error) reject(error)
+        else resolve(uncompressed)
       })
-    } else {
-      const ret = _parseUncompressed(data, type)
-      ret.metadata.buffer = data
-      resolve([null, ret.data, type, ret.metadata])
-    }
-  })
+    })
+  }
+  const parsed = protos[type].parsePacketBuffer('nbt', data, data.startOffset)
+  parsed.metadata.buffer = data
+  parsed.type = type
+  return parsed
 }
 
 async function parse (data, format, callback) {
@@ -89,7 +79,6 @@ async function parse (data, format, callback) {
   } else if (format) {
     throw new Error('Unrecognized format: ' + format)
   }
-  if (!callback) callback = () => {}
 
   data.startOffset = data.startOffset || 0
 
@@ -101,15 +90,19 @@ async function parse (data, format, callback) {
     }
   }
 
+  // if the format is specified, parse
   if (fmt) {
-    const ret = await parseAs(data, fmt)
-    if (ret[0]) {
-      throw new Error(ret[0])
+    try {
+      const res = await parseAs(data, fmt)
+      if (callback) callback(null, res.data, res.type, res.metadata)
+      return { parsed: res.data, type: res.type, metadata: res.metadata }
+    } catch (e) {
+      if (callback) callback(e)
+      else throw e
     }
-    callback(...ret) // eslint-disable-line
-    const [, result, type, metadata] = ret
-    return { result, type, metadata }
   }
+
+  // else try to deduce file type
 
   // Check if we decoded properly: the EOF should match end of the buffer,
   // or there should be more tags to read, else throw unexpected EOF
@@ -117,7 +110,7 @@ async function parse (data, format, callback) {
     const readLen = size
     const bufferLen = buffer.length - buffer.startOffset
     const lastByte = buffer[readLen + buffer.startOffset]
-    const nextNbtTag = (lastByte < 13) && (lastByte > 0)
+    const nextNbtTag = lastByte === 0x0A
     if (readLen < bufferLen && !nextNbtTag) {
       throw new Error(`Unexpected EOF at ${readLen}: still have ${bufferLen - readLen} bytes to read !`)
     }
@@ -127,17 +120,17 @@ async function parse (data, format, callback) {
   let ret = null
   try {
     ret = await parseAs(data, 'big')
-    verifyEOF(ret[3])
+    verifyEOF(ret.metadata)
   } catch (e) {
     // console.debug('Failed read as big endian, trying le')
     try {
       ret = await parseAs(data, 'little')
-      verifyEOF(ret[3])
+      verifyEOF(ret.metadata)
     } catch (e2) {
       // console.debug('Failed read as le, trying le varint')
       try {
         ret = await parseAs(data, 'littleVarint')
-        verifyEOF(ret[3])
+        verifyEOF(ret.metadata)
       } catch (e3) {
         // console.warn('Failed to read nbt', e, e2, e3)
         throw e // throw error decoding as big endian
@@ -145,13 +138,8 @@ async function parse (data, format, callback) {
     }
   }
 
-  if (ret[0]) {
-    throw new Error(ret[0])
-  }
-
-  callback(...ret) // eslint-disable-line
-  const [, result, type, metadata] = ret
-  return { result, type, metadata }
+  if (callback) callback(null, ret.data, ret.type, ret.metadata)
+  return { parsed: ret.data, type: ret.type, metadata: ret.metadata }
 }
 
 function simplify (data) {
