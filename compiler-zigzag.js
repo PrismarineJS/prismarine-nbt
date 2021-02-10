@@ -2,10 +2,26 @@
  * Reads the length for a VarInt
  */
 function sizeOfVarInt (value) {
-  value = Number(value) // same logic for 64/32bit
+  value = (value << 1) ^ (value >> 63)
   let cursor = 0
   while (value > 127) {
     value >>= 7
+    cursor++
+  }
+  return cursor + 1
+}
+
+function sizeOfVarLong (value) {
+  if (typeof value.valueOf() === 'object') {
+    // loss of percision is acceptable here
+    value = (BigInt(value[0]) << 32n) | BigInt(value[1])
+  } else if (typeof value !== 'bigint') {
+    value = BigInt(value)
+  }
+  value = (value << 1n) ^ (value >> 63n)
+  let cursor = 0
+  while (value > 127n) {
+    value >>= 7n
     cursor++
   }
   return cursor + 1
@@ -92,7 +108,7 @@ function readSignedVarInt (buffer, offset) {
  * Writes a 32-bit zigzag encoded varint
  */
 function writeSignedVarInt (value, buffer, offset) {
-  value = (value << 1) ^ (value >> 31)
+  value = (value << 1) ^ (value >> 63)
   let cursor = 0
   while (value & ~0x7F) {
     const num = Number((value & 0xFF) | 0x80)
@@ -107,5 +123,5 @@ function writeSignedVarInt (value, buffer, offset) {
 module.exports = {
   Read: { zigzag64: ['native', readSignedVarLong], zigzag32: ['native', readSignedVarInt] },
   Write: { zigzag64: ['native', writeSignedVarLong], zigzag32: ['native', writeSignedVarInt] },
-  SizeOf: { zigzag64: ['native', sizeOfVarInt], zigzag32: ['native', sizeOfVarInt] }
+  SizeOf: { zigzag64: ['native', sizeOfVarLong], zigzag32: ['native', sizeOfVarInt] }
 }

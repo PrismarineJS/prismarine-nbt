@@ -86,7 +86,6 @@ async function parse (data, format, callback) {
     if (hasBedrockLevelHeader(data)) { // bedrock level.dat header
       data.startOffset += 8 // skip + 8 bytes
       fmt = 'little'
-      // TODO: should this info be returned to the caller ?
     }
   }
 
@@ -122,17 +121,14 @@ async function parse (data, format, callback) {
     ret = await parseAs(data, 'big')
     verifyEOF(ret.metadata)
   } catch (e) {
-    // console.debug('Failed read as big endian, trying le')
     try {
       ret = await parseAs(data, 'little')
       verifyEOF(ret.metadata)
     } catch (e2) {
-      // console.debug('Failed read as le, trying le varint')
       try {
         ret = await parseAs(data, 'littleVarint')
         verifyEOF(ret.metadata)
       } catch (e3) {
-        // console.warn('Failed to read nbt', e, e2, e3)
         throw e // throw error decoding as big endian
       }
     }
