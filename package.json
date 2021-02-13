@@ -32,7 +32,7 @@
     "fix": "standard --fix"
   },
   "dependencies": {
-    "protodef": "ProtoDef-io/node-protodef"
+    "protodef": "^1.9.0"
   },
   "license": "MIT"
 }

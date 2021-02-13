@@ -45,8 +45,6 @@ describe('cross encode', function () {
       }
     }
 
-    // TODO: littleVarint currently fails because BigInt gets serialized as a string,
-    // we can wrap it in an object to preserve array functionality
     const tests = ['big', 'little']
     for (const test of tests) {
       const written = nbt.writeUncompressed(write, test)

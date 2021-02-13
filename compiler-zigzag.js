@@ -13,11 +13,9 @@ function sizeOfVarInt (value) {
 
 function sizeOfVarLong (value) {
   if (typeof value.valueOf() === 'object') {
-    // loss of percision is acceptable here
     value = (BigInt(value[0]) << 32n) | BigInt(value[1])
-  } else if (typeof value !== 'bigint') {
-    value = BigInt(value)
-  }
+  } else if (typeof value !== 'bigint') value = BigInt(value)
+  
   value = (value << 1n) ^ (value >> 63n)
   let cursor = 0
   while (value > 127n) {

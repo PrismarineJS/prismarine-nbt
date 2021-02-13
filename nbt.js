@@ -96,7 +96,7 @@ async function parse (data, format, callback) {
       if (callback) callback(null, res.data, res.type, res.metadata)
       return { parsed: res.data, type: res.type, metadata: res.metadata }
     } catch (e) {
-      if (callback) callback(e)
+      if (callback) return callback(e)
       else throw e
     }
   }
@@ -129,7 +129,8 @@ async function parse (data, format, callback) {
         ret = await parseAs(data, 'littleVarint')
         verifyEOF(ret.metadata)
       } catch (e3) {
-        throw e // throw error decoding as big endian
+        if (callback) return callback(e)
+        else throw e // throw error decoding as big endian
       }
     }
   }
