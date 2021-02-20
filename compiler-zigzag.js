@@ -4,8 +4,8 @@
 function sizeOfVarInt (value) {
   value = (value << 1) ^ (value >> 63)
   let cursor = 0
-  while (value > 127) {
-    value >>= 7
+  while (value & ~0x7F) {
+    value >>>= 7
     cursor++
   }
   return cursor + 1
@@ -30,21 +30,21 @@ function sizeOfVarLong (value) {
  */
 function readSignedVarLong (buffer, offset) {
   let result = BigInt(0)
-  let shift = 0
+  let shift = 0n
   let cursor = offset
   let size = 0
 
   while (true) {
     if (cursor + 1 > buffer.length) { throw new Error('unexpected buffer end') }
     const b = buffer.readUInt8(cursor)
-    result |= BigInt((b & 0x7f) << shift) // Add the bits to our number, except MSB
+    result |= (BigInt(b) & 0x7fn) << shift // Add the bits to our number, except MSB
     cursor++
     if (!(b & 0x80)) { // If the MSB is not set, we return the number
       size = cursor - offset
       break
     }
-    shift += 7 // we only have 7 bits, MSB being the return-trigger
-    if (shift > 63) throw new Error(`varint is too big: ${shift}`)
+    shift += 7n // we only have 7 bits, MSB being the return-trigger
+    if (shift > 63n) throw new Error(`varint is too big: ${shift}`)
   }
 
   // in zigzag encoding, the sign bit is the LSB of the value - remove the bit,
@@ -98,7 +98,7 @@ function readSignedVarInt (buffer, offset) {
     if (shift > 31) throw new Error(`varint is too big: ${shift}`)
   }
 
-  const zigzag = (result >> 1) ^ -(result & 1)
+  const zigzag = ((((result << 63) >> 63) ^ result) >> 1) ^ (result & (1 << 63))
   return { value: zigzag, size }
 }
 
@@ -106,13 +106,13 @@ function readSignedVarInt (buffer, offset) {
  * Writes a 32-bit zigzag encoded varint
  */
 function writeSignedVarInt (value, buffer, offset) {
-  value = (value << 1) ^ (value >> 63)
+  value = (value << 1) ^ (value >> 31)
   let cursor = 0
   while (value & ~0x7F) {
     const num = Number((value & 0xFF) | 0x80)
     buffer.writeUInt8(num, offset + cursor)
     cursor++
-    value >>= 7
+    value >>>= 7
   }
   buffer.writeUInt8(value, offset + cursor)
   return offset + cursor + 1

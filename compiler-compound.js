@@ -13,8 +13,8 @@ module.exports = {
           break
         }
 
-        if (typ.value > 100) {
-          throw new Error(`Tag type out of bounds: ${typ.value} > 100`) // Likely little endian or varint
+        if (typ.value > 20) {
+          throw new Error(`Invalid tag: ${typ.value} > 20`)
         }
 
         const readResults = ctx.nbt(buffer, offset)
