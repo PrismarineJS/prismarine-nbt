@@ -72,5 +72,6 @@ module.exports = {
   simplify,
   parse,
   proto,
-  protoLE
+  protoLE,
+  TagType: require('./typings/tag-type')
 }
