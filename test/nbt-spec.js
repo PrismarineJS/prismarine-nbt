@@ -5,6 +5,7 @@
 const fs = require('fs')
 const nbt = require('../nbt')
 const expect = require('chai').expect
+const crypto = require('crypto')
 
 describe('nbt.parse', function () {
   function checkBigtest (data) {
@@ -65,7 +66,8 @@ describe('nbt.write', function () {
       if (err) {
         throw err
       }
-      expect(nbt.writeUncompressed(require('../sample/bigtest'))).to.deep.equal(nbtdata)
+      const w = nbt.writeUncompressed(require('../sample/bigtest'))
+      expect(w).to.deep.equal(nbtdata)
       done()
     })
   })
@@ -77,3 +79,57 @@ describe('nbt.write', function () {
     expect(decodedOutput).to.deep.equal(input)
   })
 })
+
+describe('little endian read write', function () {
+  this.timeout(5000)
+
+  it('reads and writes le varint tags', async () => {
+    const data = fs.readFileSync('sample/block_states.lev.nbt')
+    const dataOut = fs.createWriteStream('out-block-states.nbt')
+    data.startOffset = 0
+    const results = []
+    while (data.startOffset !== data.length) {
+      const { parsed, type, metadata } = await nbt.parse(data)
+      expect(type).to.equal('littleVarint')
+      data.startOffset += metadata.size
+      results.push(parsed)
+
+      const newBuf = nbt.writeUncompressed(parsed, 'littleVarint')
+      dataOut.write(newBuf)
+    }
+
+    await new Promise(resolve => dataOut.end(() => resolve()))
+
+    const shaA = await checksumFile('sha1', 'sample/block_states.lev.nbt')
+    const shaB = await checksumFile('sha1', 'out-block-states.nbt')
+    expect(shaA).to.equal(shaB)
+    return true
+  })
+
+  it('re-encodes little endian tags', async () => {
+    const dataOut = fs.createWriteStream('out-le-level.dat')
+    const nbtdata = fs.readFileSync('sample/level.dat')
+
+    const { parsed, type } = await nbt.parse(nbtdata)
+    expect(type).to.equal('little')
+    const newBuf = nbt.writeUncompressed(parsed, 'little')
+    dataOut.write(newBuf)
+    dataOut.end()
+
+    const newSha1 = await checksumFile('sha1', 'out-le-level.dat')
+    expect(newSha1).to.equal('68e5942abe6bc92aefb02a2195b4ec359ffa3286')
+    return true
+  })
+})
+
+function checksumFile (algorithm, path) {
+  return new Promise((resolve, reject) =>
+    fs.createReadStream(path)
+      .on('error', reject)
+      .pipe(crypto.createHash(algorithm)
+        .setEncoding('hex'))
+      .once('finish', function () {
+        resolve(this.read())
+      })
+  )
+}

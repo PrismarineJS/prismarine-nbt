@@ -2,10 +2,34 @@
 [![NPM version](https://img.shields.io/npm/v/prismarine-nbt.svg)](http://npmjs.com/package/prismarine-nbt)
 [![Build Status](https://github.com/PrismarineJS/prismarine-nbt/workflows/CI/badge.svg)](https://github.com/PrismarineJS/prismarine-nbt/actions?query=workflow%3A%22CI%22)
 
-Prismarine-NBT is a JavaScript parser and serializer for [NBT](http://wiki.vg/NBT) archives, for use with [Node.js](http://nodejs.org/).
+Prismarine-NBT is a JavaScript parser and serializer for [NBT](http://wiki.vg/NBT) archives, for use with [Node.js](http://nodejs.org/). It supports big, little, and little-varint encoded NBT files.
 
 
 ## Usage
+
+#### as a async promise
+
+```js
+const fs = require('fs')
+const { parse, writeUncompressed } = require('prismarine-nbt')
+
+async function main(file) {
+    const buffer = await fs.promises.readFile(file)
+    const { parsed, type } = await parse(buffer)
+    const json = JSON.stringify(result, null, 2)
+    console.log('JSON serialized:', json)
+
+    // Write it back 
+    const outBuffer = fs.createWriteStream('file.nbt')
+    const newBuf = writeUncompressed(result, type)
+    outBuffer.write(newBuf)
+    outBuffer.end(() => console.log('written!'))
+}
+
+main(process.argv[2])
+```
+
+#### as a callback
 
 ```js
 var fs = require('fs'),
@@ -21,32 +45,42 @@ fs.readFile('bigtest.nbt', function(error, data) {
 });
 ```
 
-If the data is gzipped, it is automatically decompressed first.
+If the data is gzipped, it is automatically decompressed, for the buffer see metadata.buffer
 
 ## API
 
-### writeUncompressed(value,[isLittleEndian])
+### parse(data, [format]): Promise<{ parsed, type, metadata: { size, buffer? } }>
+### parse(data, [format,] callback)
 
-Returns a buffer with a serialized nbt `value`. If isLittleEndian is passed and is true, write little endian nbt (mcpe).
+Takes an optionally compressed `data` buffer and reads the nbt data.
 
-### parseUncompressed(data,[isLittleEndian])
+If the endian `format` is known, it can be specified as 'big', 'little' or 'littleVarint'. If not specified, the library will
+try to sequentially load as big, little and little varint until the parse is successful. The deduced type is returned as `type`.
 
-Takes a buffer `data` and returns a parsed nbt value. If isLittleEndian is passed and is true, read little endian nbt (mcpe).
+Minecraft Java Edition uses big-endian format, and Bedrock uses little-endian.
 
-### parse(data,[isLittleEndian], callback)
+### writeUncompressed(value, format='big')
 
-Takes an optionally compressed `data` and provide a parsed nbt value in the `callback(err,value)`.
-If isLittleEndian is passed and is true, read little endian nbt (mcpe).
+Returns a buffer with a serialized nbt `value`. 
+
+### parseUncompressed(data, format='big')
+
+Takes a buffer `data` and returns a parsed nbt value.
+
 
 ### simplify(nbt)
 
 Returns a simplified nbt representation : keep only the value to remove one level.
 This loses the types so you cannot use the resulting representation to write it back to nbt.
 
+### protos : { big, little, littleVarint }
+
+Provides compiled protodef instances used to parse and serialize nbt
+
 ### proto
 
-Provide the protodef instance used to parse and serialize nbt.
+Provide the big-endian protodef instance used to parse and serialize nbt.
 
 ### protoLE
 
-Provide the protodef instance used to parse and serialize little endian nbt.
+Provide the little-endian protodef instance used to parse and serialize little endian nbt.
