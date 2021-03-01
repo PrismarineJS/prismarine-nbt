@@ -6,11 +6,15 @@ module.exports = {
         value: {},
         size: 0
       }
-      while (true) {
+      while (offset !== buffer.length) {
         const typ = ctx.i8(buffer, offset)
         if (typ.value === 0) {
           results.size += typ.size
           break
+        }
+
+        if (typ.value > 20) {
+          throw new Error(`Invalid tag: ${typ.value} > 20`)
         }
 
         const readResults = ctx.nbt(buffer, offset)

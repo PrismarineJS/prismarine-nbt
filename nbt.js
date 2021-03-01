@@ -2,25 +2,43 @@ const zlib = require('zlib')
 
 const { ProtoDefCompiler } = require('protodef').Compiler
 
-const nbtJson = JSON.stringify(require('./nbt.json'))
-const leNbtJson = nbtJson.replace(/(i[0-9]+)/g, 'l$1')
+const beNbtJson = JSON.stringify(require('./nbt.json'))
+const leNbtJson = beNbtJson.replace(/([if][0-7]+)/g, 'l$1')
+const varintJson = JSON.stringify(require('./nbt-varint.json')).replace(/([if][0-7]+)/g, 'l$1')
 
-function createProto (le) {
+function createProto (type) {
   const compiler = new ProtoDefCompiler()
   compiler.addTypes(require('./compiler-compound'))
-  compiler.addTypesToCompile(JSON.parse(le ? leNbtJson : nbtJson))
+  compiler.addTypes(require('./compiler-tagname'))
+  let proto = beNbtJson
+  if (type === 'littleVarint') {
+    compiler.addTypes(require('./compiler-zigzag'))
+    proto = varintJson
+  } else if (type === 'little') {
+    proto = leNbtJson
+  }
+  compiler.addTypesToCompile(JSON.parse(proto))
   return compiler.compileProtoDefSync()
 }
 
-const proto = createProto(false)
-const protoLE = createProto(true)
+const protoBE = createProto('big')
+const protoLE = createProto('little')
+const protoVarInt = createProto('littleVarint')
 
-function writeUncompressed (value, le) {
-  return (le ? protoLE : proto).createPacketBuffer('nbt', value)
+const protos = {
+  big: protoBE,
+  little: protoLE,
+  littleVarint: protoVarInt
 }
 
-function parseUncompressed (data, le) {
-  return (le ? protoLE : proto).parsePacketBuffer('nbt', data).data
+function writeUncompressed (value, proto = 'big') {
+  if (proto === true) proto = 'little'
+  return protos[proto].createPacketBuffer('nbt', value)
+}
+
+function parseUncompressed (data, proto = 'big') {
+  if (proto === true) proto = 'little'
+  return protos[proto].parsePacketBuffer('nbt', data, data.startOffset).data
 }
 
 const hasGzipHeader = function (data) {
@@ -30,24 +48,95 @@ const hasGzipHeader = function (data) {
   return result
 }
 
-function parse (data, le, callback) {
-  let isLe = false
-  if (typeof le === 'function') {
-    callback = le
-  } else {
-    isLe = le
-  }
+const hasBedrockLevelHeader = (data) =>
+  data[1] === 0 && data[2] === 0 && data[3] === 0
+
+async function parseAs (data, type) {
   if (hasGzipHeader(data)) {
-    zlib.gunzip(data, function (error, uncompressed) {
-      if (error) {
-        callback(error, data)
-      } else {
-        callback(null, parseUncompressed(uncompressed, isLe))
-      }
+    data = await new Promise((resolve, reject) => {
+      zlib.gunzip(data, (error, uncompressed) => {
+        if (error) reject(error)
+        else resolve(uncompressed)
+      })
     })
-  } else {
-    callback(null, parseUncompressed(data, isLe))
   }
+  const parsed = protos[type].parsePacketBuffer('nbt', data, data.startOffset)
+  parsed.metadata.buffer = data
+  parsed.type = type
+  return parsed
+}
+
+async function parse (data, format, callback) {
+  let fmt = null
+  if (typeof format === 'function') {
+    callback = format
+  } else if (format === true || format === 'little') {
+    fmt = 'little'
+  } else if (format === 'big') {
+    fmt = 'big'
+  } else if (format === 'littleVarint') {
+    fmt = 'littleVarint'
+  } else if (format) {
+    throw new Error('Unrecognized format: ' + format)
+  }
+
+  data.startOffset = data.startOffset || 0
+
+  if (!fmt && !data.startOffset) {
+    if (hasBedrockLevelHeader(data)) { // bedrock level.dat header
+      data.startOffset += 8 // skip + 8 bytes
+      fmt = 'little'
+    }
+  }
+
+  // if the format is specified, parse
+  if (fmt) {
+    try {
+      const res = await parseAs(data, fmt)
+      if (callback) callback(null, res.data, res.type, res.metadata)
+      return { parsed: res.data, type: res.type, metadata: res.metadata }
+    } catch (e) {
+      if (callback) return callback(e)
+      else throw e
+    }
+  }
+
+  // else try to deduce file type
+
+  // Check if we decoded properly: the EOF should match end of the buffer,
+  // or there should be more tags to read, else throw unexpected EOF
+  const verifyEOF = ({ buffer, size }) => {
+    const readLen = size
+    const bufferLen = buffer.length - buffer.startOffset
+    const lastByte = buffer[readLen + buffer.startOffset]
+    const nextNbtTag = lastByte === 0x0A
+    if (readLen < bufferLen && !nextNbtTag) {
+      throw new Error(`Unexpected EOF at ${readLen}: still have ${bufferLen - readLen} bytes to read !`)
+    }
+  }
+
+  // Try to parse as all formats until something passes
+  let ret = null
+  try {
+    ret = await parseAs(data, 'big')
+    verifyEOF(ret.metadata)
+  } catch (e) {
+    try {
+      ret = await parseAs(data, 'little')
+      verifyEOF(ret.metadata)
+    } catch (e2) {
+      try {
+        ret = await parseAs(data, 'littleVarint')
+        verifyEOF(ret.metadata)
+      } catch (e3) {
+        if (callback) return callback(e)
+        else throw e // throw error decoding as big endian
+      }
+    }
+  }
+
+  if (callback) callback(null, ret.data, ret.type, ret.metadata)
+  return { parsed: ret.data, type: ret.type, metadata: ret.metadata }
 }
 
 function simplify (data) {
@@ -70,8 +159,11 @@ module.exports = {
   writeUncompressed,
   parseUncompressed,
   simplify,
+  hasBedrockLevelHeader,
   parse,
-  proto,
+  parseAs,
+  proto: protoBE,
   protoLE,
+  protos,
   TagType: require('./typings/tag-type')
 }

@@ -1,6 +1,6 @@
 {
   "name": "prismarine-nbt",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "A parser and serializer for NBT archives",
   "keywords": [
     "nbt",
@@ -32,7 +32,7 @@
     "fix": "standard --fix"
   },
   "dependencies": {
-    "protodef": "^1.7.0"
+    "protodef": "^1.9.0"
   },
   "license": "MIT"
 }

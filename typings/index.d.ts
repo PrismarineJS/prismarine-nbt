@@ -1,4 +1,3 @@
-
 declare module 'prismarine-nbt'{
   export type List<T extends TagType> = {
     type: TagType.List,
@@ -35,13 +34,35 @@ declare module 'prismarine-nbt'{
     [TagType.LongArray]: { type: TagType.LongArray, value: [number, number][] };
   }
 
-  export type NBT = Tags['compound'] & {name: string};
+  export type NBTFormat = 'big' | 'little' | 'littleVarint'
 
-  export function writeUncompressed(value: NBT, le?: boolean): ArrayBuffer;
-  export function parseUncompressed(value: ArrayBuffer, le?: boolean): NBT;
-  export function parse(data: ArrayBuffer, le:boolean, callback: (err: Error | null, value: NBT) => any): void;
-  export function parse(data: ArrayBuffer, callback: (err: Error | null, value: NBT) => any): void;
+  export type NBT = Tags['compound'] & {name: string};
+  export type Metadata = {
+    // The decompressed buffer
+    buffer: Buffer
+    // The length of bytes read from the buffer
+    size: number
+  }
+  export function writeUncompressed(value: NBT, format?: NBTFormat): Buffer;
+  export function parseUncompressed(value: Buffer, format?: NBTFormat): NBT;
+  
+  export function parse(data: Buffer, nbtType?: NBTFormat): Promise<{parsed: NBT, type: NBTFormat, metadata: Metadata}>;
   export function simplify(data: Tags[TagType]): any
+  // ProtoDef compiled protocols
+  export const protos: { big, little, littleVarint };
+  // Big Endian protocol
   export const proto: any;
+  // Little Endian protocol
   export const protoLE: any;
+
+  /** @deprecated */
+  export function writeUncompressed(value: NBT, little?: boolean): Buffer;
+  /** @deprecated */
+  export function parseUncompressed(value: Buffer, little?: boolean): NBT;
+  /** @deprecated */
+  export function parse(data: Buffer, little: boolean, callback: (err: Error | null, value: NBT) => any);
+  /** @deprecated */
+  export function parse(data: Buffer, nbtType: NBTFormat, callback: (err: Error | null, value: NBT) => any);
+  /** @deprecated */
+  export function parse(data: Buffer, callback: (err: Error | null, value: NBT) => any);
 }

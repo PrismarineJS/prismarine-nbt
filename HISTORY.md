@@ -1,5 +1,9 @@
 # History
 
+## 1.5.0
+
+* Little endian updates, automatic format detection (@extremeheat)
+
 ## 1.4.0
 
 * typings (@mcbobby123 and @Dep0sit)
