@@ -49,7 +49,7 @@ declare module 'prismarine-nbt'{
   export function parse(data: Buffer, nbtType?: NBTFormat): Promise<{parsed: NBT, type: NBTFormat, metadata: Metadata}>;
   export function simplify(data: Tags[TagType]): any
   // ProtoDef compiled protocols
-  export const protos: { big, little, littleVarint };
+  export const protos: { big: any, little: any, littleVarint: any };
   // Big Endian protocol
   export const proto: any;
   // Little Endian protocol
@@ -60,9 +60,9 @@ declare module 'prismarine-nbt'{
   /** @deprecated */
   export function parseUncompressed(value: Buffer, little?: boolean): NBT;
   /** @deprecated */
-  export function parse(data: Buffer, little: boolean, callback: (err: Error | null, value: NBT) => any);
+  export function parse(data: Buffer, little: boolean, callback: (err: Error | null, value: NBT) => any): void;
   /** @deprecated */
-  export function parse(data: Buffer, nbtType: NBTFormat, callback: (err: Error | null, value: NBT) => any);
+  export function parse(data: Buffer, nbtType: NBTFormat, callback: (err: Error | null, value: NBT) => any): void;
   /** @deprecated */
-  export function parse(data: Buffer, callback: (err: Error | null, value: NBT) => any);
+  export function parse(data: Buffer, callback: (err: Error | null, value: NBT) => any): void;
 }
