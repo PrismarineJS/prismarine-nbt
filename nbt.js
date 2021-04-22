@@ -155,8 +155,69 @@ function simplify (data) {
   return transform(data.value, data.type)
 }
 
+function getType (x) {
+  switch (typeof x) {
+    case 'number':
+      if (Number.isInteger(x)) return 'int'
+      return 'double'
+
+    case 'string':
+      if (/^\d+b$/.test(x)) return 'byte'
+      if (/^\d+L$/.test(x)) return 'long'
+      if (/^\d+f$/.test(x)) return 'float'
+      if (/^\d+(\.\d+)?d$/.test(x)) return 'double'
+    case 'boolean':
+      return 'string'
+
+    case 'object':
+      if (Array.isArray(x)) return 'list'
+      return 'compound'
+  }
+}
+
+function parseJsObject (obj) {
+  function parse (value) {
+    const type = getType(value)
+    switch (type) {
+      case 'double':
+        if (typeof value === 'number') return { type: type, value }
+      case 'float':
+      case 'byte':
+        return { type, value: value.slice(0, -1) }
+
+      case 'long':
+        return { type, value: [0, value.slice(0, -1)] }
+
+      case 'int':
+        return { type, value }
+      case 'string':
+        return { type, value: value.toString() }
+      case 'compound':
+        return parseJsObject(value)
+      case 'list':
+        if (value.length === 0) {
+          return { type, value: { type: 'end', value: [] } }
+        }
+        const parsed = value.map(parse)
+        return { type, value: { type: parsed[0].type, value: parsed.map(data => data.value) } }
+    }
+  }
+  const compound = { type: 'compound', value: {} }
+  for (const key in obj) {
+    compound.value[key] = parse(obj[key])
+  }
+  return compound
+}
+
+function writeJsObject (obj) {
+  const parsed = parseJsObject(obj)
+  parsed.name = ''
+  return writeUncompressed(parsed)
+}
+
 module.exports = {
   writeUncompressed,
+  writeJsObject,
   parseUncompressed,
   simplify,
   hasBedrockLevelHeader,
