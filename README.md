@@ -71,8 +71,40 @@ Takes a buffer `data` and returns a parsed nbt value.
 ### simplify(nbt)
 
 Returns a simplified nbt representation : keep only the value to remove one level.
+
 This loses the types so you cannot use the resulting representation to write it back to nbt.
 
+### writeJsObject(object, format='big')
+
+Takes a javascript object, convert it to the nbt format and return a buffer of the serialized nbt.
+
+See [parseJSObject()](#parseJsObject(object)) for the conversion
+
+### parseJsObject(object)
+
+Takes a javascript object and convert to the nbt format.
+
+To convert the object the function need to know the targeted nbt type. 
+
+js string ➔ NBTString
+
+js boolean ➔ NBTString
+
+js int (that has no decimal part) ➔ NBTInteger
+
+js int with decimal part (**note that if you type 600.0 it'll be detected as NBTInteger because javascript handle it as 600**) ➔ NBTDouble
+
+js string ending with d ➔ NBTDouble
+
+js string ending with F ➔ NBTFloat
+
+js string ending with L ➔ NBTLong
+
+js string ending with b ➔ NBTByte
+
+js array ➔ NBTList
+
+js object ➔ NBTCompound
 ### protos : { big, little, littleVarint }
 
 Provides compiled protodef instances used to parse and serialize nbt
