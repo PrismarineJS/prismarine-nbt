@@ -223,6 +223,7 @@ module.exports = {
   hasBedrockLevelHeader,
   parse,
   parseAs,
+  parseJsObject,
   proto: protoBE,
   protoLE,
   protos
