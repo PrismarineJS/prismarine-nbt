@@ -209,10 +209,10 @@ function parseJsObject (obj) {
   return compound
 }
 
-function writeJsObject (obj) {
+function writeJsObject (obj, format) {
   const parsed = parseJsObject(obj)
   parsed.name = ''
-  return writeUncompressed(parsed)
+  return writeUncompressed(parsed, format)
 }
 
 module.exports = {
