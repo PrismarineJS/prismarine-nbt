@@ -156,7 +156,7 @@ function simplify (data) {
 }
 
 function getType (x) {
-  switch (typeof x) {
+  switch (typeof x) { /* eslint-disable  no-fallthrough */
     case 'number':
       if (Number.isInteger(x)) return 'int'
       return 'double'
@@ -172,13 +172,13 @@ function getType (x) {
     case 'object':
       if (Array.isArray(x)) return 'list'
       return 'compound'
-  }
+  } /* eslint-enable  no-fallthrough */
 }
 
 function parseJsObject (obj) {
   function parse (value) {
     const type = getType(value)
-    switch (type) {
+    switch (type) { /* eslint-disable  no-fallthrough */
       case 'double':
         if (typeof value === 'number') return { type: type, value }
       case 'float':
@@ -194,13 +194,14 @@ function parseJsObject (obj) {
         return { type, value: value.toString() }
       case 'compound':
         return parseJsObject(value)
-      case 'list':
+      case 'list': {
         if (value.length === 0) {
           return { type, value: { type: 'end', value: [] } }
         }
         const parsed = value.map(parse)
         return { type, value: { type: parsed[0].type, value: parsed.map(data => data.value) } }
-    }
+      }
+    } /* eslint-enable  no-fallthrough */
   }
   const compound = { type: 'compound', value: {} }
   for (const key in obj) {
