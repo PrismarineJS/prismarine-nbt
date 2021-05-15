@@ -1,7 +1,7 @@
 /* global ctx */
 function readPString (buffer, offset) {
   const { value, size } = ctx.shortString(buffer, offset)
-  for (var c of value) {
+  for (let c of value) {
     if (c === '\0') throw new Error('unexpected tag end')
   }
   return { value, size }
