@@ -78,11 +78,11 @@ This loses the types so you cannot use the resulting representation to write it 
 
 Takes a javascript object, convert it to the nbt format and return a buffer of the serialized nbt.
 
-See [parseJSObject()](#parseJsObject(object)) for the conversion
+See [parseJSObject()](#parseJsObject(object)) for the conversion.
 
 ### parseJsObject(object)
 
-Takes a javascript object and convert to the nbt format.
+Takes a javascript object and convert it to the nbt format.
 
 To convert the object the function need to know the targeted nbt type. 
 
