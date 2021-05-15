@@ -122,6 +122,33 @@ describe('little endian read write', function () {
   })
 })
 
+describe('nbt.writeJsObject', () => {
+  it('writes a NBT from a js object', () => {
+    const written = nbt.writeJsObject({
+      AString: 'hello',
+      AnInt: 180,
+      AStringFromABoolean: true,
+      ADouble: 52.62,
+      ADouble2: '150.0d',
+      AFloat: '768.1496F',
+      ALong: '756203L',
+      AByte: '10b',
+      EmptyArray: [],
+      StringArray: ['a', 'b', 'c', 'd'],
+      FloatArray: ['12.5F', '120F', '2.008F'],
+      Compound: {
+        NotAByte: '01050b',
+        NotADouble: 'aaaad',
+        NotAFloat: '00aaaF',
+        NotAlong: 'aaaaa.aL'
+      }
+    })
+    const nbtData = fs.readFileSync('sample/writeJs.nbt')
+
+    expect(written).to.deep.equal(nbtData)
+  })
+})
+
 function checksumFile (algorithm, path) {
   return new Promise((resolve, reject) =>
     fs.createReadStream(path)
