@@ -162,7 +162,7 @@ function getType (x) {
       return 'double'
 
     case 'string':
-      if (/^\d+b$/.test(x)) return 'byte'
+      if (/^(0|1)+b$/.test(x)) return 'byte'
       if (/^\d+L$/.test(x)) return 'long'
       if (/^\d+(\.\d+)?F$/.test(x)) return 'float'
       if (/^\d+(\.\d+)?d$/.test(x)) return 'double'
