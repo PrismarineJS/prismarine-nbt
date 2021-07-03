@@ -177,5 +177,5 @@ module.exports = {
   proto: protoBE,
   protoLE,
   protos,
-  builder
+  ...builder
 }

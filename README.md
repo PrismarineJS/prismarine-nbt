@@ -90,11 +90,11 @@ Provide the little-endian protodef instance used to parse and serialize little e
 Provides a way to build complex nbt structures simply:
 
 ```js
-const {builder: nbt} = require('prismarine-nbt')
+const nbt = require('prismarine-nbt')
 writePlayerNbt({
   Air: nbt.short(300),
   Armor: nbt.list(
-    .comp({ Count: nbt.byte(0), Damage: nbt.short(0), Name: nbt.string("") }),
+    nbt.comp({ Count: nbt.byte(0), Damage: nbt.short(0), Name: nbt.string("") }),
     nbt.comp({ Count: nbt.byte(0), Damage: nbt.short(0), Name: nbt.string("") }),
     nbt.comp({ Count: nbt.byte(0), Damage: nbt.short(0), Name: nbt.string("") }),
   ),
