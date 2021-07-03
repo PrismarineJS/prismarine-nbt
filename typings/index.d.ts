@@ -65,4 +65,13 @@ declare module 'prismarine-nbt'{
   export function parse(data: Buffer, nbtType: NBTFormat, callback: (err: Error | null, value: NBT) => any): void;
   /** @deprecated */
   export function parse(data: Buffer, callback: (err: Error | null, value: NBT) => any): void;
+
+  export interface builder {
+    short (val: number): { type: string, value: number }
+    byte (val: number): { type: string, value: number }
+    string (val: string): { type: string, value: string }
+    comp (val: object): { type: string, value: object }
+    int (val: number): { type: string, value: number }
+    list (...val: T): { type: string, value: Array<T> }
+  }
 }
