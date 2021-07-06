@@ -84,3 +84,19 @@ Provide the big-endian protodef instance used to parse and serialize nbt.
 ### protoLE
 
 Provide the little-endian protodef instance used to parse and serialize little endian nbt.
+
+### builder
+
+Provides a way to build complex nbt structures simply:
+
+```js
+const nbt = require('prismarine-nbt')
+writePlayerNbt({
+  Air: nbt.short(300),
+  Armor: nbt.list(
+    nbt.comp({ Count: nbt.byte(0), Damage: nbt.short(0), Name: nbt.string("") }),
+    nbt.comp({ Count: nbt.byte(0), Damage: nbt.short(0), Name: nbt.string("") }),
+    nbt.comp({ Count: nbt.byte(0), Damage: nbt.short(0), Name: nbt.string("") }),
+  ),
+})
+```

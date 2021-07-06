@@ -155,6 +155,18 @@ function simplify (data) {
   return transform(data.value, data.type)
 }
 
+const builder = {
+  short (value) { return { type: 'short', value } },
+  byte (value) { return { type: 'byte', value } },
+  string (value) { return { type: 'string', value } },
+  comp (value) { return { type: 'compound', value } },
+  int (value) { return { type: 'int', value } },
+  list (...value) {
+    const type = value[0]?.type ?? 'end'
+    return { type: 'list', value: { type, value } }
+  }
+}
+
 module.exports = {
   writeUncompressed,
   parseUncompressed,
@@ -164,5 +176,6 @@ module.exports = {
   parseAs,
   proto: protoBE,
   protoLE,
-  protos
+  protos,
+  ...builder
 }
