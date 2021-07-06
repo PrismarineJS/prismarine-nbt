@@ -177,5 +177,6 @@ module.exports = {
   proto: protoBE,
   protoLE,
   protos,
+  TagType: require('./typings/tag-type'),
   ...builder
 }
