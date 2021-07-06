@@ -1,5 +1,9 @@
 # History
 
+## 1.6.0
+
+* add nbt builder (@U9G)
+
 ## 1.5.0
 
 * Little endian updates, automatic format detection (@extremeheat)
