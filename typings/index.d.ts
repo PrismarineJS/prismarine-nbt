@@ -72,4 +72,9 @@ declare module 'prismarine-nbt'{
   export function comp<T extends object> (val: T): { type: 'compound', value: T }
   export function int<T extends number> (val: T): { type: 'int', value: T }
   export function list<T extends string, K extends {type: T}>(...value: K[]): { type: 'list'; value: { type: T | 'end', value: K[] } };
+  export function double<T extends number> (value: T): { type: 'double', value: T}
+  /**
+   * @param value Takes a BigInt or an array of two 32-bit integers
+   */
+  export function long<T extends number | BigInt> (value: T[] | T): { type: 'long', value: T[] | T}
 }
