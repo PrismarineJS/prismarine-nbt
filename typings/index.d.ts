@@ -74,7 +74,7 @@ declare module 'prismarine-nbt'{
   export function list<T extends string, K extends {type: T}>(...value: K[]): { type: 'list'; value: { type: T | 'end', value: K[] } };
   export function double<T extends number> (value: T): { type: 'double', value: T}
   /**
-   * @param values Javascript doesn't support 64-bit integers,so this method takes an array of two 32-bit integers
+   * @param value Takes a BigInt or an array of two 32-bit integers
    */
-  export function long<T extends number> (values: T[]): { type: 'long', value: T[]}
+  export function long<T extends number | BigInt> (value: T[] | T): { type: 'long', value: T[] | T}
 }
