@@ -159,13 +159,13 @@ const builder = {
   short (value) { return { type: 'short', value } },
   byte (value) { return { type: 'byte', value } },
   string (value) { return { type: 'string', value } },
-  comp (value) { return { type: 'compound', value } },
+  comp (value, name='') { return { type: 'compound', name, value } },
   int (value) { return { type: 'int', value } },
   double (value) { return { type: 'double', value } },
   long (value) { return { type: 'long', value } },
-  list (...value) {
-    const type = value[0]?.type ?? 'end'
-    return { type: 'list', value: { type, value } }
+  list (value) {
+    const type = value?.type ?? 'end'
+    return { type: 'list', value: { type, value: value?.value ?? [] } }
   }
 }
 
