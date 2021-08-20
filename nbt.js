@@ -159,7 +159,7 @@ const builder = {
   short (value) { return { type: 'short', value } },
   byte (value) { return { type: 'byte', value } },
   string (value) { return { type: 'string', value } },
-  comp (value, name='') { return { type: 'compound', name, value } },
+  comp (value, name = '') { return { type: 'compound', name, value } },
   int (value) { return { type: 'int', value } },
   double (value) { return { type: 'double', value } },
   long (value) { return { type: 'long', value } },
