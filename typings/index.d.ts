@@ -76,5 +76,5 @@ declare module 'prismarine-nbt'{
   /**
    * @param value Takes a BigInt or an array of two 32-bit integers
    */
-  export function long<T extends number | number[] | BigInt | BigInt[]> (value: T): { type: 'long', value: T}
+  export function long<T extends number | number[number[]] | BigInt | BigInt[]> (value: T): { type: 'long', value: T}
 }
