@@ -1,5 +1,9 @@
 # History
 
+## 2.0.0
+
+* breaking change to the nbt builder (@extremeheat)
+
 ## 1.6.0
 
 * add nbt builder (@U9G)
