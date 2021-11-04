@@ -66,15 +66,15 @@ declare module 'prismarine-nbt'{
   /** @deprecated */
   export function parse(data: Buffer, callback: (err: Error | null, value: NBT) => any): void;
   
-  export function short<T extends number> (val: T): { type: 'short', value: T }
-  export function byte<T extends number> (val: T): { type: 'byte', value: T }
-  export function string<T extends string> (val: T): { type: 'string', value: T }
-  export function comp<T extends object> (val: T): { type: 'compound', value: T }
-  export function int<T extends number> (val: T): { type: 'int', value: T }
-  export function list<T extends string, K extends {type: T}>(...value: K[]): { type: 'list'; value: { type: T | 'end', value: K[] } };
-  export function double<T extends number> (value: T): { type: 'double', value: T}
+  export function short<T extends number | number[]> (val: T): { type: 'short', value: T }
+  export function byte<T extends number | number[]> (val: T): { type: 'byte', value: T }
+  export function string<T extends string | string[]> (val: T): { type: 'string', value: T }
+  export function comp<T extends object | object[]> (val: T, name?: string): { type: 'compound', name, value: T }
+  export function int<T extends number | number[]> (val: T): { type: 'int', value: T }
+  export function list<T extends string, K extends {type: T}>(value: K): { type: 'list'; value: { type: T | 'end', value: K } };
+  export function double<T extends number | number[]> (value: T): { type: 'double', value: T}
   /**
    * @param value Takes a BigInt or an array of two 32-bit integers
    */
-  export function long<T extends number | BigInt> (value: T[] | T): { type: 'long', value: T[] | T}
+  export function long<T extends number | number[] | number[number[]] | BigInt | BigInt[]> (value: T): { type: 'long', value: T}
 }
