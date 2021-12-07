@@ -69,7 +69,7 @@ declare module 'prismarine-nbt'{
   export function short<T extends number | number[]> (val: T): { type: 'short', value: T }
   export function byte<T extends number | number[]> (val: T): { type: 'byte', value: T }
   export function string<T extends string | string[]> (val: T): { type: 'string', value: T }
-  export function comp<T extends object | object[]> (val: T, name?: string): { type: 'compound', name, value: T }
+  export function comp<T extends object | object[]> (val: T, name?: string): { type: 'compound', name?: string, value: T }
   export function int<T extends number | number[]> (val: T): { type: 'int', value: T }
   export function list<T extends string, K extends {type: T}>(value: K): { type: 'list'; value: { type: T | 'end', value: K } };
   export function double<T extends number | number[]> (value: T): { type: 'double', value: T}
