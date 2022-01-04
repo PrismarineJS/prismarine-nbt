@@ -102,9 +102,9 @@ nbt.writeUncompressed(tag) // now do something with this nbt buffer...
 
 For webpack usage, see an example configuration [here](https://github.com/PrismarineJS/prismarine-web-client/blob/master/webpack.common.js#L28).
 
-For a web bundle with browserify:
+For a web bundle with browserify (after you ran `npm install prismarine-nbt` in your project):
 ```
-npx browserify -r ./nbt.js:prismarine-nbt -r buffer -o pnbt.js
+npx browserify -r prismarine-nbt -r buffer -o pnbt.js
 ```
 ```html
 <script src="./pnbt.js"></script>
