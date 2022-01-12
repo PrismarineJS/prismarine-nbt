@@ -1,8 +1,10 @@
 # Prismarine-NBT
 [![NPM version](https://img.shields.io/npm/v/prismarine-nbt.svg)](http://npmjs.com/package/prismarine-nbt)
 [![Build Status](https://github.com/PrismarineJS/prismarine-nbt/workflows/CI/badge.svg)](https://github.com/PrismarineJS/prismarine-nbt/actions?query=workflow%3A%22CI%22)
+[![Discord](https://img.shields.io/badge/chat-on%20discord-brightgreen.svg)](https://discord.gg/GsEFRM8)
+[![Try it on gitpod](https://img.shields.io/badge/try-on%20gitpod-brightgreen.svg)](https://gitpod.io/#https://github.com/PrismarineJS/prismarine-nbt)
 
-Prismarine-NBT is a JavaScript parser and serializer for [NBT](http://wiki.vg/NBT) archives, for use with [Node.js](http://nodejs.org/). It supports big, little, and little-varint encoded NBT files.
+Prismarine-NBT is a JavaScript parser and serializer for [NBT](http://wiki.vg/NBT) archives. It supports big, little, and little-varint encoded NBT files.
 
 
 ## Usage
@@ -10,23 +12,17 @@ Prismarine-NBT is a JavaScript parser and serializer for [NBT](http://wiki.vg/NB
 #### as a async promise
 
 ```js
-const fs = require('fs')
-const { parse, writeUncompressed } = require('prismarine-nbt')
+const fs = require('fs/promises')
+const nbt = require('prismarine-nbt')
 
 async function main(file) {
-    const buffer = await fs.promises.readFile(file)
-    const { parsed, type } = await parse(buffer)
-    const json = JSON.stringify(result, null, 2)
-    console.log('JSON serialized:', json)
-
-    // Write it back 
-    const outBuffer = fs.createWriteStream('file.nbt')
-    const newBuf = writeUncompressed(result, type)
-    outBuffer.write(newBuf)
-    outBuffer.end(() => console.log('written!'))
+  const buffer = await fs.readFile(file)
+  const { parsed, type } = await nbt.parse(buffer)
+  console.log('JSON serialized', JSON.stringify(result, null, 2))
+  fs.createWriteStream('file.nbt').write(writeUncompressed(result, type)) // Write it back 
 }
 
-main(process.argv[2])
+main('file.nbt')
 ```
 
 #### as a callback
@@ -91,12 +87,31 @@ Provides a way to build complex nbt structures simply:
 
 ```js
 const nbt = require('prismarine-nbt')
-writePlayerNbt({
+const tag = nbt.comp({
   Air: nbt.short(300),
   Armor: nbt.list(nbt.comp([
-    { Count: nbt.byte(0), Damage: nbt.short(0), Name: nbt.string("") },
-    { Count: nbt.byte(0), Damage: nbt.short(0), Name: nbt.string("") },
-    { Count: nbt.byte(0), Damage: nbt.short(0), Name: nbt.string("") }
-  ])),
+    { Count: nbt.byte(0), Damage: nbt.short(0), Name: nbt.string('a') },
+    { Count: nbt.byte(0), Damage: nbt.short(0), Name: nbt.string('b') },
+    { Count: nbt.byte(0), Damage: nbt.short(0), Name: nbt.string('c') }
+  ]))
 })
+nbt.writeUncompressed(tag) // now do something with this nbt buffer...
+```
+
+## Browser usage
+
+For webpack usage, see an example configuration [here](https://github.com/PrismarineJS/prismarine-web-client/blob/master/webpack.common.js#L28).
+
+For a web bundle with browserify (after you ran `npm install prismarine-nbt` in your project):
+```
+npx browserify -r prismarine-nbt -r buffer -o pnbt.js
+```
+```html
+<script src="./pnbt.js"></script>
+<script>
+  const nbt = require('prismarine-nbt')
+  const { Buffer } = require('buffer')
+  fetch('test.nbt').then(resp => resp.arrayBuffer())
+    .then(buf => nbt.parse(Buffer.from(buf))).then(console.log)
+</script>
 ```
