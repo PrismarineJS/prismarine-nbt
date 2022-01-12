@@ -1,5 +1,9 @@
 # History
 
+## 2.1.0
+
+* Add .float() method to builder
+
 ## 2.0.0
 
 * breaking change to the nbt builder (@extremeheat)
