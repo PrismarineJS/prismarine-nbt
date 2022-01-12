@@ -19,7 +19,7 @@ async function main(file) {
   const buffer = await fs.readFile(file)
   const { parsed, type } = await nbt.parse(buffer)
   console.log('JSON serialized', JSON.stringify(result, null, 2))
-  fs.createWriteStream('file.nbt').write(writeUncompressed(result, type)) // Write it back 
+  fs.createWriteStream('file.nbt').write(nbt.writeUncompressed(result, type)) // Write it back 
 }
 
 main('file.nbt')
@@ -97,6 +97,8 @@ const tag = nbt.comp({
 })
 nbt.writeUncompressed(tag) // now do something with this nbt buffer...
 ```
+
+See [index.d.ts](typings/index.d.ts#L69) for methods
 
 ## Browser usage
 
