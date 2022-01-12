@@ -161,6 +161,7 @@ const builder = {
   string (value) { return { type: 'string', value } },
   comp (value, name = '') { return { type: 'compound', name, value } },
   int (value) { return { type: 'int', value } },
+  float (value) { return { type: 'float', value } },
   double (value) { return { type: 'double', value } },
   long (value) { return { type: 'long', value } },
   list (value) {
