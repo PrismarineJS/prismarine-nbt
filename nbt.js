@@ -170,6 +170,7 @@ const builder = {
     return { type: 'list', value: { type, value: value?.value ?? [] } }
   },
   byteArray (value = []) { return { type: 'byteArray', value } },
+  shortArray (value = []) { return { type: 'shortArray', value } },
   intArray (value = []) { return { type: 'intArray', value } },
   longArray (value = []) { return { type: 'longArray', value } }
 }
