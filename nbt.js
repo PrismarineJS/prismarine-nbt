@@ -156,6 +156,7 @@ function simplify (data) {
 }
 
 const builder = {
+  bool (value = false) { return { type: 'bool', value } },
   short (value) { return { type: 'short', value } },
   byte (value) { return { type: 'byte', value } },
   string (value) { return { type: 'string', value } },
@@ -167,7 +168,11 @@ const builder = {
   list (value) {
     const type = value?.type ?? 'end'
     return { type: 'list', value: { type, value: value?.value ?? [] } }
-  }
+  },
+  byteArray (value = []) { return { type: 'byteArray', value } },
+  shortArray (value = []) { return { type: 'shortArray', value } },
+  intArray (value = []) { return { type: 'intArray', value } },
+  longArray (value = []) { return { type: 'longArray', value } }
 }
 
 module.exports = {
