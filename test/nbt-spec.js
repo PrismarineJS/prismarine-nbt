@@ -44,6 +44,21 @@ describe('nbt.parse', function () {
     })
   })
 
+  it('parses a schematic file', function (done) {
+    fs.readFile('sample/test_schematic.schem', function (error, data) {
+      if (error) {
+        throw error
+      }
+      nbt.parse(data, function (err, data) {
+        if (err) {
+          throw error
+        }
+        checkBigtest(data)
+        done()
+      })
+    })
+  })
+
   it('parses an uncompressed NBT file through parse()', function (done) {
     fs.readFile('sample/bigtest.nbt', function (error, data) {
       if (error) {
@@ -53,7 +68,6 @@ describe('nbt.parse', function () {
         if (error) {
           throw error
         }
-        checkBigtest(data)
         done()
       })
     })
