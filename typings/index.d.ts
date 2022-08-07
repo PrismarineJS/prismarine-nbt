@@ -11,10 +11,11 @@ declare module 'prismarine-nbt'{
     Long = 'long',
     Float = 'float',
     Double = 'double',
-    ByteArray = 'byteArray',
     String = 'string',
     List = 'list',
     Compound = 'compound',
+    ByteArray = 'byteArray',
+    ShortArray = 'shortArray',
     IntArray = 'intArray',
     LongArray = 'longArray',
   }
@@ -26,10 +27,11 @@ declare module 'prismarine-nbt'{
     [TagType.Long]: { type: TagType.Long, value: [number, number] };
     [TagType.Float]: { type: TagType.Float, value: number };
     [TagType.Double]: { type: TagType.Double, value: number };
-    [TagType.ByteArray]: { type: TagType.ByteArray, value: number[] };
     [TagType.String]: { type: TagType.String, value: string };
     [TagType.List]: List<TagType>
     [TagType.Compound]: { type: TagType.Compound, value: Record<string, undefined | Tags[TagType]> };
+    [TagType.ByteArray]: { type: TagType.ByteArray, value: number[] };
+    [TagType.ShortArray]: { type: TagType.ShortArray, value: number[] };
     [TagType.IntArray]: { type: TagType.IntArray, value: number[] };
     [TagType.LongArray]: { type: TagType.LongArray, value: [number, number][] };
   }
@@ -66,22 +68,22 @@ declare module 'prismarine-nbt'{
   /** @deprecated */
   export function parse(data: Buffer, callback: (err: Error | null, value: NBT) => any): void;
 
-  export function bool(val: number): { type: 'short', value: number }
-  export function short (val: number): { type: 'short', value: number }
-  export function byte<T extends number> (val: number): { type: 'byte', value: number }
-  export function string<T extends string | string[]> (val: T): { type: 'string', value: T }
-  export function comp<T extends object | object[]> (val: T, name?: string): { type: 'compound', name?: string, value: T }
-  export function int<T extends number | number[]> (val: T): { type: 'int', value: T }
-  export function list<T extends string, K extends {type: T}>(value: K): { type: 'list'; value: { type: T | 'end', value: K } }
-  export function float<T extends number | number[]> (value: T): { type: 'float', value: T}
-  export function double<T extends number | number[]> (value: T): { type: 'double', value: T}
+  export function bool(val: number): { type: TagType.Short, value: number }
+  export function short (val: number): { type: TagType.Short, value: number }
+  export function byte<T extends number> (val: number): { type: TagType.Byte, value: number }
+  export function string<T extends string | string[]> (val: T): { type: TagType.String, value: T }
+  export function comp<T extends object | object[]> (val: T, name?: string): { type: TagType.Compound, name?: string, value: T }
+  export function int<T extends number | number[]> (val: T): { type: TagType.Int, value: T }
+  export function list<T extends string, K extends {type: T}>(value: K): { type: TagType.List; value: { type: T | 'end', value: K } }
+  export function float<T extends number | number[]> (value: T): { type: TagType.Float, value: T}
+  export function double<T extends number | number[]> (value: T): { type: TagType.Double, value: T}
   /**
    * @param value Takes a BigInt or an array of two 32-bit integers
    */
-  export function long<T extends number | number[] |  BigInt> (value: T): { type: 'long', value: T}
+  export function long<T extends number | number[] |  BigInt> (value: T): { type: TagType.Long, value: T}
   // Arrays
-  export function byteArray (value: number[]): { type: 'byteArray', value: number[]}
-  export function shortArray (value: number[]): { type: 'shortArray', value: number[]}
-  export function intArray (value: number[]): { type: 'intArray', value: number[]}
-  export function longArray<T extends number[] | BigInt[]> (value: T): { type: 'longArray', value: T}
+  export function byteArray (value: number[]): { type: TagType.ByteArray, value: number[]}
+  export function shortArray (value: number[]): { type: TagType.ShortArray, value: number[]}
+  export function intArray (value: number[]): { type: TagType.ByteArray, value: number[]}
+  export function longArray<T extends number[] | BigInt[]> (value: T): { type: TagType.LongArray, value: T}
 }
