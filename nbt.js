@@ -158,10 +158,10 @@ function simplify (data) {
 function equal (nbt1, nbt2) {
   if (nbt1.type !== nbt2.type) return false
   if (nbt1.type === 'compound') {
-    const aKeys = Object.keys(nbt1.value)
-    const bKeys = Object.keys(nbt2.value)
-    if (aKeys.length !== bKeys.length) return false
-    for (const key of aKeys) {
+    const nbt1Keys = Object.keys(nbt1.value)
+    const nbt2Keys = Object.keys(nbt2.value)
+    if (nbt1Keys.length !== nbt2Keys.length) return false
+    for (const key of nbt1Keys) {
       if (!equal(nbt1.value[key], nbt2.value[key])) return false
     }
     return true
