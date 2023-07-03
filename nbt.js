@@ -155,25 +155,25 @@ function simplify (data) {
   return transform(data.value, data.type)
 }
 
-function equal (a, b) {
-  if (a.type !== b.type) return false
-  if (a.type === 'compound') {
-    const aKeys = Object.keys(a.value)
-    const bKeys = Object.keys(b.value)
+function equal (nbt1, nbt2) {
+  if (nbt1.type !== nbt2.type) return false
+  if (nbt1.type === 'compound') {
+    const aKeys = Object.keys(nbt1.value)
+    const bKeys = Object.keys(nbt2.value)
     if (aKeys.length !== bKeys.length) return false
     for (const key of aKeys) {
-      if (!equal(a.value[key], b.value[key])) return false
+      if (!equal(nbt1.value[key], nbt2.value[key])) return false
     }
     return true
   }
-  if (a.type === 'list') {
-    if (a.value.length !== b.value.length) return false
-    for (let i = 0; i < a.value.length; ++i) {
-      if (!equal(a.value[i], b.value[i])) return false
+  if (nbt1.type === 'list') {
+    if (nbt1.value.length !== nbt2.value.length) return false
+    for (let i = 0; i < nbt1.value.length; ++i) {
+      if (!equal(nbt1.value[i], nbt2.value[i])) return false
     }
     return true
   }
-  return a.value === b.value
+  return nbt1.value === nbt2.value
 }
 
 const builder = {
