@@ -155,6 +155,27 @@ function simplify (data) {
   return transform(data.value, data.type)
 }
 
+function equal (a, b) {
+  if (a.type !== b.type) return false
+  if (a.type === 'compound') {
+    const aKeys = Object.keys(a.value)
+    const bKeys = Object.keys(b.value)
+    if (aKeys.length !== bKeys.length) return false
+    for (const key of aKeys) {
+      if (!equal(a.value[key], b.value[key])) return false
+    }
+    return true
+  }
+  if (a.type === 'list') {
+    if (a.value.length !== b.value.length) return false
+    for (let i = 0; i < a.value.length; ++i) {
+      if (!equal(a.value[i], b.value[i])) return false
+    }
+    return true
+  }
+  return a.value === b.value
+}
+
 const builder = {
   bool (value = false) { return { type: 'bool', value } },
   short (value) { return { type: 'short', value } },
@@ -182,6 +203,7 @@ module.exports = {
   hasBedrockLevelHeader,
   parse,
   parseAs,
+  equal,
   proto: protoBE,
   protoLE,
   protos,
