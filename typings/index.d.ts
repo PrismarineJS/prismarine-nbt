@@ -50,6 +50,7 @@ declare module 'prismarine-nbt'{
   
   export function parse(data: Buffer, nbtType?: NBTFormat): Promise<{parsed: NBT, type: NBTFormat, metadata: Metadata}>;
   export function simplify(data: Tags[TagType]): any
+  export function equal(nbt1: Tags[TagType], nbt2: Tags[TagType]): boolean
   // ProtoDef compiled protocols
   export const protos: { big: any, little: any, littleVarint: any };
   // Big Endian protocol

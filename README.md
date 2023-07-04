@@ -69,6 +69,10 @@ Takes a buffer `data` and returns a parsed nbt value.
 Returns a simplified nbt representation : keep only the value to remove one level.
 This loses the types so you cannot use the resulting representation to write it back to nbt.
 
+### equal(nbt1, nbt2)
+
+Checks whether two NBT objects are equal, returns a boolean.
+
 ### protos : { big, little, littleVarint }
 
 Provides compiled protodef instances used to parse and serialize nbt
