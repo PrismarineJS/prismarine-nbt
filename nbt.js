@@ -157,6 +157,7 @@ function simplify (data) {
 
 function equal (nbt1, nbt2) {
   if (nbt1.type !== nbt2.type) return false
+
   if (nbt1.type === 'compound') {
     const nbt1Keys = Object.keys(nbt1.value)
     const nbt2Keys = Object.keys(nbt2.value)
@@ -166,6 +167,7 @@ function equal (nbt1, nbt2) {
     }
     return true
   }
+
   if (nbt1.type === 'list') {
     if (nbt1.value.length !== nbt2.value.length) return false
     for (let i = 0; i < nbt1.value.length; ++i) {
@@ -173,6 +175,27 @@ function equal (nbt1, nbt2) {
     }
     return true
   }
+
+  if (nbt1.type === 'byteArray' || nbt1.type === 'intArray' || nbt1.type === 'shortArray') {
+    if (nbt1.value.length !== nbt2.value.length) return false
+    for (let i = 0; i < nbt1.value.length; ++i) {
+      if (nbt1.value[i] !== nbt2.value[i]) return false
+    }
+    return true
+  }
+
+  if (nbt1.type === 'long') {
+    return nbt1.value[0] === nbt2.value[0] && nbt1.value[1] === nbt2.value[1]
+  }
+
+  if (nbt1.type === 'longArray') {
+    if (nbt1.value.length !== nbt2.value.length) return false
+    for (let i = 0; i < nbt1.value.length; ++i) {
+      if (nbt1.value[i][0] !== nbt2.value[i][0] || nbt1.value[i][1] !== nbt2.value[i][1]) return false
+    }
+    return true
+  }
+
   return nbt1.value === nbt2.value
 }
 
