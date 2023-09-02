@@ -95,7 +95,7 @@ function readSignedVarInt (buffer, offset) {
       break
     }
     shift += 7 // we only have 7 bits, MSB being the return-trigger
-    if (shift > 31) throw new Error(`varint is too big: ${shift}`)
+    if (shift > 63) throw new Error(`varint is too big: ${shift}`)
   }
 
   const zigzag = ((((result << 63) >> 63) ^ result) >> 1) ^ (result & (1 << 63))
