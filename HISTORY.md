@@ -1,5 +1,14 @@
 # History
 
+## 2.3.0
+* [Allow zigzag encoded varints to be read up to 64bits (#74)](https://github.com/PrismarineJS/prismarine-nbt/commit/7022802e138db82753c69fdfd3423289366621a1) (thanks @extremeheat)
+* [Add command gh workflow allowing to use release command in comments (#73)](https://github.com/PrismarineJS/prismarine-nbt/commit/16c78c083797e410ebf5216145c2a406e286be27) (thanks @rom1504)
+* [equal() function to test NBT equality (#72)](https://github.com/PrismarineJS/prismarine-nbt/commit/44fb7ee41f7f564121b5587b0551df7a2adb8831) (thanks @CreeperG16)
+* [Update to node 18.0.0 (#71)](https://github.com/PrismarineJS/prismarine-nbt/commit/05ffcd5d7e8ff532a61e3a60d71d4441013b3e69) (thanks @rom1504)
+* [Add ShortArray typings and fix builder function typings (#70)](https://github.com/PrismarineJS/prismarine-nbt/commit/eae4d9c7dc59f05d8aa408a1370674e7361d60d5) (thanks @qhyun2)
+* [Bump mocha from 9.2.2 to 10.0.0 (#67)](https://github.com/PrismarineJS/prismarine-nbt/commit/34bdff2b8ec81e4f4ed7f7326c4c6d2349c7c48a) (thanks @dependabot[bot])
+* [Bump standard from 16.0.4 to 17.0.0 (#65)](https://github.com/PrismarineJS/prismarine-nbt/commit/554aae29e031dcce32f11ec8d7d9a56df0fd8bbb) (thanks @dependabot[bot])
+
 ## 2.2.1
 
 * Use u16 countType for shortString
