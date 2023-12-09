@@ -3,6 +3,7 @@ const zlib = require('zlib')
 const { ProtoDefCompiler } = require('protodef').Compiler
 
 const beNbtJson = JSON.stringify(require('./nbt.json'))
+const beNetworkNbtJson = JSON.stringify(require('./nbt-network.json'))
 const leNbtJson = beNbtJson.replace(/([iuf][0-7]+)/g, 'l$1')
 const varintJson = JSON.stringify(require('./nbt-varint.json')).replace(/([if][0-7]+)/g, 'l$1')
 
@@ -16,19 +17,24 @@ function createProto (type) {
     proto = varintJson
   } else if (type === 'little') {
     proto = leNbtJson
+  } else if (type === 'network') {
+    proto = beNetworkNbtJson
+    compiler.addTypesToCompile(JSON.parse(beNbtJson))
   }
   compiler.addTypesToCompile(JSON.parse(proto))
   return compiler.compileProtoDefSync()
 }
 
 const protoBE = createProto('big')
+const protoNetworkBE = createProto('network')
 const protoLE = createProto('little')
 const protoVarInt = createProto('littleVarint')
 
 const protos = {
   big: protoBE,
   little: protoLE,
-  littleVarint: protoVarInt
+  littleVarint: protoVarInt,
+  network: protoNetworkBE
 }
 
 function writeUncompressed (value, proto = 'big') {
@@ -236,6 +242,7 @@ module.exports = {
   parseAs,
   equal,
   proto: protoBE,
+  protoNetwork: protoNetworkBE,
   protoLE,
   protos,
   TagType: require('./typings/tag-type'),
