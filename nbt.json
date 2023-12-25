@@ -111,5 +111,18 @@
         "type": ["nbtSwitch",{"type":"type"}]
       }
     ]
+  ],
+  "anonymousNbt": [
+    "container",
+    [
+      {
+        "name": "type",
+        "type": "nbtMapper"
+      },
+      {
+        "name": "value",
+        "type": ["nbtSwitch",{"type":"type"}]
+      }
+    ]
   ]
 }
