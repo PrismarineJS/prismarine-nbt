@@ -6,18 +6,34 @@ const beNbtJson = JSON.stringify(require('./nbt.json'))
 const leNbtJson = beNbtJson.replace(/([iuf][0-7]+)/g, 'l$1')
 const varintJson = JSON.stringify(require('./nbt-varint.json')).replace(/([if][0-7]+)/g, 'l$1')
 
-function createProto (type) {
-  const compiler = new ProtoDefCompiler()
+function addTypesToCompiler (type, compiler) {
   compiler.addTypes(require('./compiler-compound'))
   compiler.addTypes(require('./compiler-tagname'))
   let proto = beNbtJson
   if (type === 'littleVarint') {
-    compiler.addTypes(require('./compiler-zigzag'))
+    compiler.addTypes(require('./compiler-zigzag').compiler)
     proto = varintJson
   } else if (type === 'little') {
     proto = leNbtJson
   }
   compiler.addTypesToCompile(JSON.parse(proto))
+}
+
+function addTypesToInterperter (type, compiler) {
+  compiler.addTypes(require('./compound'))
+  let proto = beNbtJson
+  if (type === 'littleVarint') {
+    compiler.addTypes(require('./compiler-zigzag').interpert)
+    proto = varintJson
+  } else if (type === 'little') {
+    proto = leNbtJson
+  }
+  compiler.addTypes(JSON.parse(proto))
+}
+
+function createProto (type) {
+  const compiler = new ProtoDefCompiler()
+  addTypesToCompiler(type, compiler)
   return compiler.compileProtoDefSync()
 }
 
@@ -228,6 +244,8 @@ const builder = {
 }
 
 module.exports = {
+  addTypesToCompiler,
+  addTypesToInterperter,
   writeUncompressed,
   parseUncompressed,
   simplify,

@@ -119,7 +119,10 @@ function writeSignedVarInt (value, buffer, offset) {
 }
 
 module.exports = {
-  Read: { zigzag64: ['native', readSignedVarLong], zigzag32: ['native', readSignedVarInt] },
-  Write: { zigzag64: ['native', writeSignedVarLong], zigzag32: ['native', writeSignedVarInt] },
-  SizeOf: { zigzag64: ['native', sizeOfVarLong], zigzag32: ['native', sizeOfVarInt] }
+  compiler: {
+    Read: { zigzag64: ['native', readSignedVarLong], zigzag32: ['native', readSignedVarInt] },
+    Write: { zigzag64: ['native', writeSignedVarLong], zigzag32: ['native', writeSignedVarInt] },
+    SizeOf: { zigzag64: ['native', sizeOfVarLong], zigzag32: ['native', sizeOfVarInt] }
+  },
+  interpert: { zigzag64: [readSignedVarLong, writeSignedVarLong, sizeOfVarInt] }
 }
