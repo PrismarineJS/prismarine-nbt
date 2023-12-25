@@ -57,6 +57,10 @@ declare module 'prismarine-nbt'{
   export const proto: any;
   // Little Endian protocol
   export const protoLE: any;
+  // Adds prismarine-nbt types to an ProtoDef compiler instance
+  export function addTypesToCompiler(type: NBTFormat, compiler)
+  // Adds prismarine-nbt types to a ProtoDef interperter instance
+  export function addTypesToInterperter(type: NBTFormat, protodef)
 
   /** @deprecated */
   export function writeUncompressed(value: NBT, little?: boolean): Buffer;
