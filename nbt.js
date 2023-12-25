@@ -23,6 +23,7 @@ function addTypesToInterperter (type, compiler) {
   compiler.addTypes(require('./compound'))
   let proto = beNbtJson
   if (type === 'littleVarint') {
+    compiler.addType('nbtTagName', 'shortString')
     compiler.addTypes(require('./compiler-zigzag').interpert)
     proto = varintJson
   } else if (type === 'little') {
