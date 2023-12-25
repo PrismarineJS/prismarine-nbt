@@ -1,5 +1,9 @@
 # History
 
+## 2.4.0
+* [Update nbt.json to add anonymous compound without name (#79)](https://github.com/PrismarineJS/prismarine-nbt/commit/7ec1c4428a0b263906d31d41fd7f5692a080c542) (thanks @extremeheat)
+* [Update publish.yml workflow to match mineflayer (#76)](https://github.com/PrismarineJS/prismarine-nbt/commit/1c62910515ab78b0599ea0700371c34811f5b0a9) (thanks @extremeheat)
+
 ## 2.3.0
 * [Allow zigzag encoded varints to be read up to 64bits (#74)](https://github.com/PrismarineJS/prismarine-nbt/commit/7022802e138db82753c69fdfd3423289366621a1) (thanks @extremeheat)
 * [Add command gh workflow allowing to use release command in comments (#73)](https://github.com/PrismarineJS/prismarine-nbt/commit/16c78c083797e410ebf5216145c2a406e286be27) (thanks @rom1504)
