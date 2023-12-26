@@ -126,6 +126,6 @@ module.exports = {
   },
   interpret: {
     zigzag64: [readSignedVarLong, writeSignedVarLong, sizeOfVarLong],
-    zigzag32: [readSignedVarInt, writeSignedVarInt, sizeOfVarInt],
+    zigzag32: [readSignedVarInt, writeSignedVarInt, sizeOfVarInt]
   }
 }
