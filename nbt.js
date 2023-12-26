@@ -9,10 +9,10 @@ const varintJson = JSON.stringify(require('./nbt-varint.json')).replace(/([if][0
 function addTypesToCompiler (type, compiler) {
   compiler.addTypes(require('./compiler-compound'))
   compiler.addTypes(require('./compiler-tagname'))
-  compiler.addTypes(require('./compiler-optional').compiler)
+  compiler.addTypes(require('./optional').compiler)
+  compiler.addTypes(require('./zigzag').compiler)
   let proto = beNbtJson
   if (type === 'littleVarint') {
-    compiler.addTypes(require('./compiler-zigzag').compiler)
     proto = varintJson
   } else if (type === 'little') {
     proto = leNbtJson
@@ -20,13 +20,13 @@ function addTypesToCompiler (type, compiler) {
   compiler.addTypesToCompile(JSON.parse(proto))
 }
 
-function addTypesToInterperter (type, compiler) {
+function addTypesToInterpreter (type, compiler) {
   compiler.addTypes(require('./compound'))
   compiler.addType('nbtTagName', 'shortString')
-  compiler.addTypes(require('./compiler-optional').interpert)
+  compiler.addTypes(require('./optional').interpret)
+  compiler.addTypes(require('./zigzag').interpret)
   let proto = beNbtJson
   if (type === 'littleVarint') {
-    compiler.addTypes(require('./compiler-zigzag').interpert)
     proto = varintJson
   } else if (type === 'little') {
     proto = leNbtJson
@@ -248,7 +248,7 @@ const builder = {
 
 module.exports = {
   addTypesToCompiler,
-  addTypesToInterperter,
+  addTypesToInterpreter,
   writeUncompressed,
   parseUncompressed,
   simplify,

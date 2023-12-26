@@ -87,8 +87,8 @@ Provide the little-endian protodef instance used to parse and serialize little e
 ### addTypesToCompiler (type, compiler)
 Adds prismarine-nbt types to an ProtoDef compiler instance
 
-### addTypesToInterperter (type, interperter)
-Adds prismarine-nbt types to a ProtoDef interperter instance
+### addTypesToInterpreter (type, interperter)
+Adds prismarine-nbt types to a ProtoDef interpreter instance
 
 ### builder
 

@@ -53,5 +53,5 @@ const compiler = {
 
 module.exports = {
   compiler,
-  interpert: { optionalNbt: [readOptionalNbt, writeOptionalNbt, sizeOfOptionalNbt] }
+  interpret: { optionalNbt: [readOptionalNbt, writeOptionalNbt, sizeOfOptionalNbt] }
 }
