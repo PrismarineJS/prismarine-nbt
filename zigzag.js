@@ -124,5 +124,8 @@ module.exports = {
     Write: { zigzag64: ['native', writeSignedVarLong], zigzag32: ['native', writeSignedVarInt] },
     SizeOf: { zigzag64: ['native', sizeOfVarLong], zigzag32: ['native', sizeOfVarInt] }
   },
-  interpret: { zigzag64: [readSignedVarLong, writeSignedVarLong, sizeOfVarInt] }
+  interpret: {
+    zigzag64: [readSignedVarLong, writeSignedVarLong, sizeOfVarLong],
+    zigzag32: [readSignedVarInt, writeSignedVarInt, sizeOfVarInt],
+  }
 }
