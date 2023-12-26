@@ -22,7 +22,6 @@ function addTypesToCompiler (type, compiler) {
 
 function addTypesToInterpreter (type, compiler) {
   compiler.addTypes(require('./compound'))
-  compiler.addType('nbtTagName', 'shortString')
   compiler.addTypes(require('./optional').interpret)
   compiler.addTypes(require('./zigzag').interpret)
   let proto = beNbtJson
@@ -32,6 +31,7 @@ function addTypesToInterpreter (type, compiler) {
     proto = leNbtJson
   }
   compiler.addTypes(JSON.parse(proto))
+  compiler.types.nbtTagName = compiler.types.shortString
 }
 
 function createProto (type) {
