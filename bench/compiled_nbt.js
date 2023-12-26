@@ -9,7 +9,7 @@ const mainType = 'nbt'
 
 function main (nbTests = 10000) {
   const buffer = fs.readFileSync(__dirname + '/../sample/bigtest.nbt') // eslint-disable-line n/no-path-concat
-  const validate = false
+  const validate = true
   const proto = new ProtoDef(validate)
   nbt.addTypesToInterpreter('big', proto)
 

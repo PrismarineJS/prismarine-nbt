@@ -4,6 +4,7 @@
   "i8": "native",
   "switch": "native",
   "compound": "native",
+  "nbtTagName": "native",
   "i16": "native",
   "u16": "native",
   "i32": "native",
