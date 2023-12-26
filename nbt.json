@@ -11,9 +11,12 @@
   "f32": "native",
   "f64": "native",
   "pstring": "native",
-  "shortString": ["pstring",{
-    "countType":"u16"
-  }],
+  "shortString": [
+    "pstring",
+    {
+      "countType": "u16"
+    }
+  ],
   "byteArray": [
     "array",
     {
@@ -34,7 +37,12 @@
           "array",
           {
             "countType": "i32",
-            "type": ["nbtSwitch",{"type":"type"}]
+            "type": [
+              "nbtSwitch",
+              {
+                "type": "type"
+              }
+            ]
           }
         ]
       }
@@ -54,7 +62,8 @@
       "type": "i64"
     }
   ],
-  "nbtMapper":["mapper",
+  "nbtMapper": [
+    "mapper",
     {
       "type": "i8",
       "mappings": {
@@ -74,7 +83,7 @@
       }
     }
   ],
-  "nbtSwitch":[
+  "nbtSwitch": [
     "switch",
     {
       "compareTo": "$type",
@@ -108,7 +117,12 @@
       },
       {
         "name": "value",
-        "type": ["nbtSwitch",{"type":"type"}]
+        "type": [
+          "nbtSwitch",
+          {
+            "type": "type"
+          }
+        ]
       }
     ]
   ],
@@ -121,8 +135,25 @@
       },
       {
         "name": "value",
-        "type": ["nbtSwitch",{"type":"type"}]
+        "type": [
+          "nbtSwitch",
+          {
+            "type": "type"
+          }
+        ]
       }
     ]
+  ],
+  "anonOptionalNbt": [
+    "optionalNbtType",
+    {
+      "tagType": "anonymousNbt"
+    }
+  ],
+  "optionalNbt": [
+    "optionalNbtType",
+    {
+      "tagType": "nbt"
+    }
   ]
 }
