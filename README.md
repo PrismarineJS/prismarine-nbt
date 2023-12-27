@@ -12,17 +12,16 @@ Prismarine-NBT is a JavaScript parser and serializer for [NBT](http://wiki.vg/NB
 #### as a async promise
 
 ```js
-const fs = require('fs/promises')
+const fs = require('fs')
 const nbt = require('prismarine-nbt')
 
 async function main(file) {
-  const buffer = await fs.readFile(file)
+  const buffer = fs.readFileSync(file)
   const { parsed, type } = await nbt.parse(buffer)
-  console.log('JSON serialized', JSON.stringify(result, null, 2))
-  fs.createWriteStream('file.nbt').write(nbt.writeUncompressed(result, type)) // Write it back 
+  console.log('JSON serialized', JSON.stringify(parsed, null, 2))
+  fs.createWriteStream('bigtest.nbt').write(nbt.writeUncompressed(parsed, type)) // Write it back 
 }
-
-main('file.nbt')
+main('bigtest.nbt')
 ```
 
 #### as a callback
@@ -84,6 +83,12 @@ Provide the big-endian protodef instance used to parse and serialize nbt.
 ### protoLE
 
 Provide the little-endian protodef instance used to parse and serialize little endian nbt.
+
+### addTypesToCompiler (type, compiler)
+Adds prismarine-nbt types to an ProtoDef compiler instance
+
+### addTypesToInterpreter (type, interperter)
+Adds prismarine-nbt types to a ProtoDef interpreter instance
 
 ### builder
 
