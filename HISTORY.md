@@ -1,5 +1,8 @@
 # History
 
+## 2.5.0
+* [add addTypesToCompiler and addTypesToInterperter method for ProtoDef (#81)](https://github.com/PrismarineJS/prismarine-nbt/commit/e2182975f0fe5d91d4f09b75cbc7b355a678c5e3) (thanks @extremeheat)
+
 ## 2.4.0
 * [Update nbt.json to add anonymous compound without name (#79)](https://github.com/PrismarineJS/prismarine-nbt/commit/7ec1c4428a0b263906d31d41fd7f5692a080c542) (thanks @extremeheat)
 * [Update publish.yml workflow to match mineflayer (#76)](https://github.com/PrismarineJS/prismarine-nbt/commit/1c62910515ab78b0599ea0700371c34811f5b0a9) (thanks @extremeheat)
