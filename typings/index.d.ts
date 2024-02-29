@@ -1,3 +1,4 @@
+/// <reference types="node" resolution-mode="require"/>
 declare module 'prismarine-nbt'{
   export type List<T extends TagType> = {
     type: TagType.List,
