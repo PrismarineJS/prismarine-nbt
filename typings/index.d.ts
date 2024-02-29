@@ -1,5 +1,8 @@
 /// <reference types="node" resolution-mode="require"/>
 declare module 'prismarine-nbt'{
+  // @ts-expect-error - protodef is untyped
+  import type { Compiler, Interpreter } from "protodef";
+
   export type List<T extends TagType> = {
     type: `${TagType.List}`,
     value: { type: Tags[T]['type'], value: Tags[T]['value'][] }
@@ -59,9 +62,9 @@ declare module 'prismarine-nbt'{
   // Little Endian protocol
   export const protoLE: any;
   // Adds prismarine-nbt types to an ProtoDef compiler instance
-  export function addTypesToCompiler(type: NBTFormat, compiler)
+  export function addTypesToCompiler(type: NBTFormat, compiler: Compiler): void;
   // Adds prismarine-nbt types to a ProtoDef interpreter instance
-  export function addTypesToInterpreter(type: NBTFormat, protodef)
+  export function addTypesToInterpreter(type: NBTFormat, protodef: Interpreter): void;
 
   /** @deprecated */
   export function writeUncompressed(value: NBT, little?: boolean): Buffer;
