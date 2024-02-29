@@ -3,10 +3,34 @@ declare module 'prismarine-nbt'{
   // @ts-expect-error - protodef is untyped
   import type { Compiler, Interpreter } from "protodef";
 
+  export type Byte = { type: `${TagType.Byte}`, value: number };
+
+  export type Short = { type: `${TagType.Short}`, value: number };
+
+  export type Int = { type: `${TagType.Int}`, value: number };
+
+  export type Long = { type: `${TagType.Long}`, value: [number, number] };
+
+  export type Float = { type: `${TagType.Float}`, value: number };
+
+  export type Double = { type: `${TagType.Double}`, value: number };
+
+  export type String = { type: `${TagType.String}`, value: string };
+
   export type List<T extends TagType> = {
     type: `${TagType.List}`,
     value: { type: Tags[T]['type'], value: Tags[T]['value'][] }
   };
+
+  export type Compound = { type: `${TagType.Compound}`, value: Record<string, undefined | Tags[TagType]> };
+
+  export type ByteArray = { type: `${TagType.ByteArray}`, value: Byte["value"][] };
+
+  export type ShortArray = { type: `${TagType.ShortArray}`, value: Short["value"][] };
+
+  export type IntArray = { type: `${TagType.IntArray}`, value: Int["value"][] };
+
+  export type LongArray = { type: `${TagType.LongArray}`, value: Long["value"][] };
 
   export enum TagType {
     Byte = 'byte',
@@ -25,19 +49,19 @@ declare module 'prismarine-nbt'{
   }
 
   export type Tags = {
-    [TagType.Byte]: { type: `${TagType.Byte}`, value: number };
-    [TagType.Short]: { type: `${TagType.Short}`, value: number };
-    [TagType.Int]: { type: `${TagType.Int}`, value: number };
-    [TagType.Long]: { type: `${TagType.Long}`, value: [number, number] };
-    [TagType.Float]: { type: `${TagType.Float}`, value: number };
-    [TagType.Double]: { type: `${TagType.Double}`, value: number };
-    [TagType.String]: { type: `${TagType.String}`, value: string };
-    [TagType.List]: List<TagType>
-    [TagType.Compound]: { type: `${TagType.Compound}`, value: Record<string, undefined | Tags[TagType]> };
-    [TagType.ByteArray]: { type: `${TagType.ByteArray}`, value: number[] };
-    [TagType.ShortArray]: { type: `${TagType.ShortArray}`, value: number[] };
-    [TagType.IntArray]: { type: `${TagType.IntArray}`, value: number[] };
-    [TagType.LongArray]: { type: `${TagType.LongArray}`, value: [number, number][] };
+    [TagType.Byte]: Byte;
+    [TagType.Short]: Short;
+    [TagType.Int]: Int;
+    [TagType.Long]: Long;
+    [TagType.Float]: Float;
+    [TagType.Double]: Double;
+    [TagType.String]: String;
+    [TagType.List]: List<TagType>;
+    [TagType.Compound]: Compound;
+    [TagType.ByteArray]: ByteArray;
+    [TagType.ShortArray]: ShortArray;
+    [TagType.IntArray]: IntArray;
+    [TagType.LongArray]: LongArray;
   }
 
   export type NBTFormat = 'big' | 'little' | 'littleVarint'
