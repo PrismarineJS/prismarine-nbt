@@ -35,7 +35,7 @@ function addTypesToInterpreter (type, compiler) {
 }
 
 function createProto (type) {
-  const compiler = new ProtoDefCompiler()
+  const compiler = new ProtoDefCompiler({ skipChecks: true })
   addTypesToCompiler(type, compiler)
   return compiler.compileProtoDefSync()
 }
