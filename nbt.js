@@ -34,8 +34,8 @@ function addTypesToInterpreter (type, compiler) {
   compiler.types.nbtTagName = compiler.types.shortString
 }
 
-function createProto (type) {
-  const compiler = new ProtoDefCompiler({ skipChecks: true })
+function createProto (type, options = {}) {
+  const compiler = new ProtoDefCompiler(options)
   addTypesToCompiler(type, compiler)
   return compiler.compileProtoDefSync()
 }
@@ -50,14 +50,36 @@ const protos = {
   littleVarint: protoVarInt
 }
 
-function writeUncompressed (value, proto = 'big') {
-  if (proto === true) proto = 'little'
-  return protos[proto].createPacketBuffer('nbt', value)
+const protosSkipChecks = {
+  big: createProto('big', { skipChecks: true }),
+  little: createProto('little', { skipChecks: true }),
+  littleVarint: createProto('littleVarint', { skipChecks: true })
 }
 
-function parseUncompressed (data, proto = 'big') {
-  if (proto === true) proto = 'little'
-  return protos[proto].parsePacketBuffer('nbt', data, data.startOffset).data
+const parseProtoName = (proto) => {
+  if (proto === true) {
+    return 'little'
+  }
+  return proto
+}
+
+/**
+ * Return the proto object give a name and options.
+ */
+const getProto = (proto, options = {}) => {
+  const protoName = parseProtoName(proto)
+  if (options.skipChecks) {
+    return protosSkipChecks[protoName]
+  }
+  return protos[protoName]
+}
+
+function writeUncompressed (value, proto = 'big', options = {}) {
+  return getProto(proto, options).createPacketBuffer('nbt', value)
+}
+
+function parseUncompressed (data, proto = 'big', options = {}) {
+  return getProto(proto, options).parsePacketBuffer('nbt', data, data.startOffset).data
 }
 
 const hasGzipHeader = function (data) {
@@ -70,7 +92,7 @@ const hasGzipHeader = function (data) {
 const hasBedrockLevelHeader = (data) =>
   data[1] === 0 && data[2] === 0 && data[3] === 0
 
-async function parseAs (data, type) {
+async function parseAs (data, type, options = {}) {
   if (hasGzipHeader(data)) {
     data = await new Promise((resolve, reject) => {
       zlib.gunzip(data, (error, uncompressed) => {
@@ -79,13 +101,13 @@ async function parseAs (data, type) {
       })
     })
   }
-  const parsed = protos[type].parsePacketBuffer('nbt', data, data.startOffset)
+  const parsed = getProto(type, options).parsePacketBuffer('nbt', data, data.startOffset)
   parsed.metadata.buffer = data
   parsed.type = type
   return parsed
 }
 
-async function parse (data, format, callback) {
+async function parse (data, format, callback, options = {}) {
   let fmt = null
   if (typeof format === 'function') {
     callback = format
@@ -111,7 +133,7 @@ async function parse (data, format, callback) {
   // if the format is specified, parse
   if (fmt) {
     try {
-      const res = await parseAs(data, fmt)
+      const res = await parseAs(data, fmt, options)
       if (callback) callback(null, res.data, res.type, res.metadata)
       return { parsed: res.data, type: res.type, metadata: res.metadata }
     } catch (e) {
@@ -137,15 +159,15 @@ async function parse (data, format, callback) {
   // Try to parse as all formats until something passes
   let ret = null
   try {
-    ret = await parseAs(data, 'big')
+    ret = await parseAs(data, 'big', options)
     verifyEOF(ret.metadata)
   } catch (e) {
     try {
-      ret = await parseAs(data, 'little')
+      ret = await parseAs(data, 'little', options)
       verifyEOF(ret.metadata)
     } catch (e2) {
       try {
-        ret = await parseAs(data, 'littleVarint')
+        ret = await parseAs(data, 'littleVarint', options)
         verifyEOF(ret.metadata)
       } catch (e3) {
         if (callback) return callback(e)
