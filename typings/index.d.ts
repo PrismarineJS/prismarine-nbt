@@ -79,8 +79,10 @@ declare module 'prismarine-nbt'{
   }
   export function writeUncompressed(value: NBT, format?: NBTFormat, options?: CompilerOptions): Buffer;
   export function parseUncompressed(value: Buffer, format?: NBTFormat, options?: CompilerOptions): NBT;
-  
-  export function parse(data: Buffer, nbtType?: NBTFormat, options?: CompilerOptions): Promise<{parsed: NBT, type: NBTFormat, metadata: Metadata}>;
+
+  type ParseCallback = ((error: null, parsed: NBT, type: NBTFormat, metadata: Metadata) => void) | ((error: Error) => void);
+
+  export function parse(data: Buffer, nbtType?: NBTFormat, callback?: ParseCallback, options?: CompilerOptions): Promise<{parsed: NBT, type: NBTFormat, metadata: Metadata}>;
   export function simplify(data: Tags[TagType]): any
   export function equal(nbt1: Tags[TagType], nbt2: Tags[TagType]): boolean
   // ProtoDef compiled protocols
