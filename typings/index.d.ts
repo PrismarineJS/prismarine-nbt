@@ -64,6 +64,10 @@ declare module 'prismarine-nbt'{
     [TagType.LongArray]: LongArray;
   }
 
+  interface CompilerOptions {
+    skipChecks: boolean
+  }
+
   export type NBTFormat = 'big' | 'little' | 'littleVarint'
 
   export type NBT = Tags['compound'] & {name: string};
@@ -73,10 +77,10 @@ declare module 'prismarine-nbt'{
     // The length of bytes read from the buffer
     size: number
   }
-  export function writeUncompressed(value: NBT, format?: NBTFormat): Buffer;
-  export function parseUncompressed(value: Buffer, format?: NBTFormat): NBT;
+  export function writeUncompressed(value: NBT, format?: NBTFormat, options?: CompilerOptions): Buffer;
+  export function parseUncompressed(value: Buffer, format?: NBTFormat, options?: CompilerOptions): NBT;
   
-  export function parse(data: Buffer, nbtType?: NBTFormat): Promise<{parsed: NBT, type: NBTFormat, metadata: Metadata}>;
+  export function parse(data: Buffer, nbtType?: NBTFormat, options?: CompilerOptions): Promise<{parsed: NBT, type: NBTFormat, metadata: Metadata}>;
   export function simplify(data: Tags[TagType]): any
   export function equal(nbt1: Tags[TagType], nbt2: Tags[TagType]): boolean
   // ProtoDef compiled protocols

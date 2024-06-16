@@ -64,7 +64,7 @@ const parseProtoName = (proto) => {
 }
 
 /**
- * Return the proto object give a name and options.
+ * Return the proto object give the proto name and options.
  */
 const getProto = (proto, options = {}) => {
   const protoName = parseProtoName(proto)
