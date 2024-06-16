@@ -34,7 +34,7 @@ function addTypesToInterpreter (type, compiler) {
   compiler.types.nbtTagName = compiler.types.shortString
 }
 
-function createProto (type, options = {}) {
+function createProto (type, options) {
   const compiler = new ProtoDefCompiler(options)
   addTypesToCompiler(type, compiler)
   return compiler.compileProtoDefSync()
@@ -66,19 +66,19 @@ const parseProtoName = (proto) => {
 /**
  * Return the proto object give the proto name and options.
  */
-const getProto = (proto, options = {}) => {
+const getProto = (proto, options) => {
   const protoName = parseProtoName(proto)
-  if (options.skipChecks) {
+  if (options?.skipChecks) {
     return protosSkipChecks[protoName]
   }
   return protos[protoName]
 }
 
-function writeUncompressed (value, proto = 'big', options = {}) {
+function writeUncompressed (value, proto = 'big', options) {
   return getProto(proto, options).createPacketBuffer('nbt', value)
 }
 
-function parseUncompressed (data, proto = 'big', options = {}) {
+function parseUncompressed (data, proto = 'big', options) {
   return getProto(proto, options).parsePacketBuffer('nbt', data, data.startOffset).data
 }
 
@@ -92,7 +92,7 @@ const hasGzipHeader = function (data) {
 const hasBedrockLevelHeader = (data) =>
   data[1] === 0 && data[2] === 0 && data[3] === 0
 
-async function parseAs (data, type, options = {}) {
+async function parseAs (data, type, options) {
   if (hasGzipHeader(data)) {
     data = await new Promise((resolve, reject) => {
       zlib.gunzip(data, (error, uncompressed) => {
@@ -107,7 +107,7 @@ async function parseAs (data, type, options = {}) {
   return parsed
 }
 
-async function parse (data, format, callback, options = {}) {
+async function parse (data, format, callback, options) {
   let fmt = null
   if (typeof format === 'function') {
     callback = format
