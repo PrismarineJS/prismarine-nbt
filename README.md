@@ -46,7 +46,6 @@ If the data is gzipped, it is automatically decompressed, for the buffer see met
 
 ### parse(data, [format]): Promise<{ parsed, type, metadata: { size, buffer? } }>
 ### parse(data, [format,] callback)
-### parse(data, format, callback, {skipChecks: boolean})
 
 Takes an optionally compressed `data` buffer and reads the nbt data.
 
@@ -56,12 +55,10 @@ try to sequentially load as big, little and little varint until the parse is suc
 Minecraft Java Edition uses big-endian format, and Bedrock uses little-endian.
 
 ### writeUncompressed(value, format='big')
-### writeUncompressed(value, format='big', {skipChecks: boolean})
 
 Returns a buffer with a serialized nbt `value`. 
 
 ### parseUncompressed(data, format='big')
-### parseUncompressed(data, format='big', {skipChecks: boolean})
 
 Takes a buffer `data` and returns a parsed nbt value.
 
