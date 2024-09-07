@@ -175,7 +175,9 @@ function simplify (data) {
 }
 
 function setSkipChecks (value) {
-  compiler.setValue('skipChecks', value)
+  protos.big.setVariable('skipChecks', value)
+  protos.little.setVariable('skipChecks', value)
+  protos.littleVarint.setVariable('skipChecks', value)
 }
 
 function equal (nbt1, nbt2) {
