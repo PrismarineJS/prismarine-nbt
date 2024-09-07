@@ -174,6 +174,10 @@ function simplify (data) {
   return transform(data.value, data.type)
 }
 
+function setSkipChecks (value) {
+  compiler.setValue('skipChecks', value)
+}
+
 function equal (nbt1, nbt2) {
   if (nbt1.type !== nbt2.type) return false
 
@@ -252,6 +256,7 @@ module.exports = {
   writeUncompressed,
   parseUncompressed,
   simplify,
+  setSkipChecks,
   hasBedrockLevelHeader,
   parse,
   parseAs,

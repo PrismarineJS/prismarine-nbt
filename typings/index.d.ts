@@ -82,6 +82,7 @@ declare module 'prismarine-nbt'{
   
   export function parse(data: Buffer, nbtType?: NBTFormat, options?: CompilerOptions): Promise<{parsed: NBT, type: NBTFormat, metadata: Metadata}>;
   export function simplify(data: Tags[TagType]): any
+  export function setSkipChecks(skipChecks: boolean): void
   export function equal(nbt1: Tags[TagType], nbt2: Tags[TagType]): boolean
   // ProtoDef compiled protocols
   export const protos: { big: any, little: any, littleVarint: any };
