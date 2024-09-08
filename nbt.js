@@ -58,17 +58,17 @@ function writeUncompressed (value, proto = 'big') {
 function parseUncompressed (data, proto = 'big', options = {}) {
   if (proto === true) proto = 'little'
 
-  if(options.noArraySizeCheck) {
-    protos[proto].setVariable('noArraySizeCheck', options.noArraySizeCheck);
+  if (options.noArraySizeCheck) {
+    protos[proto].setVariable('noArraySizeCheck', options.noArraySizeCheck)
   }
 
   const parsed = protos[proto].parsePacketBuffer('nbt', data, data.startOffset).data
 
   // Unset the noArraySizeCheck option so the variable value doesn't persist.
-  if(options.noArraySizeCheck) {
-    protos[proto].setVariable('noArraySizeCheck', undefined);
+  if (options.noArraySizeCheck) {
+    protos[proto].setVariable('noArraySizeCheck', undefined)
   }
-  return parsed;
+  return parsed
 }
 
 const hasGzipHeader = function (data) {
@@ -91,15 +91,15 @@ async function parseAs (data, type, options = {}) {
     })
   }
 
-  if(options.noArraySizeCheck) {
-    protos[type].setVariable('noArraySizeCheck', options.noArraySizeCheck);
+  if (options.noArraySizeCheck) {
+    protos[type].setVariable('noArraySizeCheck', options.noArraySizeCheck)
   }
 
   const parsed = protos[type].parsePacketBuffer('nbt', data, data.startOffset)
 
   // Unset the noArraySizeCheck option so the variable value doesn't persist.
-  if(options.noArraySizeCheck) {
-    protos[type].setVariable('noArraySizeCheck', undefined);
+  if (options.noArraySizeCheck) {
+    protos[type].setVariable('noArraySizeCheck', undefined)
   }
 
   parsed.metadata.buffer = data
