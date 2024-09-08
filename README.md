@@ -58,9 +58,17 @@ Minecraft Java Edition uses big-endian format, and Bedrock uses little-endian.
 
 Returns a buffer with a serialized nbt `value`. 
 
-### parseUncompressed(data, format='big')
+### parseUncompressed(data, format='big', options?= {noArraySizeCheck?: boolean})
 
 Takes a buffer `data` and returns a parsed nbt value.
+
+The `options` parameter is optional. When `noArraySizeCheck` is `true`, an array size check is disabled which allows for parsing of large arrays.
+
+### parseAs(data, type, options?= {noArraySizeCheck?: boolean})
+
+Takes a buffer `data` and returns a parsed nbt value. If the buffer is gzipped, it will unzip the data first.
+
+The `options` parameter is optional. When `noArraySizeCheck` is `true`, an array size check is disabled which allows for parsing of large arrays.
 
 
 ### simplify(nbt)
