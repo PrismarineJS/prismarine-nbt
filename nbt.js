@@ -55,9 +55,20 @@ function writeUncompressed (value, proto = 'big') {
   return protos[proto].createPacketBuffer('nbt', value)
 }
 
-function parseUncompressed (data, proto = 'big') {
+function parseUncompressed (data, proto = 'big', options = {}) {
   if (proto === true) proto = 'little'
-  return protos[proto].parsePacketBuffer('nbt', data, data.startOffset).data
+
+  if(options.noArraySizeCheck) {
+    protos[proto].setVariable('noArraySizeCheck', options.noArraySizeCheck);
+  }
+
+  const parsed = protos[proto].parsePacketBuffer('nbt', data, data.startOffset).data
+
+  // Unset the noArraySizeCheck option so the variable value doesn't persist.
+  if(options.noArraySizeCheck) {
+    protos[proto].setVariable('noArraySizeCheck', undefined);
+  }
+  return parsed;
 }
 
 const hasGzipHeader = function (data) {
@@ -70,7 +81,7 @@ const hasGzipHeader = function (data) {
 const hasBedrockLevelHeader = (data) =>
   data[1] === 0 && data[2] === 0 && data[3] === 0
 
-async function parseAs (data, type) {
+async function parseAs (data, type, options = {}) {
   if (hasGzipHeader(data)) {
     data = await new Promise((resolve, reject) => {
       zlib.gunzip(data, (error, uncompressed) => {
@@ -79,13 +90,24 @@ async function parseAs (data, type) {
       })
     })
   }
+
+  if(options.noArraySizeCheck) {
+    protos[type].setVariable('noArraySizeCheck', options.noArraySizeCheck);
+  }
+
   const parsed = protos[type].parsePacketBuffer('nbt', data, data.startOffset)
+
+  // Unset the noArraySizeCheck option so the variable value doesn't persist.
+  if(options.noArraySizeCheck) {
+    protos[type].setVariable('noArraySizeCheck', undefined);
+  }
+
   parsed.metadata.buffer = data
   parsed.type = type
   return parsed
 }
 
-async function parse (data, format, callback) {
+async function parse (data, format, callback, options = {}) {
   let fmt = null
   if (typeof format === 'function') {
     callback = format
@@ -111,7 +133,7 @@ async function parse (data, format, callback) {
   // if the format is specified, parse
   if (fmt) {
     try {
-      const res = await parseAs(data, fmt)
+      const res = await parseAs(data, fmt, options)
       if (callback) callback(null, res.data, res.type, res.metadata)
       return { parsed: res.data, type: res.type, metadata: res.metadata }
     } catch (e) {
@@ -137,15 +159,15 @@ async function parse (data, format, callback) {
   // Try to parse as all formats until something passes
   let ret = null
   try {
-    ret = await parseAs(data, 'big')
+    ret = await parseAs(data, 'big', options)
     verifyEOF(ret.metadata)
   } catch (e) {
     try {
-      ret = await parseAs(data, 'little')
+      ret = await parseAs(data, 'little', options)
       verifyEOF(ret.metadata)
     } catch (e2) {
       try {
-        ret = await parseAs(data, 'littleVarint')
+        ret = await parseAs(data, 'littleVarint', options)
         verifyEOF(ret.metadata)
       } catch (e3) {
         if (callback) return callback(e)
@@ -172,12 +194,6 @@ function simplify (data) {
     return value
   }
   return transform(data.value, data.type)
-}
-
-function setSkipChecks (value) {
-  protos.big.setVariable('skipChecks', value)
-  protos.little.setVariable('skipChecks', value)
-  protos.littleVarint.setVariable('skipChecks', value)
 }
 
 function equal (nbt1, nbt2) {
@@ -258,7 +274,6 @@ module.exports = {
   writeUncompressed,
   parseUncompressed,
   simplify,
-  setSkipChecks,
   hasBedrockLevelHeader,
   parse,
   parseAs,
