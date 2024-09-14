@@ -59,7 +59,7 @@ function parseUncompressed (data, proto = 'big', options = {}) {
   if (proto === true) proto = 'little'
 
   protos[proto].setVariable('noArraySizeCheck', options.noArraySizeCheck)
-  
+
   return protos[proto].parsePacketBuffer('nbt', data, data.startOffset).data
 }
 
