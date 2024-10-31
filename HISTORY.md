@@ -1,5 +1,9 @@
 # History
 
+## 2.6.0
+* [Use ProtoDef `skipChecks` flag to allow full NBT array size support (#91)](https://github.com/PrismarineJS/prismarine-nbt/commit/f433bc80c7d9ff25abacaa189c6a324fb94a772c) (thanks @bdkopen)
+* [Improved Tag Types (#89)](https://github.com/PrismarineJS/prismarine-nbt/commit/70323d8c7f771698a02f3f40aa676bcecc60c5e7) (thanks @Offroaders123)
+
 ## 2.5.0
 * [add addTypesToCompiler and addTypesToInterperter method for ProtoDef (#81)](https://github.com/PrismarineJS/prismarine-nbt/commit/e2182975f0fe5d91d4f09b75cbc7b355a678c5e3) (thanks @extremeheat)
 
