@@ -64,6 +64,10 @@ declare module 'prismarine-nbt'{
     [TagType.LongArray]: LongArray;
   }
 
+  interface ParseOptions {
+    noArraySizeCheck?: boolean;
+  }
+
   export type NBTFormat = 'big' | 'little' | 'littleVarint'
 
   export type NBT = Tags['compound'] & {name: string};
@@ -74,7 +78,8 @@ declare module 'prismarine-nbt'{
     size: number
   }
   export function writeUncompressed(value: NBT, format?: NBTFormat): Buffer;
-  export function parseUncompressed(value: Buffer, format?: NBTFormat): NBT;
+  export function parseUncompressed(value: Buffer, format?: NBTFormat, options?: ParseOptions): NBT;
+  export function parseAs(value: Buffer, type: NBTFormat, options?: ParseOptions): Promise<{parsed: NBT, type: NBTFormat, metadata: Metadata}>;
   
   export function parse(data: Buffer, nbtType?: NBTFormat): Promise<{parsed: NBT, type: NBTFormat, metadata: Metadata}>;
   export function simplify(data: Tags[TagType]): any

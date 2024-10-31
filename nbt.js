@@ -55,8 +55,11 @@ function writeUncompressed (value, proto = 'big') {
   return protos[proto].createPacketBuffer('nbt', value)
 }
 
-function parseUncompressed (data, proto = 'big') {
+function parseUncompressed (data, proto = 'big', options = {}) {
   if (proto === true) proto = 'little'
+
+  protos[proto].setVariable('noArraySizeCheck', options.noArraySizeCheck)
+
   return protos[proto].parsePacketBuffer('nbt', data, data.startOffset).data
 }
 
@@ -70,7 +73,7 @@ const hasGzipHeader = function (data) {
 const hasBedrockLevelHeader = (data) =>
   data[1] === 0 && data[2] === 0 && data[3] === 0
 
-async function parseAs (data, type) {
+async function parseAs (data, type, options = {}) {
   if (hasGzipHeader(data)) {
     data = await new Promise((resolve, reject) => {
       zlib.gunzip(data, (error, uncompressed) => {
@@ -79,7 +82,11 @@ async function parseAs (data, type) {
       })
     })
   }
+
+  protos[type].setVariable('noArraySizeCheck', options.noArraySizeCheck)
+
   const parsed = protos[type].parsePacketBuffer('nbt', data, data.startOffset)
+
   parsed.metadata.buffer = data
   parsed.type = type
   return parsed
