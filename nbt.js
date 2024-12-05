@@ -10,7 +10,6 @@ function addTypesToCompiler (type, compiler) {
   compiler.addTypes(require('./compiler-compound'))
   compiler.addTypes(require('./compiler-tagname'))
   compiler.addTypes(require('./optional').compiler)
-  compiler.addTypes(require('./zigzag').compiler)
   let proto = beNbtJson
   if (type === 'littleVarint') {
     proto = varintJson
@@ -23,7 +22,6 @@ function addTypesToCompiler (type, compiler) {
 function addTypesToInterpreter (type, compiler) {
   compiler.addTypes(require('./compound'))
   compiler.addTypes(require('./optional').interpret)
-  compiler.addTypes(require('./zigzag').interpret)
   let proto = beNbtJson
   if (type === 'littleVarint') {
     proto = varintJson
