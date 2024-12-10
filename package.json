@@ -33,7 +33,7 @@
     "fix": "standard --fix"
   },
   "dependencies": {
-    "protodef": "extremeheat/node-protodef#varint"
+    "protodef": "^1.18.0"
   },
   "license": "MIT"
 }
