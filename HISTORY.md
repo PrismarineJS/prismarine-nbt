@@ -1,5 +1,8 @@
 # History
 
+## 2.7.0
+* [Remove varint types (#120)](https://github.com/PrismarineJS/prismarine-nbt/commit/5a7d8c0d3892c58886b8253e38135b539deee6ba) (thanks @extremeheat)
+
 ## 2.6.0
 * [Use ProtoDef `skipChecks` flag to allow full NBT array size support (#91)](https://github.com/PrismarineJS/prismarine-nbt/commit/f433bc80c7d9ff25abacaa189c6a324fb94a772c) (thanks @bdkopen)
 * [Improved Tag Types (#89)](https://github.com/PrismarineJS/prismarine-nbt/commit/70323d8c7f771698a02f3f40aa676bcecc60c5e7) (thanks @Offroaders123)
