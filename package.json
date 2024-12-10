@@ -33,7 +33,7 @@
     "fix": "standard --fix"
   },
   "dependencies": {
-    "protodef": "^1.9.0"
+    "protodef": "^1.18.0"
   },
   "license": "MIT"
 }
