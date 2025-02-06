@@ -72,6 +72,7 @@ const hasBedrockLevelHeader = (data) =>
   data[1] === 0 && data[2] === 0 && data[3] === 0
 
 async function parseAs (data, type, options = {}) {
+  if (!(data instanceof Buffer)) throw new Error('Invalid argument: `data` must be a Buffer object')
   if (hasGzipHeader(data)) {
     data = await new Promise((resolve, reject) => {
       zlib.gunzip(data, (error, uncompressed) => {
@@ -91,6 +92,12 @@ async function parseAs (data, type, options = {}) {
 }
 
 async function parse (data, format, callback) {
+  if (data instanceof ArrayBuffer) {
+    data = Buffer.from(data)
+  } else if (!(data instanceof Buffer)) {
+    throw new Error('Invalid argument: `data` must be a Buffer or ArrayBuffer object')
+  }
+
   let fmt = null
   if (typeof format === 'function') {
     callback = format
