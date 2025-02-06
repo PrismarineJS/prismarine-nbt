@@ -128,14 +128,13 @@ For webpack usage, see an example configuration [here](https://github.com/Prisma
 
 For a web bundle with browserify (after you ran `npm install prismarine-nbt` in your project):
 ```
-npx browserify -r prismarine-nbt -r buffer -o pnbt.js
+npx browserify -r prismarine-nbt -o pnbt.js
 ```
 ```html
 <script src="./pnbt.js"></script>
 <script>
   const nbt = require('prismarine-nbt')
-  const { Buffer } = require('buffer')
   fetch('test.nbt').then(resp => resp.arrayBuffer())
-    .then(buf => nbt.parse(Buffer.from(buf))).then(console.log)
+    .then(nbt.parse).then(console.log)
 </script>
 ```
