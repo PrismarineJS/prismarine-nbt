@@ -18,8 +18,13 @@ const nbt = require('prismarine-nbt')
 async function main(file) {
   const buffer = fs.readFileSync(file)
   const { parsed, type } = await nbt.parse(buffer)
-  console.log('JSON serialized', JSON.stringify(parsed, null, 2))
-  fs.createWriteStream('bigtest.nbt').write(nbt.writeUncompressed(parsed, type)) // Write it back 
+
+  console.log('As JSON', JSON.stringify(parsed))
+  console.log('Simplified', nbt.simplify(parsed))
+
+  // Write it back
+  fs.createWriteStream('bigtest.nbt')
+    .write(nbt.writeUncompressed(parsed, type))
 }
 main('bigtest.nbt')
 ```
@@ -47,7 +52,7 @@ If the data is gzipped, it is automatically decompressed, for the buffer see met
 ### parse(data, [format]): Promise<{ parsed, type, metadata: { size, buffer? } }>
 ### parse(data, [format,] callback)
 
-Takes an optionally compressed `data` buffer and reads the nbt data.
+Takes an optionally compressed `data` buffer (`Buffer` or `ArrayBuffer`) and reads the nbt data.
 
 If the endian `format` is known, it can be specified as 'big', 'little' or 'littleVarint'. If not specified, the library will
 try to sequentially load as big, little and little varint until the parse is successful. The deduced type is returned as `type`.
@@ -123,14 +128,13 @@ For webpack usage, see an example configuration [here](https://github.com/Prisma
 
 For a web bundle with browserify (after you ran `npm install prismarine-nbt` in your project):
 ```
-npx browserify -r prismarine-nbt -r buffer -o pnbt.js
+npx browserify -r prismarine-nbt -o pnbt.js
 ```
 ```html
 <script src="./pnbt.js"></script>
 <script>
   const nbt = require('prismarine-nbt')
-  const { Buffer } = require('buffer')
   fetch('test.nbt').then(resp => resp.arrayBuffer())
-    .then(buf => nbt.parse(Buffer.from(buf))).then(console.log)
+    .then(nbt.parse).then(console.log)
 </script>
 ```
