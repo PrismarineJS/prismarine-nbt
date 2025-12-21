@@ -1,5 +1,9 @@
 # History
 
+## 2.8.0
+* [Accept ArrayBuffer as .parse data (#125)](https://github.com/PrismarineJS/prismarine-nbt/commit/f3f1ce21f25c4e14484da35301cad35e87bd7709) (thanks @extremeheat)
+* [node 22 (#123)](https://github.com/PrismarineJS/prismarine-nbt/commit/54f36f653cf98da4a61503927d7769ba33301387) (thanks @rom1504)
+
 ## 2.7.0
 * [Remove varint types (#120)](https://github.com/PrismarineJS/prismarine-nbt/commit/5a7d8c0d3892c58886b8253e38135b539deee6ba) (thanks @extremeheat)
 
