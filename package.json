@@ -1,6 +1,6 @@
 {
   "name": "prismarine-nbt",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "description": "A parser and serializer for NBT archives",
   "keywords": [
     "nbt",

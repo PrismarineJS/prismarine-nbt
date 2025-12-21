@@ -1,5 +1,12 @@
 # History
 
+## 2.8.0
+* [Bump chai from 4.5.0 to 6.2.1 (#160)](https://github.com/PrismarineJS/prismarine-nbt/commit/00e2c020c713635a7e6aa6c401a6ff99470cea9a) (thanks @dependabot[bot])
+* [Accept ArrayBuffer as .parse data (#125)](https://github.com/PrismarineJS/prismarine-nbt/commit/f3f1ce21f25c4e14484da35301cad35e87bd7709) (thanks @extremeheat)
+* [Bump @types/node from 22.19.1 to 24.10.1 (#161)](https://github.com/PrismarineJS/prismarine-nbt/commit/4f680867ea2d678b6a888efd2b09b725128fc78e) (thanks @dependabot[bot])
+* [node 22 (#123)](https://github.com/PrismarineJS/prismarine-nbt/commit/54f36f653cf98da4a61503927d7769ba33301387) (thanks @rom1504)
+* [Bump mocha from 10.8.2 to 11.0.1 (#122)](https://github.com/PrismarineJS/prismarine-nbt/commit/0604fe1d5367f5d79470920ba0ea5f445ad456b7) (thanks @dependabot[bot])
+
 ## 2.7.0
 * [Remove varint types (#120)](https://github.com/PrismarineJS/prismarine-nbt/commit/5a7d8c0d3892c58886b8253e38135b539deee6ba) (thanks @extremeheat)
 
