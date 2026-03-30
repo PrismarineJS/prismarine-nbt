@@ -1,5 +1,11 @@
 # History
 
+## 2.9.0
+* [Update CI to Node 24 (#179)](https://github.com/PrismarineJS/prismarine-nbt/commit/143c8d9cd26f5039acd597c9e73666f55632e8f4) (thanks @rom1504)
+* [Fix publish condition for npm-publish v4 (#178)](https://github.com/PrismarineJS/prismarine-nbt/commit/2cab6f5841bbfb8e69a5cce8fea64f640ca5c76d) (thanks @rom1504)
+* [Switch to trusted publishing via OIDC (#177)](https://github.com/PrismarineJS/prismarine-nbt/commit/39c861d4bcc2899eef2b6232f23aa779a75ac2dd) (thanks @rom1504)
+* [Bump @types/node from 24.10.13 to 25.3.0 (#176)](https://github.com/PrismarineJS/prismarine-nbt/commit/f53789d0e8f40539824106bb18fba71bb7cbc65b) (thanks @dependabot[bot])
+
 ## 2.8.0
 * [Accept ArrayBuffer as .parse data (#125)](https://github.com/PrismarineJS/prismarine-nbt/commit/f3f1ce21f25c4e14484da35301cad35e87bd7709) (thanks @extremeheat)
 * [node 22 (#123)](https://github.com/PrismarineJS/prismarine-nbt/commit/54f36f653cf98da4a61503927d7769ba33301387) (thanks @rom1504)
