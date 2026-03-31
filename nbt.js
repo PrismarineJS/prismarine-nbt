@@ -74,12 +74,9 @@ const hasBedrockLevelHeader = (data) =>
 async function parseAs (data, type, options = {}) {
   if (!(data instanceof Buffer)) throw new Error('Invalid argument: `data` must be a Buffer object')
   if (hasGzipHeader(data)) {
-    data = await new Promise((resolve, reject) => {
-      zlib.gunzip(data, (error, uncompressed) => {
-        if (error) reject(error)
-        else resolve(uncompressed)
-      })
-    })
+    // Use sync to avoid uncaught async zlib errors from Node's C++ binding
+    // race condition during teardown. See nodejs/node#62325, nodejs/node#61202
+    data = zlib.gunzipSync(data)
   }
 
   protos[type].setVariable('noArraySizeCheck', options.noArraySizeCheck)
