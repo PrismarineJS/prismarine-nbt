@@ -1,5 +1,8 @@
 # History
 
+## 2.10.0
+* [Use gunzipSync to avoid uncaught async zlib errors (#182)](https://github.com/PrismarineJS/prismarine-nbt/commit/cf89b63fdd5b6af04a742b4b3483a45973baa811) (thanks @rom1504)
+
 ## 2.9.0
 * [Update CI to Node 24 (#179)](https://github.com/PrismarineJS/prismarine-nbt/commit/143c8d9cd26f5039acd597c9e73666f55632e8f4) (thanks @rom1504)
 * [Fix publish condition for npm-publish v4 (#178)](https://github.com/PrismarineJS/prismarine-nbt/commit/2cab6f5841bbfb8e69a5cce8fea64f640ca5c76d) (thanks @rom1504)
