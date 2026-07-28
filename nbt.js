@@ -183,6 +183,12 @@ function simplify (data) {
   return transform(data.value, data.type)
 }
 
+function longToBigInt (value) {
+  if (typeof value === 'bigint') return value
+  if (Array.isArray(value)) return (BigInt(value[0] | 0) << 32n) | BigInt(value[1] >>> 0)
+  return BigInt(value)
+}
+
 function equal (nbt1, nbt2) {
   if (nbt1.type !== nbt2.type) return false
 
@@ -219,7 +225,7 @@ function equal (nbt1, nbt2) {
   }
 
   if (nbt1.type === 'long') {
-    return nbt1.value[0] === nbt2.value[0] && nbt1.value[1] === nbt2.value[1]
+    return longToBigInt(nbt1.value) === longToBigInt(nbt2.value)
   }
 
   if (nbt1.type === 'longArray') {
