@@ -67,7 +67,7 @@ declare module 'prismarine-nbt' {
   }
   export function writeUncompressed(value: NBT, format?: NBTFormat): Buffer;
   export function parseUncompressed(value: Buffer, format?: NBTFormat, options?: ParseOptions): NBT;
-  export function parseAs(value: Buffer, type: NBTFormat, options?: ParseOptions): Promise<{ parsed: NBT, type: NBTFormat, metadata: Metadata }>;
+  export function parseAs(value: Buffer, type: NBTFormat, options?: ParseOptions): Promise<{ data: NBT, type: NBTFormat, metadata: Metadata, buffer: Buffer, fullBuffer: Uint8Array }>;
 
   export function parse(data: Buffer | ArrayBuffer, nbtType?: NBTFormat): Promise<{ parsed: NBT, type: NBTFormat, metadata: Metadata }>;
   export function simplify(data: Tags[TagType]): any
@@ -107,10 +107,10 @@ declare module 'prismarine-nbt' {
   /**
    * @param value Takes a BigInt or an array of two 32-bit integers
    */
-  export function long<T extends number | number[] | BigInt>(value: T): { type: `${TagType.Long}`, value: T }
+  export function long<T extends number | [number, number] | bigint>(value: T): { type: `${TagType.Long}`, value: T }
   // Arrays
   export function byteArray(value: number[]): { type: `${TagType.ByteArray}`, value: number[] }
   export function shortArray(value: number[]): { type: `${TagType.ShortArray}`, value: number[] }
   export function intArray(value: number[]): { type: `${TagType.ByteArray}`, value: number[] }
-  export function longArray<T extends number[] | BigInt[]>(value: T): { type: `${TagType.LongArray}`, value: T }
+  export function longArray<T extends number[] | [number, number][] | bigint[]>(value: T): { type: `${TagType.LongArray}`, value: T }
 }
