@@ -1,6 +1,7 @@
 const zlib = require('zlib')
 
 const { ProtoDefCompiler } = require('protodef').Compiler
+const { toBigInt } = require('./long')
 
 const beNbtJson = JSON.stringify(require('./nbt.json'))
 const leNbtJson = beNbtJson.replace(/([iuf][0-7]+)/g, 'l$1')
@@ -10,6 +11,7 @@ function addTypesToCompiler (type, compiler) {
   compiler.addTypes(require('./compiler-compound'))
   compiler.addTypes(require('./compiler-tagname'))
   compiler.addTypes(require('./optional').compiler)
+  if (type === 'littleVarint') compiler.addTypes(require('./long').compiler)
   let proto = beNbtJson
   if (type === 'littleVarint') {
     proto = varintJson
@@ -22,6 +24,7 @@ function addTypesToCompiler (type, compiler) {
 function addTypesToInterpreter (type, compiler) {
   compiler.addTypes(require('./compound'))
   compiler.addTypes(require('./optional').interpret)
+  if (type === 'littleVarint') compiler.addTypes(require('./long').interpret)
   let proto = beNbtJson
   if (type === 'littleVarint') {
     proto = varintJson
@@ -219,14 +222,16 @@ function equal (nbt1, nbt2) {
   }
 
   if (nbt1.type === 'long') {
-    return nbt1.value[0] === nbt2.value[0] && nbt1.value[1] === nbt2.value[1]
+    // Compare by numeric value: longs may be [high, low] (big/little) or
+    // BigInt (littleVarint), and indexing a BigInt yields undefined (#190)
+    return toBigInt(nbt1.value) === toBigInt(nbt2.value)
   }
 
   if (nbt1.type === 'longArray') {
     if (nbt1.value.length !== nbt2.value.length) return false
 
     for (let i = 0; i < nbt1.value.length; i++) {
-      if (nbt1.value[i][0] !== nbt2.value[i][0] || nbt1.value[i][1] !== nbt2.value[i][1]) return false
+      if (toBigInt(nbt1.value[i]) !== toBigInt(nbt2.value[i])) return false
     }
 
     return true

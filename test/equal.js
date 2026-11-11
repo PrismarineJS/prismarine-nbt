@@ -138,4 +138,29 @@ describe('test equal', function () {
     expect(nbt.equal(nbt1, nbt4)).to.equal(false)
     expect(nbt.equal(nbt3, nbt4)).to.equal(false)
   })
+
+  it('compares longs by value across representations (#190)', async function () {
+    // littleVarint parses longs as BigInt, big/little as [high, low]
+    const longBigInt = { type: 'long', value: 1n }
+    const longBigInt2 = { type: 'long', value: 2n }
+    const longArrayHL = { type: 'long', value: [0, 1] }
+    const longNegBigInt = { type: 'long', value: -75715n }
+    const longNegHL = { type: 'long', value: [-1, -75715] }
+
+    // BigInt longs must not all compare equal (the silent-failure case)
+    expect(nbt.equal(longBigInt, longBigInt2)).to.equal(false)
+    expect(nbt.equal(longBigInt, { type: 'long', value: 1n })).to.equal(true)
+    // BigInt and [high, low] holding the same value are equal
+    expect(nbt.equal(longBigInt, longArrayHL)).to.equal(true)
+    expect(nbt.equal(longArrayHL, longBigInt)).to.equal(true)
+    expect(nbt.equal(longNegBigInt, longNegHL)).to.equal(true)
+    expect(nbt.equal(longBigInt, longNegBigInt)).to.equal(false)
+
+    // longArray elements compare by value too
+    const arrA = { type: 'longArray', value: [[0, 1], [0, 2]] }
+    const arrB = { type: 'longArray', value: [1n, 2n] }
+    const arrC = { type: 'longArray', value: [[0, 1], [0, 3]] }
+    expect(nbt.equal(arrA, arrB)).to.equal(true)
+    expect(nbt.equal(arrA, arrC)).to.equal(false)
+  })
 })
