@@ -50,11 +50,13 @@ const protos = {
 
 function writeUncompressed (value, proto = 'big') {
   if (proto === true) proto = 'little'
+  if (proto === false) proto = 'big'
   return protos[proto].createPacketBuffer('nbt', value)
 }
 
 function parseUncompressed (data, proto = 'big', options = {}) {
   if (proto === true) proto = 'little'
+  if (proto === false) proto = 'big'
 
   protos[proto].setVariable('noArraySizeCheck', options.noArraySizeCheck)
 
@@ -100,7 +102,7 @@ async function parse (data, format, callback) {
     callback = format
   } else if (format === true || format === 'little') {
     fmt = 'little'
-  } else if (format === 'big') {
+  } else if (format === false || format === 'big') {
     fmt = 'big'
   } else if (format === 'littleVarint') {
     fmt = 'littleVarint'
