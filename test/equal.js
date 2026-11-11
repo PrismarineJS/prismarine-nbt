@@ -138,4 +138,23 @@ describe('test equal', function () {
     expect(nbt.equal(nbt1, nbt4)).to.equal(false)
     expect(nbt.equal(nbt3, nbt4)).to.equal(false)
   })
+
+  it('compares longs by value, not by index', async function () {
+    const long = value => ({ type: 'long', value })
+
+    expect(nbt.equal(long(1n), long(1n))).to.equal(true)
+    expect(nbt.equal(long(1n), long(2n))).to.equal(false)
+    expect(nbt.equal(long(-1n), long(1n))).to.equal(false)
+
+    expect(nbt.equal(long([0, 1]), long([0, 1]))).to.equal(true)
+    expect(nbt.equal(long([0, 1]), long([0, 2]))).to.equal(false)
+    expect(nbt.equal(long([1234, 5678]), long([1234, 5679]))).to.equal(false)
+
+    expect(nbt.equal(long([0, 1]), long(1n))).to.equal(true)
+    expect(nbt.equal(long([0, 1]), long(2n))).to.equal(false)
+    expect(nbt.equal(long([-1, 4294967295]), long(-1n))).to.equal(true)
+
+    expect(nbt.equal(long([2147483647, 4294967295]), long(9223372036854775807n))).to.equal(true)
+    expect(nbt.equal(long([-2147483648, 0]), long(-9223372036854775808n))).to.equal(true)
+  })
 })
