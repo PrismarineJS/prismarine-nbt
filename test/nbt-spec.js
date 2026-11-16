@@ -114,7 +114,7 @@ describe('little endian read write', function () {
     expect(type).to.equal('little')
     const newBuf = nbt.writeUncompressed(parsed, 'little')
     dataOut.write(newBuf)
-    dataOut.end()
+    await new Promise(resolve => dataOut.end(() => resolve()))
 
     const newSha1 = await checksumFile('sha1', 'out-le-level.dat')
     expect(newSha1).to.equal('68e5942abe6bc92aefb02a2195b4ec359ffa3286')
